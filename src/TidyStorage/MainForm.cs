@@ -15,14 +15,66 @@ namespace TidyStorage
 {
     public partial class MainForm : Form
     {
+        Storage currentStorage;
+
         public MainForm()
         {
             InitializeComponent();
         }
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void NoStorageError()
+        {
+            MessageBox.Show("There is no storage. Please open or create new storage first.", "Storage Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void CreateNewStoragePart()
+        {
+            if (currentStorage != null)
+            {
+                StoragePartForm spf = new StoragePartForm(currentStorage, null);
+                spf.StartPosition = FormStartPosition.CenterParent;
+                spf.ShowDialog();
+            }
+            else
+            {
+                NoStorageError();
+            }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="part"></param>
+        private void EditStoragePart(StoragePart part)
+        {
+            if (currentStorage != null)
+            {
+                StoragePartForm spf = new StoragePartForm(currentStorage, part);
+                spf.StartPosition = FormStartPosition.CenterParent;
+                spf.ShowDialog();
+            }
+            else
+            {
+                NoStorageError();
+            }
+        }
+
+
         private void newToolStripButton_Click(object sender, EventArgs e)
         {
-         
+            if (tabControl1.SelectedIndex == 0)
+            {
+                CreateNewStoragePart();
+            }
         }
 
         private void groupBox1_Enter(object sender, EventArgs e)
@@ -121,10 +173,9 @@ namespace TidyStorage
         {
             ExcellTest();
 
-            Storage sg = new Storage("test2.sqlite");
+            currentStorage = new Storage("test2.sqlite");
 
-
-            sg.FillData(ref dataGridViewStorage);
+            dataGridViewStorage.DataSource = currentStorage.GetTable("part");
         }
 
         private void dataGridViewStorage_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
@@ -134,9 +185,22 @@ namespace TidyStorage
 
         private void partToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            StoragePartForm spf = new StoragePartForm();
-            spf.StartPosition = FormStartPosition.CenterParent;
-            spf.ShowDialog();
+            CreateNewStoragePart();
+        }
+
+        private void newToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            currentStorage.Save();
+        }
+
+        private void saveToolStripButton_Click(object sender, EventArgs e)
+        {
+            currentStorage.Save();
         }
     }
 }

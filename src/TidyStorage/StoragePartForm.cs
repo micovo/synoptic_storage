@@ -13,9 +13,23 @@ namespace TidyStorage
 {
     public partial class StoragePartForm : Form
     {
-        public StoragePartForm()
+        StoragePart part;
+        Storage storage;
+
+        public StoragePartForm(Storage storage, StoragePart part)
         {
             InitializeComponent();
+
+            this.storage = storage;
+
+            if  (part == null)
+            {
+                this.part = new StoragePart();
+            }
+            else
+            {
+                this.part = part;
+            }
         }
 
         private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
@@ -85,31 +99,46 @@ namespace TidyStorage
         /// <param name="e"></param>
         private void buttonEdit_Click(object sender, EventArgs e)
         {
+            StoragePartTypeEditor spte;
+
             if (sender == buttonEditManuf)
             {
-
+                spte = new StoragePartTypeEditor(storage, StorageTypeTables.Manufacturer);
             }
             else if (sender == buttonEditPackage)
             {
-
+                spte = new StoragePartTypeEditor(storage, StorageTypeTables.Package);
             }
             else if (sender == buttonEditPlaceType)
             {
-
+                spte = new StoragePartTypeEditor(storage, StorageTypeTables.PlaceType);
             }
             else if (sender == buttonEditType)
             {
-
+                spte = new StoragePartTypeEditor(storage, StorageTypeTables.PartType);
+            }
+            else
+            {
+                return;
             }
 
-            StoragePartTypeEditor spte = new StoragePartTypeEditor();
+            
             spte.StartPosition = FormStartPosition.CenterParent;
             DialogResult ds = spte.ShowDialog();
 
             if (ds == DialogResult.OK)
             {
-
+                LoadPart();
             }
+        }
+
+
+        /// <summary>
+        /// Loads Part data into the GUI
+        /// </summary>
+        void LoadPart()
+        {
+
         }
     }
 }

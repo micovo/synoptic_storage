@@ -99,6 +99,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Storage.cs" />
+    <Compile Include="StorageConst.cs" />
     <Compile Include="StoragePart.cs" />
     <Compile Include="StoragePartForm.cs">
       <SubType>Form</SubType>
