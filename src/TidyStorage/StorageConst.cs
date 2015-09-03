@@ -24,6 +24,8 @@ namespace TidyStorage
 
         public const string sqlite_connection_str = "Data Source={0};Version=3;";
 
+        public const string Str_Part = "part";
+        public const string Str_Part_id = "id_part";
 
         public const string Str_Manufacturer = "manufacturer";
         public const string Str_Manufacturer_id = "id_manufacturer";
@@ -47,7 +49,7 @@ namespace TidyStorage
 
         public const string Str_Supplier = "supplier";
         public const string Str_Supplier_id = "id_supplier";
-        public const string Str_Supplier_name = "id_supplier";
+        public const string Str_Supplier_name = "suppliername";
 
 
 
@@ -58,12 +60,12 @@ namespace TidyStorage
         )";
 
         public const string sql_createtable_part = @"
-        CREATE TABLE part ( 
-            id_part INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 
+        CREATE TABLE " + Str_Part + @" ( 
+            " + Str_Part_id + @" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 
+            productnumber VARCHAR(64) NOT NULL, 
             " + Str_PartType_id + @" INTEGER, 
-            " + Str_Package + @" INTEGER, 
+            " + Str_Package_id + @" INTEGER, 
             " + Str_Manufacturer_id + @" INTEGER, 
-            productnumber VARCHAR(64), 
             " + Str_Supplier_id + @" INTEGER, 
             suppliernumber VARCHAR(64), 
             primary_value REAL, 
@@ -72,7 +74,7 @@ namespace TidyStorage
             secondary_tolerance REAL, 
             tertiary_value REAL, 
             tertiary_tolerance REAL, 
-            stock INTEGER, 
+            stock INTEGER DEFAULT 0, 
             currency CHAR(3), 
             price_1pcs REAL, 
             price_10pcs REAL, 
@@ -82,9 +84,41 @@ namespace TidyStorage
             datasheet_url VARCHAR(256),
             temperature_from INTEGER,
             temperature_to INTEGER,
-            " + Str_PlaceType_id + @" INTEGER
+            " + Str_PlaceType_id + @" INTEGER,
             storage_place_number INTEGER
         )";
+
+
+
+        public const string sql_insert_part = @"INSERT INTO " + Str_Part + @" (productnumber) VALUES(' ')";
+
+        /*
+        public const string sql_update_part = @"UPDATE " + Str_Part + @" SET
+        (" + Str_PartType_id + @"={0}, 
+            " + Str_Package + @"={1}, 
+            " + Str_Manufacturer_id + @"={2}, 
+            productnumber='{3}', 
+            " + Str_Supplier_id + @"={4}, 
+            suppliernumber='{5}', 
+            primary_value={6}, 
+            primary_tolerance={7}, 
+            secondary_valu=, 
+            secondary_tolerance, 
+            tertiary_value, 
+            tertiary_tolerance, 
+            stock, 
+            currency CHAR(3), 
+            price_1pcs, 
+            price_10pcs, 
+            price_100pcs, 
+            price_1000pcs,
+            comment,
+            datasheet_url,
+            temperature_from,
+            temperature_to,
+            " + Str_PlaceType_id + @",
+            storage_place_number) VALUES ({0})"; */
+        
 
 
         public const string sql_createtable_manufacturer = @"
@@ -121,7 +155,9 @@ namespace TidyStorage
         public const string sql_createtable_supplier = @"
         CREATE TABLE " + Str_Supplier + @" (
             " + Str_Supplier_id + @" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-            " + Str_Supplier_name + @" VARCHAR(64) NOT NULL
-        )";
+            " + Str_Supplier_name + @" VARCHAR(64) NOT NULL,
+            read_only INTEGER DEFAULT(0)
+        );
+        INSERT INTO " + Str_Supplier + "(" + Str_Supplier_name + ",read_only) VALUES ('Farnell', 1), ('Mouser', 1), ('GME', 1)";
     }
 }

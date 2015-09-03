@@ -42,6 +42,7 @@ namespace TidyStorage
                 StoragePartForm spf = new StoragePartForm(currentStorage, null);
                 spf.StartPosition = FormStartPosition.CenterParent;
                 spf.ShowDialog();
+                RefreshStorageTable();
             }
             else
             {
@@ -61,6 +62,7 @@ namespace TidyStorage
                 StoragePartForm spf = new StoragePartForm(currentStorage, part);
                 spf.StartPosition = FormStartPosition.CenterParent;
                 spf.ShowDialog();
+                RefreshStorageTable();
             }
             else
             {
@@ -167,15 +169,20 @@ namespace TidyStorage
         }
         
 
+        public void RefreshStorageTable()
+        {
+            dataGridViewStorage.DataSource = currentStorage.GetTable("part");
+        }
+
 
 
         private void MainForm_Load(object sender, EventArgs e)
         {
             ExcellTest();
 
-            currentStorage = new Storage("test2.sqlite");
+            currentStorage = new Storage("test4.sqlite");
+            RefreshStorageTable();
 
-            dataGridViewStorage.DataSource = currentStorage.GetTable("part");
         }
 
         private void dataGridViewStorage_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
@@ -201,6 +208,23 @@ namespace TidyStorage
         private void saveToolStripButton_Click(object sender, EventArgs e)
         {
             currentStorage.Save();
+        }
+
+        private void dataGridViewStorage_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            
+        }
+
+        private void dataGridViewStorage_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                int id = (int)(Int64)dataGridViewStorage.Rows[e.RowIndex].Cells[StorageConst.Str_Part_id].Value;
+                string filter = StorageConst.Str_Part_id + "=" + id.ToString();
+                DataTable tb = currentStorage.GetTable(StorageConst.Str_Part, "*", filter);
+                StoragePart sp = new StoragePart(tb);
+                EditStoragePart(sp);
+            }
         }
     }
 }

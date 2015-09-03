@@ -11,7 +11,22 @@ using System.Threading;
 
 namespace TidyStorage
 {
- 
+    public class IndexedName
+    {
+        public int id;
+        public string name;
+
+        public IndexedName(int id, string name)
+        {
+            this.id = id;
+            this.name = name;
+        }
+
+        public override string ToString()
+        {
+            return name;
+        }
+    }
 
 
     public class Storage
@@ -26,7 +41,7 @@ namespace TidyStorage
         /// </summary>
         ~Storage()
         {
-           
+           //TODO: Delete database temporary file
         }
 
 
@@ -36,6 +51,19 @@ namespace TidyStorage
             {
                 File.Copy(this.workfile, this.filename, true);
             }
+        }
+
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sql"></param>
+        /// <param name="ex"></param>
+        private void DatabaseError(string sql, Exception ex)
+        {
+            if (sql.Length > 512) sql = sql.Substring(0, 512);
+            MessageBox.Show("Failed to commit SQL query:\r\n" + sql + "\r\n\r\n" + ex.Message + "\r\n\r\n" + ex.StackTrace, "Storage database error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
 
@@ -89,16 +117,15 @@ namespace TidyStorage
 
                 GC.Collect();
             }
-            else
-            {
-                File.Copy(filename, workfile, true);
-            }
+
+
+            File.Copy(filename, workfile, true);
 
 
             bool StorageVersionVerified = false;
 
             //Check database content
-            using (SQLiteConnection con = new SQLiteConnection(string.Format(StorageConst.sqlite_connection_str, filename + ".tmp")))
+            using (SQLiteConnection con = new SQLiteConnection(string.Format(StorageConst.sqlite_connection_str, workfile)))
             {
                 con.Open();
 
@@ -185,6 +212,147 @@ namespace TidyStorage
         }
 
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="table"></param>
+        /// <param name="columns"></param>
+        /// <param name="where_condition"></param>
+        public int InsertIntoTable(string table, string columns, string values)
+        {
+            DataTable tab = null;
+
+            int new_id = -1;
+
+            try
+            {
+                using (SQLiteConnection con = new SQLiteConnection(string.Format(StorageConst.sqlite_connection_str, workfile)))
+                {
+                    con.Open();
+
+                    var sql = String.Format(@"INSERT INTO {0} ({1}) VALUES ({2})", table, columns, values);
+                    var cmd = new SQLiteCommand(sql, con);
+
+                    cmd.ExecuteNonQuery();
+
+                    sql = String.Format(@"SELECT last_insert_rowid()");
+                    cmd = new SQLiteCommand(sql, con);
+
+
+                    using (SQLiteDataReader rdr = cmd.ExecuteReader())
+                    {
+                        if (rdr.Read())
+                        {
+                            new_id = (int)rdr.GetInt64(0);
+                        }
+                    }
+
+                    con.Close();
+                }
+
+                GC.Collect();
+            }
+            catch (Exception ex)
+            {
+                string s = ex.Message;
+            }
+
+            return new_id;
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="table"></param>
+        /// <param name="columns"></param>
+        /// <param name="where_condition"></param>
+        public void UpdateTable(string table, string columns, string where_condition)
+        {
+            DataTable tab = null;
+            string sql = "";
+
+            using (SQLiteConnection con = new SQLiteConnection(string.Format(StorageConst.sqlite_connection_str, workfile)))
+            {
+                try
+                {
+                    con.Open();
+
+                    sql = String.Format(@"UPDATE {0} SET {1} WHERE {2}", table, columns, where_condition);
+                    var cmd = new SQLiteCommand(sql, con);
+
+                    cmd.ExecuteNonQuery();
+                }
+                catch (SQLiteException ex)
+                {
+                    DatabaseError(sql, ex);
+                }
+
+                con.Close();
+            }
+            
+
+
+            GC.Collect();
+
+        }
+
+        
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="t"></param>
+        /// <returns></returns>
+        public List<IndexedName> GetStringIdArray(StorageTypeTables t)
+        {
+            string table = "";
+            string columns = "";
+
+            switch (t)
+            {
+                case StorageTypeTables.Manufacturer:
+                    table = StorageConst.Str_Manufacturer;
+                    columns = StorageConst.Str_Manufacturer_id + "," + StorageConst.Str_Manufacturer_name;
+                    break;
+                case StorageTypeTables.PartType:
+                    table = StorageConst.Str_PartType;
+                    columns = StorageConst.Str_PartType_id + "," + StorageConst.Str_PartType_name;
+                    break;
+                case StorageTypeTables.Package:
+                    table = StorageConst.Str_Package;
+                    columns = StorageConst.Str_Package_id + "," + StorageConst.Str_Package_name;
+                    break;
+                case StorageTypeTables.PlaceType:
+                    table = StorageConst.Str_PlaceType;
+                    columns = StorageConst.Str_PlaceType_id + "," + StorageConst.Str_PlaceType_name;
+                    break;
+                case StorageTypeTables.Supplier:
+                    table = StorageConst.Str_Supplier;
+                    columns = StorageConst.Str_Supplier_id + "," + StorageConst.Str_Supplier_name;
+                    break;
+            }
+
+            DataTable dt = GetTable(table, columns);
+            List<IndexedName> lst = new List<IndexedName>();
+
+            foreach (DataRow dr in dt.Rows)
+            {
+                if (dr.ItemArray.Length >= 2)
+                {
+                    var id = dr.ItemArray[0];
+                    var name = dr.ItemArray[1];
+                    if ((id.GetType() == typeof(Int64)) && (name.GetType() == typeof(string)))
+                    {
+                        lst.Add(new IndexedName((int)(Int64)id, (string)name));
+                    }
+                }
+            }
+
+            return lst;
+        }
+
 
 
         /// <summary>
@@ -241,30 +409,39 @@ namespace TidyStorage
             {
                 using (SQLiteConnection con = new SQLiteConnection(string.Format(StorageConst.sqlite_connection_str, workfile)))
                 {
-                    con.Open();
+                    string sql = "";
 
-                    foreach (DataRow dr in ToUpdate)
+                    try
                     {
-                        int id = (int)(Int64)dr.ItemArray[0];
+                        con.Open();
 
-                        string update_query = "";
-                        for (int i = 1; i < tab.Columns.Count; i++)
+                        foreach (DataRow dr in ToUpdate)
                         {
-                            if (dr.ItemArray[i].GetType() != typeof(System.DBNull))
+                            int id = (int)(Int64)dr.ItemArray[0];
+
+                            string update_query = "";
+                            for (int i = 1; i < tab.Columns.Count; i++)
                             {
-                                update_query += tab.Columns[i].Caption + "=\"" + (string)dr.ItemArray[i] + "\",";
+                                if (dr.ItemArray[i].GetType() != typeof(System.DBNull))
+                                {
+                                    update_query += tab.Columns[i].Caption + "=\"" + (string)dr.ItemArray[i] + "\",";
+                                }
+                                else
+                                {
+                                    update_query += tab.Columns[i].Caption + "=NULL,";
+                                }
                             }
-                            else
-                            {
-                                update_query += tab.Columns[i].Caption + "=NULL,";
-                            }
+
+                            update_query = update_query.Trim(',');
+
+                            sql = string.Format("UPDATE {0} SET {1} WHERE {2} = {3}", table, update_query, id_column_name, id);
+                            var command = new SQLiteCommand(sql, con);
+                            command.ExecuteNonQuery();
                         }
-
-                        update_query = update_query.Trim(',');
-
-                        var sql = string.Format("UPDATE {0} SET {1} WHERE {2} = {3}", table, update_query, id_column_name, id);
-                        var command = new SQLiteCommand(sql, con);
-                        command.ExecuteNonQuery();
+                    }
+                    catch (SQLiteException ex)
+                    {
+                        DatabaseError(sql, ex);
                     }
 
                     con.Close();
@@ -278,6 +455,8 @@ namespace TidyStorage
 
 
 
+        
+
 
         /// <summary>
         /// 
@@ -288,13 +467,24 @@ namespace TidyStorage
         {
             using (SQLiteConnection con = new SQLiteConnection(string.Format(StorageConst.sqlite_connection_str, workfile)))
             {
-                con.Open();
+                string sql = "";
 
-                var sql = string.Format("INSERT INTO {0} ({1}) VALUES ('Enter new')", table, namecolumn);
-                var command = new SQLiteCommand(sql, con);
-                command.ExecuteNonQuery();
+                try
+                {
+                    con.Open();
 
-                con.Close();
+
+                    sql = string.Format("INSERT INTO {0} ({1}) VALUES ('Enter new')", table, namecolumn);
+                    var command = new SQLiteCommand(sql, con);
+                    command.ExecuteNonQuery();
+
+                }
+                catch (SQLiteException ex)
+                {
+                    DatabaseError(sql, ex);
+                }
+
+            con.Close();
             }
 
             GC.Collect();
@@ -309,19 +499,30 @@ namespace TidyStorage
         /// <param name="id"></param>
         public void DeleteRow(string table, string id_column, int id)
         {
+            string sql = "";
+
             using (SQLiteConnection con = new SQLiteConnection(string.Format(StorageConst.sqlite_connection_str, workfile)))
             {
-                con.Open();
+                try
+                {
+                    con.Open();
 
-                var sql = string.Format("DELETE FROM {0} WHERE ({1} = {2})", table, id_column, id);
-                var command = new SQLiteCommand(sql, con);
-                command.ExecuteNonQuery();
+                    sql = string.Format("DELETE FROM {0} WHERE ({1} = {2})", table, id_column, id);
+                    var command = new SQLiteCommand(sql, con);
+                    command.ExecuteNonQuery();
 
-                con.Close();
+                }
+                catch (SQLiteException ex)
+                {
+                    DatabaseError(sql, ex);
+                }
+
+            con.Close();
             }
 
             GC.Collect();
         }
+
 
 
 
@@ -337,20 +538,29 @@ namespace TidyStorage
             //Check database content
             using (SQLiteConnection con = new SQLiteConnection(string.Format(StorageConst.sqlite_connection_str, workfile)))
             {
-                con.Open();
+                string sql = "";
 
-                var sql = string.Format(@"SELECT COUNT(1) FROM part WHERE {0} = {1}", column_name, column_value);
-                var command = new SQLiteCommand(sql, con);
-
-                using (SQLiteCommand cmd = new SQLiteCommand(sql, con))
+                try
                 {
-                    using (SQLiteDataReader rdr = cmd.ExecuteReader())
+                    con.Open();
+
+                    sql = string.Format(@"SELECT COUNT(1) FROM part WHERE {0} = {1}", column_name, column_value);
+                    var command = new SQLiteCommand(sql, con);
+
+                    using (SQLiteCommand cmd = new SQLiteCommand(sql, con))
                     {
-                        while (rdr.Read())
+                        using (SQLiteDataReader rdr = cmd.ExecuteReader())
                         {
-                            count = rdr.GetInt32(0);
+                            while (rdr.Read())
+                            {
+                                count = rdr.GetInt32(0);
+                            }
                         }
                     }
+                }
+                catch (SQLiteException ex)
+                {
+                    DatabaseError(sql, ex);
                 }
 
                 con.Close();

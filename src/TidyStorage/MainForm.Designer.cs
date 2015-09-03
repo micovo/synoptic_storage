@@ -892,6 +892,8 @@
             this.dataGridViewStorage.Name = "dataGridViewStorage";
             this.dataGridViewStorage.Size = new System.Drawing.Size(1136, 251);
             this.dataGridViewStorage.TabIndex = 0;
+            this.dataGridViewStorage.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewStorage_CellContentDoubleClick);
+            this.dataGridViewStorage.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewStorage_CellDoubleClick);
             this.dataGridViewStorage.UserDeletingRow += new System.Windows.Forms.DataGridViewRowCancelEventHandler(this.dataGridViewStorage_UserDeletingRow);
             // 
             // tabPage2

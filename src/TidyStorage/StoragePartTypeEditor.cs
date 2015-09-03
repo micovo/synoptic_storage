@@ -65,9 +65,9 @@ namespace TidyStorage
                     break;
                 case StorageTypeTables.Supplier:
                     this.Text += " - Suppliers";
-                    table_name = StorageConst.Str_Manufacturer;
-                    column_id_name = StorageConst.Str_Manufacturer_id;
-                    column_name_name = StorageConst.Str_PlaceType_name;
+                    table_name = StorageConst.Str_Supplier;
+                    column_id_name = StorageConst.Str_Supplier_id;
+                    column_name_name = StorageConst.Str_Supplier_name;
                     break;
                 default:
                     break;
@@ -210,6 +210,11 @@ namespace TidyStorage
             LoadTable();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void StoragePartTypeEditor_Resize(object sender, EventArgs e)
         {
             if (dataGridViewType.Columns.Count > 0)
@@ -232,9 +237,13 @@ namespace TidyStorage
             if (storage.SaveTypeTable(table_name, column_id_name, (DataTable)dataGridViewType.DataSource, out SaveErrorMessage) == false)
             {
                 MessageBox.Show("Unable to save data: " + SaveErrorMessage, "Type editor error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                
+
                 //Save was not succesfull re-enable apply button
                 buttonApply.Enabled = true;
+            }
+            else
+            {
+                ContentChanged = false;
             }
         }
     }
