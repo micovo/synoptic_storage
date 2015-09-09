@@ -211,6 +211,104 @@ namespace TidyStorage
             return tab;
         }
 
+        
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="filter"></param>
+        /// <returns></returns>
+        public DataTable GetPartTable(string where = "1" )
+        {
+            DataTable tab = null;
+
+            try
+            {
+                using (SQLiteConnection con = new SQLiteConnection(string.Format(StorageConst.sqlite_connection_str, workfile)))
+                {
+                    con.Open();
+
+                    var sql = @"SELECT 
+`id_part`,
+	`productnumber`,
+	manufacturer.manufacturername AS manufacturername,
+	part_type.typename AS typename,
+	part_package.packagename AS packagename,
+	`stock`	 ,
+	storage_place.placename AS placename,
+	`storage_place_number`,
+	`primary_value`	,
+	`primary_tolerance`	,
+	`secondary_value`	,
+	`secondary_tolerance`	,
+	`tertiary_value`	,
+	`tertiary_tolerance`	,
+	`temperature_from`,
+	`temperature_to`,
+	supplier.suppliername AS suppliername,
+	`suppliernumber`,
+	`price_1pcs`	,
+	`price_10pcs`	,
+	`price_100pcs`	,
+	`price_1000pcs`	,
+currency
+	
+	FROM `part` 
+	LEFT JOIN manufacturer ON manufacturer.id_manufacturer = part.id_manufacturer
+	LEFT JOIN part_package ON part_package.id_part_package = part.id_part_package
+	LEFT JOIN part_type ON part_type.id_part_type = part.id_part_type
+	LEFT JOIN supplier ON supplier.id_supplier = part.id_supplier
+	LEFT JOIN storage_place ON storage_place.id_storage_place = part.id_storage_place
+
+    WHERE " + where;
+
+                    var cmd = new SQLiteCommand(sql, con);
+
+
+                    using (SQLiteDataReader rdr = cmd.ExecuteReader())
+                    {
+                        var mAdapter = new SQLiteDataAdapter(sql, con);
+                        tab = new DataTable(); // Don't forget initialize!
+                        mAdapter.Fill(tab);
+                    }
+
+                    con.Close();
+                }
+
+                GC.Collect();
+            }
+            catch (Exception ex)
+            {
+                string s = ex.Message;
+            }
+
+            return tab;
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="i"></param>
+        /// <returns></returns>
+        public string[] GetPartTypeStrings(int i)
+        {
+            string[] o = new string[3];
+
+            string cond = string.Format("{0}={1}", StorageConst.Str_PartType_id, i);
+            DataTable dt = GetTable(StorageConst.Str_PartType, "primary_valuename,secondary_valuename,tertiary_valuename", cond);
+            
+            if ((dt != null) && (dt.Rows.Count > 0))
+            {
+                DataRow dr = dt.Rows[0];
+                o[0] = (string)dr.ItemArray[0];
+                o[1] = (string)dr.ItemArray[1];
+                o[2] = (string)dr.ItemArray[2];
+            }
+
+            return o;
+        }
+
 
         /// <summary>
         /// 
@@ -375,7 +473,7 @@ namespace TidyStorage
             columns[0] = tab.Columns[0];
             tab.PrimaryKey = columns;
 
-            int strings_to_compare = 1;
+           
 
 
             foreach (DataRow dr in dt.Rows)
@@ -386,15 +484,36 @@ namespace TidyStorage
 
                 DataRow drr = tab.Rows.Find(id);
 
+                int strings_to_compare = dr.ItemArray.Length - 1;
+
                 if (drr != null)
                 {
                     //Not deleted, check for content changes
                     for (int i = 1; i < strings_to_compare + 1; i++)
                     {
-                        if ((string)drr.ItemArray[i] != (string)dr.ItemArray[i])
+                        if (dr.ItemArray[i].GetType() != typeof(System.DBNull))
+                        {
+                            if (dr.ItemArray[i].GetType() == typeof(string))
+                            {
+                                if ((string)drr.ItemArray[i] != (string)dr.ItemArray[i])
+                                {
+                                    change_found = true;
+                                }
+                            }
+                        }
+                        else
                         {
                             change_found = true;
                         }
+                    }
+                }
+
+                //Check for read only 
+                if (dr.ItemArray.Last().GetType() == typeof(Int64))
+                {
+                    if ((Int64)dr.ItemArray.Last() == 1)
+                    {
+                        change_found = false;
                     }
                 }
 

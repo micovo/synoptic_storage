@@ -17,6 +17,9 @@ namespace TidyStorage
     {
         Storage currentStorage;
 
+        string part_filter = "1";
+        string part_filter_fulltext = "";
+
         public MainForm()
         {
             InitializeComponent();
@@ -47,6 +50,7 @@ namespace TidyStorage
             else
             {
                 NoStorageError();
+                RefreshListBox();
             }
         }
 
@@ -63,6 +67,7 @@ namespace TidyStorage
                 spf.StartPosition = FormStartPosition.CenterParent;
                 spf.ShowDialog();
                 RefreshStorageTable();
+                RefreshListBox();
             }
             else
             {
@@ -171,17 +176,64 @@ namespace TidyStorage
 
         public void RefreshStorageTable()
         {
-            dataGridViewStorage.DataSource = currentStorage.GetTable("part");
+           
+
+
+            string filter = part_filter + part_filter_fulltext;
+            dataGridViewStorage.DataSource = currentStorage.GetPartTable(filter);
+
+            dataGridViewStorage.Columns["id_part"].HeaderText = "ID";
+            dataGridViewStorage.Columns["productnumber"].HeaderText = "Part name";
+            dataGridViewStorage.Columns["productnumber"].DefaultCellStyle.Font = new Font(DataGridView.DefaultFont, FontStyle.Bold);
+
+            dataGridViewStorage.Columns["manufacturername"].HeaderText = "Manufacturer";
+            dataGridViewStorage.Columns["typename"].HeaderText = "Type";
+            dataGridViewStorage.Columns["packagename"].HeaderText = "Package";
+            dataGridViewStorage.Columns["stock"].HeaderText = "Stock";
+            dataGridViewStorage.Columns["stock"].DefaultCellStyle.Font = new Font(DataGridView.DefaultFont, FontStyle.Bold);
+
+            dataGridViewStorage.Columns["placename"].HeaderText = "Storage place";
+
+            dataGridViewStorage.Columns["storage_place_number"].HeaderText = "Storage number";
+            dataGridViewStorage.Columns["storage_place_number"].DefaultCellStyle.Font = new Font(DataGridView.DefaultFont, FontStyle.Bold);
+
+            dataGridViewStorage.Columns["primary_value"].HeaderText = "Primary";
+            dataGridViewStorage.Columns["primary_tolerance"].HeaderText = "Tolerance";
+            dataGridViewStorage.Columns["secondary_value"].HeaderText = "Secondary";
+            dataGridViewStorage.Columns["secondary_tolerance"].HeaderText = "Tolerance";
+            dataGridViewStorage.Columns["tertiary_value"].HeaderText = "Third";
+            dataGridViewStorage.Columns["tertiary_tolerance"].HeaderText = "Tolerance";
+            dataGridViewStorage.Columns["temperature_from"].HeaderText = "Temp\r\nMIN";
+            dataGridViewStorage.Columns["temperature_to"].HeaderText = "Temp\r\nMAX";
+            dataGridViewStorage.Columns["suppliername"].HeaderText = "Supplier";
+            dataGridViewStorage.Columns["suppliernumber"].HeaderText = "Supplier number";
+            dataGridViewStorage.Columns["price_1pcs"].HeaderText = "Price per\r\n1";
+            dataGridViewStorage.Columns["price_10pcs"].HeaderText = "Price per\r\n10";
+            dataGridViewStorage.Columns["price_100pcs"].HeaderText = "Price per\r\n100";
+            dataGridViewStorage.Columns["price_1000pcs"].HeaderText = "Part per\r\n1000";
+            dataGridViewStorage.Columns["currency"].HeaderText = "";
         }
 
+
+
+
+        public void RefreshListBox()
+        {
+            listBoxFilterType.DataSource = currentStorage.GetStringIdArray(StorageTypeTables.PartType);
+            listBoxFilterPackage.DataSource = currentStorage.GetStringIdArray(StorageTypeTables.Package);
+
+            listBoxFilterType.ClearSelected();
+            listBoxFilterPackage.ClearSelected();
+        }
 
 
         private void MainForm_Load(object sender, EventArgs e)
         {
             ExcellTest();
 
-            currentStorage = new Storage("test4.sqlite");
+            currentStorage = new Storage("test5.sqlite");
             RefreshStorageTable();
+            RefreshListBox();
 
         }
 
@@ -205,16 +257,22 @@ namespace TidyStorage
             currentStorage.Save();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void saveToolStripButton_Click(object sender, EventArgs e)
         {
             currentStorage.Save();
         }
+        
 
-        private void dataGridViewStorage_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
-        {
-            
-        }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void dataGridViewStorage_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
@@ -225,6 +283,99 @@ namespace TidyStorage
                 StoragePart sp = new StoragePart(tb);
                 EditStoragePart(sp);
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void buttonListFilter_Click(object sender, EventArgs e)
+        {
+            var s = listBoxFilterType.SelectedItems;
+
+            part_filter = "";
+
+            if (s.Count > 0)
+            {
+                part_filter += StorageConst.Str_Part + "." + StorageConst.Str_PartType_id + " IN (";
+
+                foreach (var ss in s)
+                {
+                    IndexedName i = (IndexedName)ss;
+                    part_filter += i.id.ToString() + ",";
+                }
+
+                part_filter = part_filter.Trim(',') + ") ";
+            }
+
+            s = listBoxFilterPackage.SelectedItems;
+            
+
+            if (s.Count > 0)
+            {
+                if (part_filter != "")
+                {
+                    part_filter += " AND ";
+                }
+
+                part_filter += StorageConst.Str_Part + "." + StorageConst.Str_Package_id + " IN (";
+
+                foreach (var ss in s)
+                {
+                    IndexedName i = (IndexedName)ss;
+                    part_filter += i.id.ToString() + ",";
+                }
+
+                part_filter = part_filter.Trim(',') + ") ";
+            }
+
+            if (part_filter == "") part_filter = "1";
+
+            RefreshStorageTable();
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void buttonFulltextClear_Click(object sender, EventArgs e)
+        {
+            part_filter_fulltext = "";
+            RefreshStorageTable();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void buttonFulltextFilter_Click(object sender, EventArgs e)
+        {
+            string text = textBoxStorageFulltext.Text;
+            part_filter_fulltext = "";
+            RefreshStorageTable();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void buttonListFilterClear_Click(object sender, EventArgs e)
+        {
+            listBoxFilterPackage.ClearSelected();
+            listBoxFilterType.ClearSelected();
+
+            part_filter = "1";
+            RefreshStorageTable();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

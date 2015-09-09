@@ -39,6 +39,7 @@ namespace TidyStorage
             }
 
             RefreshComboBoxes();
+            LoadPartTypeStrings();
             RefreshForm();
         }
 
@@ -98,6 +99,45 @@ namespace TidyStorage
         private void buttonImport_Click(object sender, EventArgs e)
         {
             // Process part import here
+            if (comboBoxSupplier.SelectedIndex > -1)
+            {
+                if (textBoxSupplierNumber.Text.Length > 0)
+                {
+                    string supp = comboBoxSupplier.Text;
+                    string suppnum = textBoxSupplierNumber.Text;
+
+                    StoragePartImporter spi = new StoragePartImporter(supp, suppnum);
+                    if (spi.ShowDialog() == DialogResult.OK)
+                    {
+                        string manuf = "";
+                        string pack = "";
+
+                        if (spi.comboBox1.Text != "") textBoxProductName.Text = spi.comboBox1.Text;
+                        if (spi.comboBox2.Text != "") manuf = spi.comboBox2.Text;
+                        if (spi.comboBox3.Text != "") pack = spi.comboBox3.Text;
+                        if (spi.comboBox4.Text != "") textBoxDatasheet.Text = spi.comboBox4.Text;
+                        if (spi.comboBox5.Text != "") textBoxComment.Text = spi.comboBox5.Text;
+                        if (spi.comboBox6.Text != "") textBoxPrimaryValue.Text = spi.comboBox6.Text;
+                        if (spi.comboBox7.Text != "") textBoxPrimaryTolerance.Text = spi.comboBox7.Text;
+                        if (spi.comboBox8.Text != "") textBoxSecondaryValue.Text = spi.comboBox8.Text;
+                        if (spi.comboBox9.Text != "") textBoxSecondaryTolerance.Text = spi.comboBox9.Text;
+                        if (spi.comboBox10.Text != "") textBoxThridValue.Text = spi.comboBox10.Text;
+                        if (spi.comboBox11.Text != "") textBoxThridTolerance.Text = spi.comboBox11.Text;
+                        if (spi.comboBox12.Text != "") textBoxTempRangeMin.Text = spi.comboBox12.Text;
+                        if (spi.comboBox13.Text != "") textBoxTempRangeMax.Text = spi.comboBox13.Text;
+
+
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Please enter supplier number first", "Import from Web", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please choose supplier first", "Import from Web", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+            }
         }
 
         /// <summary>
@@ -120,11 +160,11 @@ namespace TidyStorage
             string url = textBoxDatasheet.Text;
             if (url.ToLower().StartsWith("http://"))
             {
-                System.Diagnostics.Process.Start("http://google.com");
+                System.Diagnostics.Process.Start(url);
             }
             else
             {
-                textBoxDatasheet.BackColor = Color.LightSalmon;
+                textBoxDatasheet.BackColor = Color.LightCoral;
             }
         }
 
@@ -176,8 +216,35 @@ namespace TidyStorage
             DialogResult ds = spte.ShowDialog();
 
             RefreshComboBoxes();
+            LoadPartTypeStrings();
         }
 
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        void LoadPartTypeStrings()
+        {
+            int i = ProcessTypeComboBox(comboBoxPartType);
+
+            string[] s = new string[3];
+
+            s = storage.GetPartTypeStrings(i);
+
+            if (s[0] == null) s[0] = "Primary";
+            if (s[1] == null) s[1] = "Secondary";
+            if (s[2] == null) s[2] = "Third";
+
+            if (s[0].Length > 17) s[0] = s[0].Substring(0, 17);
+            if (s[1].Length > 17) s[1] = s[1].Substring(0, 17);
+            if (s[2].Length > 17) s[2] = s[2].Substring(0, 17);
+
+            labelValuePrimary.Text = s[0];
+            labelValueSecondary.Text = s[1];
+            labelValueThird.Text = s[2];
+
+        }
 
         
 
@@ -295,25 +362,35 @@ namespace TidyStorage
         /// <summary>
         /// 
         /// </summary>
-        void RefreshForm()
+        /// <param name="primary_tolerance"></param>
+        /// <returns></returns>
+        private string GetPartToleranceString(double p)
         {
-            textBoxProductName.Text = this.part.productnumber;
-            textBoxDatasheet.Text = this.part.datasheet_url;
-            textBoxComment.Text = this.part.comment;
-            textBoxCurrency.Text = this.part.currency;
-
-
-            textBoxTempRangeMin.Text = this.part.temperature_from.ToString();
-            textBoxTempRangeMax.Text = this.part.temperature_to.ToString();
-            textBoxPlaceNumber.Text = this.part.storage_place_number.ToString();
- 
-            numericUpDownStock.Value = this.part.stock;
-
-            textBoxPrice1pcs.Text = GetPartPriceString(this.part.price_1pcs);
-            textBoxPrice10pcs.Text = GetPartPriceString(this.part.price_10pcs);
-            textBoxPrice100pcs.Text = GetPartPriceString(this.part.price_100pcs);
-            textBoxPrice1000pcs.Text = GetPartPriceString(this.part.price_1000pcs);
+            if (double.IsNaN(p) == false)
+            {
+                //return p.ToString() + " " + this.part.currency;
+                return p.ToString();
+            }
+            return "";
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="primary_value"></param>
+        /// <returns></returns>
+        private string GetPartValueString(double p)
+        {
+            if (double.IsNaN(p) == false)
+            {
+                //return p.ToString() + " " + this.part.currency;
+                return p.ToString();
+            }
+            return "";
+        }
+
+
+
 
 
         /// <summary>
@@ -490,6 +567,97 @@ namespace TidyStorage
         }
 
 
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void textBoxProductName_TextChanged(object sender, EventArgs e)
+        {
+            if (sender.GetType() == typeof(TextBox))
+            {
+                TextBox tb = (TextBox)sender;
+                if (tb.BackColor != Color.White) tb.BackColor = Color.White;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void buttonSupplierOpen_Click(object sender, EventArgs e)
+        {
+            string url = "";
+            //TODO get supplier link
+
+           
+            if (url != "")
+            {
+                System.Diagnostics.Process.Start(url);
+            }
+            else
+            {
+                MessageBox.Show("Importer or URL formatter is not available for this supplier.\r\nRequest importer or URL formatter on TidiStorage github.", "Not supported", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void StoragePartForm_Load(object sender, EventArgs e)
+        {
+            textBoxProductName.Focus();
+        }
+
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void comboBoxPartType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            LoadPartTypeStrings();
+        }
+
+        private void numericUpDownStock_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            
+        }
+
+        private void numericUpDownStock_KeyDown(object sender, KeyEventArgs e)
+        {
+            //if (e.KeyChar == '+')
+            if (e.KeyCode == Keys.Add)
+            {
+                numericUpDownStock.Value++;
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+            }
+
+            //if (e.KeyChar == '-')
+            if (e.KeyCode == Keys.Subtract)
+            {
+                if (numericUpDownStock.Value > 0) numericUpDownStock.Value--;
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+            }
+        }
+
+
+
+
+
+
+
+
         /// <summary>
         /// Saves values from GUI into part data structure
         /// </summary>
@@ -507,17 +675,30 @@ namespace TidyStorage
             if (ProcessTextBox(textBoxSupplierNumber, out s)) this.part.suppliernumber = s; else return false;
             if (ProcessTextBox(textBoxCurrency, out s)) this.part.currency = s; else return false;
 
+            if (ProcessTextBox(textBoxPlaceNumber, out s)) this.part.storage_place_number = s; else return false;
+
+            if (ProcessTextBox(textBoxPrimaryValue, out s)) this.part.primary_value = s; else return false;
+            if (ProcessTextBox(textBoxPrimaryTolerance, out s)) this.part.primary_tolerance = s; else return false;
+            if (ProcessTextBox(textBoxSecondaryValue, out s)) this.part.secondary_value = s; else return false;
+            if (ProcessTextBox(textBoxSecondaryTolerance, out s)) this.part.secondary_tolerance = s; else return false;
+            if (ProcessTextBox(textBoxThridValue, out s)) this.part.tertiary_value = s; else return false;
+            if (ProcessTextBox(textBoxThridTolerance, out s)) this.part.tertiary_tolerance = s; else return false;
+
+
             //Int textboxes
             if (ProcessTextBox(textBoxTempRangeMin, out i)) this.part.temperature_from = i; else return false;
             if (ProcessTextBox(textBoxTempRangeMax, out i)) this.part.temperature_to = i; else return false;
 
+
             //Float textboxes
+            /*
             if (ProcessTextBox(textBoxPrimaryValue, out d)) this.part.primary_value = d; else return false;
             if (ProcessTextBox(textBoxPrimaryTolerance, out d)) this.part.primary_tolerance = d; else return false;
             if (ProcessTextBox(textBoxSecondaryValue, out d)) this.part.secondary_value = d; else return false;
             if (ProcessTextBox(textBoxSecondaryTolerance, out d)) this.part.secondary_tolerance = d; else return false;
             if (ProcessTextBox(textBoxThridValue, out d)) this.part.tertiary_value = d; else return false;
             if (ProcessTextBox(textBoxThridTolerance, out d)) this.part.tertiary_tolerance = d; else return false;
+            */
 
             //Price textboxes
             if (ProcessTextBoxPrice(textBoxPrice1pcs, out d)) this.part.price_1pcs = d; else return false;
@@ -533,6 +714,8 @@ namespace TidyStorage
             this.part.id_part_type = ProcessTypeComboBox(comboBoxPartType);
             this.part.id_storage_place = ProcessTypeComboBox(comboBoxPlaceType);
 
+            this.part.stock = (int)numericUpDownStock.Value;
+
 
 
 
@@ -541,19 +724,51 @@ namespace TidyStorage
 
 
 
-
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void textBoxProductName_TextChanged(object sender, EventArgs e)
+        void RefreshForm()
         {
-            if (sender.GetType() == typeof(TextBox))
-            {
-                TextBox tb = (TextBox)sender;
-                if (tb.BackColor != Color.White) tb.BackColor = Color.White;
-            }
+            textBoxProductName.Text = this.part.productnumber;
+            textBoxDatasheet.Text = this.part.datasheet_url;
+            textBoxComment.Text = this.part.comment;
+            textBoxCurrency.Text = this.part.currency;
+            textBoxPlaceNumber.Text = this.part.storage_place_number;
+            textBoxSupplierNumber.Text = this.part.suppliernumber;
+
+
+            textBoxTempRangeMin.Text = this.part.temperature_from.ToString();
+            textBoxTempRangeMax.Text = this.part.temperature_to.ToString();
+
+            numericUpDownStock.Value = this.part.stock;
+
+            textBoxPrice1pcs.Text = GetPartPriceString(this.part.price_1pcs);
+            textBoxPrice10pcs.Text = GetPartPriceString(this.part.price_10pcs);
+            textBoxPrice100pcs.Text = GetPartPriceString(this.part.price_100pcs);
+            textBoxPrice1000pcs.Text = GetPartPriceString(this.part.price_1000pcs);
+
+            /*
+            textBoxPrimaryValue.Text = GetPartValueString(this.part.primary_value);
+            textBoxSecondaryValue.Text = GetPartValueString(this.part.secondary_value);
+            textBoxThridValue.Text = GetPartValueString(this.part.tertiary_value);
+
+
+            textBoxPrimaryTolerance.Text = GetPartToleranceString(this.part.primary_tolerance);
+            textBoxSecondaryTolerance.Text = GetPartToleranceString(this.part.secondary_tolerance);
+            textBoxThridTolerance.Text = GetPartToleranceString(this.part.tertiary_tolerance);
+            */
+
+
+            textBoxPrimaryValue.Text = this.part.primary_value;
+            textBoxSecondaryValue.Text = this.part.secondary_value;
+            textBoxThridValue.Text = this.part.tertiary_value;
+
+
+            textBoxPrimaryTolerance.Text = this.part.primary_tolerance;
+            textBoxSecondaryTolerance.Text = this.part.secondary_tolerance;
+            textBoxThridTolerance.Text = this.part.tertiary_tolerance;
+
         }
+
     }
 }

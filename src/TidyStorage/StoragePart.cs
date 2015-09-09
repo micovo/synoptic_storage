@@ -27,19 +27,20 @@ namespace TidyStorage
         public string comment;
         public string datasheet_url;
         public string currency;
+        public string storage_place_number;
 
 
         public int temperature_from;
         public int temperature_to;
-        public int storage_place_number;
         public int stock;
 
-        public double primary_value;
-        public double primary_tolerance;
-        public double secondary_value;
-        public double secondary_tolerance;
-        public double tertiary_value;
-        public double tertiary_tolerance;
+        public string primary_value;
+        public string primary_tolerance;
+        public string secondary_value;
+        public string secondary_tolerance;
+        public string tertiary_value;
+        public string tertiary_tolerance;
+
         public double price_1pcs;
         public double price_10pcs;
         public double price_100pcs;
@@ -58,6 +59,8 @@ namespace TidyStorage
             this.id_part_type = -1;
             this.id_part_package = -1;
             this.id_supplier = -1;
+
+            this.productnumber = "New part";
 
             dt = null;
 
@@ -173,7 +176,6 @@ namespace TidyStorage
 
                 this.temperature_from = GetCellINTEGER(dt, dr, "temperature_from");
                 this.temperature_to = GetCellINTEGER(dt, dr, "temperature_to");
-                this.storage_place_number = GetCellINTEGER(dt, dr, "storage_place_number");
 
                 this.stock = GetCellINTEGER(dt, dr, "stock");
                 if (this.stock < 0) this.stock = 0;
@@ -183,13 +185,23 @@ namespace TidyStorage
                 this.comment = GetCellVARCHAR(dt, dr, "comment");
                 this.datasheet_url = GetCellVARCHAR(dt, dr, "datasheet_url");
                 this.currency = GetCellVARCHAR(dt, dr, "currency");
+                this.storage_place_number = GetCellVARCHAR(dt, dr, "storage_place_number");
 
+                /*
                 this.primary_value = GetCellREAL(dt, dr, "primary_value");
                 this.primary_tolerance = GetCellREAL(dt, dr, "primary_tolerance");
                 this.secondary_value = GetCellREAL(dt, dr, "secondary_value");
                 this.secondary_tolerance = GetCellREAL(dt, dr, "secondary_tolerance");
                 this.tertiary_value = GetCellREAL(dt, dr, "tertiary_value");
                 this.tertiary_tolerance = GetCellREAL(dt, dr, "tertiary_tolerance");
+                */
+
+                this.primary_value = GetCellVARCHAR(dt, dr, "primary_value");
+                this.primary_tolerance = GetCellVARCHAR(dt, dr, "primary_tolerance");
+                this.secondary_value = GetCellVARCHAR(dt, dr, "secondary_value");
+                this.secondary_tolerance = GetCellVARCHAR(dt, dr, "secondary_tolerance");
+                this.tertiary_value = GetCellVARCHAR(dt, dr, "tertiary_value");
+                this.tertiary_tolerance = GetCellVARCHAR(dt, dr, "tertiary_tolerance");
 
                 this.price_1pcs = GetCellREAL(dt, dr, "price_1pcs");
                 this.price_10pcs = GetCellREAL(dt, dr, "price_10pcs");

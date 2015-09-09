@@ -63,6 +63,12 @@
     <Reference Include="EPPlus">
       <HintPath>..\..\lib\EPPlus 4.0.4\EPPlus.dll</HintPath>
     </Reference>
+    <Reference Include="HtmlAgilityPack">
+      <HintPath>..\..\lib\HtmlAgilityPack.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\lib\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -76,6 +82,7 @@
       <HintPath>packages\System.Data.SQLite.Linq.1.0.97.0\lib\net45\System.Data.SQLite.Linq.dll</HintPath>
     </Reference>
     <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -107,12 +114,26 @@
     <Compile Include="StoragePartForm.Designer.cs">
       <DependentUpon>StoragePartForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="StoragePartImporter.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="StoragePartImporter.Designer.cs">
+      <DependentUpon>StoragePartImporter.cs</DependentUpon>
+    </Compile>
     <Compile Include="StoragePartTypeEditor.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="StoragePartTypeEditor.Designer.cs">
       <DependentUpon>StoragePartTypeEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="Suppliers\FarnellHelper.cs" />
+    <Compile Include="Suppliers\GMEHelper.cs" />
+    <Compile Include="Suppliers\MouserHelper.cs" />
+    <Compile Include="Suppliers\Data\PartPrice.cs" />
+    <Compile Include="Suppliers\Supplier.cs" />
+    <Compile Include="Suppliers\Data\SupplierPart.cs" />
+    <Compile Include="Suppliers\TMEHelper.cs" />
+    <Compile Include="Suppliers\WebClient.cs" />
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -127,6 +148,9 @@
     </Compile>
     <EmbeddedResource Include="StoragePartForm.resx">
       <DependentUpon>StoragePartForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StoragePartImporter.resx">
+      <DependentUpon>StoragePartImporter.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="StoragePartTypeEditor.resx">
       <DependentUpon>StoragePartTypeEditor.cs</DependentUpon>

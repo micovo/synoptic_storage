@@ -104,18 +104,18 @@
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.textBox8 = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.button6 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
+            this.buttonFulltextClear = new System.Windows.Forms.Button();
+            this.buttonFulltextFilter = new System.Windows.Forms.Button();
             this.label10 = new System.Windows.Forms.Label();
-            this.textBox7 = new System.Windows.Forms.TextBox();
+            this.textBoxStorageFulltext = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
+            this.buttonListFilterClear = new System.Windows.Forms.Button();
+            this.buttonListFilter = new System.Windows.Forms.Button();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.label9 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
-            this.listBox1 = new System.Windows.Forms.ListBox();
-            this.listBox2 = new System.Windows.Forms.ListBox();
+            this.listBoxFilterType = new System.Windows.Forms.ListBox();
+            this.listBoxFilterPackage = new System.Windows.Forms.ListBox();
             this.dataGridViewStorage = new System.Windows.Forms.DataGridView();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
@@ -152,6 +152,7 @@
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.helpToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.button3 = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -700,6 +701,7 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.button3);
             this.tabPage1.Controls.Add(this.groupBox3);
             this.tabPage1.Controls.Add(this.groupBox2);
             this.tabPage1.Controls.Add(this.groupBox1);
@@ -739,10 +741,10 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.button6);
-            this.groupBox2.Controls.Add(this.button5);
+            this.groupBox2.Controls.Add(this.buttonFulltextClear);
+            this.groupBox2.Controls.Add(this.buttonFulltextFilter);
             this.groupBox2.Controls.Add(this.label10);
-            this.groupBox2.Controls.Add(this.textBox7);
+            this.groupBox2.Controls.Add(this.textBoxStorageFulltext);
             this.groupBox2.Location = new System.Drawing.Point(615, 12);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(10);
@@ -751,23 +753,25 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Fulltext Search";
             // 
-            // button6
+            // buttonFulltextClear
             // 
-            this.button6.Location = new System.Drawing.Point(13, 77);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(64, 38);
-            this.button6.TabIndex = 4;
-            this.button6.Text = "Clear";
-            this.button6.UseVisualStyleBackColor = true;
+            this.buttonFulltextClear.Location = new System.Drawing.Point(13, 77);
+            this.buttonFulltextClear.Name = "buttonFulltextClear";
+            this.buttonFulltextClear.Size = new System.Drawing.Size(64, 38);
+            this.buttonFulltextClear.TabIndex = 4;
+            this.buttonFulltextClear.Text = "Clear";
+            this.buttonFulltextClear.UseVisualStyleBackColor = true;
+            this.buttonFulltextClear.Click += new System.EventHandler(this.buttonFulltextClear_Click);
             // 
-            // button5
+            // buttonFulltextFilter
             // 
-            this.button5.Location = new System.Drawing.Point(83, 77);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(145, 38);
-            this.button5.TabIndex = 2;
-            this.button5.Text = "Search";
-            this.button5.UseVisualStyleBackColor = true;
+            this.buttonFulltextFilter.Location = new System.Drawing.Point(83, 77);
+            this.buttonFulltextFilter.Name = "buttonFulltextFilter";
+            this.buttonFulltextFilter.Size = new System.Drawing.Size(145, 38);
+            this.buttonFulltextFilter.TabIndex = 2;
+            this.buttonFulltextFilter.Text = "Search";
+            this.buttonFulltextFilter.UseVisualStyleBackColor = true;
+            this.buttonFulltextFilter.Click += new System.EventHandler(this.buttonFulltextFilter_Click);
             // 
             // label10
             // 
@@ -778,17 +782,17 @@
             this.label10.TabIndex = 1;
             this.label10.Text = "Text to Search";
             // 
-            // textBox7
+            // textBoxStorageFulltext
             // 
-            this.textBox7.Location = new System.Drawing.Point(13, 43);
-            this.textBox7.Name = "textBox7";
-            this.textBox7.Size = new System.Drawing.Size(215, 20);
-            this.textBox7.TabIndex = 0;
+            this.textBoxStorageFulltext.Location = new System.Drawing.Point(13, 43);
+            this.textBoxStorageFulltext.Name = "textBoxStorageFulltext";
+            this.textBoxStorageFulltext.Size = new System.Drawing.Size(215, 20);
+            this.textBoxStorageFulltext.TabIndex = 0;
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.button4);
-            this.groupBox1.Controls.Add(this.button3);
+            this.groupBox1.Controls.Add(this.buttonListFilterClear);
+            this.groupBox1.Controls.Add(this.buttonListFilter);
             this.groupBox1.Controls.Add(this.tableLayoutPanel2);
             this.groupBox1.Location = new System.Drawing.Point(10, 12);
             this.groupBox1.Name = "groupBox1";
@@ -799,23 +803,25 @@
             this.groupBox1.Text = "Filter";
             this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
-            // button4
+            // buttonListFilterClear
             // 
-            this.button4.Location = new System.Drawing.Point(517, 20);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(64, 38);
-            this.button4.TabIndex = 3;
-            this.button4.Text = "Clear";
-            this.button4.UseVisualStyleBackColor = true;
+            this.buttonListFilterClear.Location = new System.Drawing.Point(517, 20);
+            this.buttonListFilterClear.Name = "buttonListFilterClear";
+            this.buttonListFilterClear.Size = new System.Drawing.Size(64, 38);
+            this.buttonListFilterClear.TabIndex = 3;
+            this.buttonListFilterClear.Text = "Clear";
+            this.buttonListFilterClear.UseVisualStyleBackColor = true;
+            this.buttonListFilterClear.Click += new System.EventHandler(this.buttonListFilterClear_Click);
             // 
-            // button3
+            // buttonListFilter
             // 
-            this.button3.Location = new System.Drawing.Point(517, 64);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(64, 48);
-            this.button3.TabIndex = 2;
-            this.button3.Text = "Filter";
-            this.button3.UseVisualStyleBackColor = true;
+            this.buttonListFilter.Location = new System.Drawing.Point(517, 64);
+            this.buttonListFilter.Name = "buttonListFilter";
+            this.buttonListFilter.Size = new System.Drawing.Size(64, 48);
+            this.buttonListFilter.TabIndex = 2;
+            this.buttonListFilter.Text = "Filter";
+            this.buttonListFilter.UseVisualStyleBackColor = true;
+            this.buttonListFilter.Click += new System.EventHandler(this.buttonListFilter_Click);
             // 
             // tableLayoutPanel2
             // 
@@ -829,8 +835,8 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel2.Controls.Add(this.label9, 1, 0);
             this.tableLayoutPanel2.Controls.Add(this.label8, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.listBox1, 0, 1);
-            this.tableLayoutPanel2.Controls.Add(this.listBox2, 1, 1);
+            this.tableLayoutPanel2.Controls.Add(this.listBoxFilterType, 0, 1);
+            this.tableLayoutPanel2.Controls.Add(this.listBoxFilterPackage, 1, 1);
             this.tableLayoutPanel2.Location = new System.Drawing.Point(13, 20);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 2;
@@ -861,25 +867,27 @@
             this.label8.Text = "Filter Type";
             this.label8.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
-            // listBox1
+            // listBoxFilterType
             // 
-            this.listBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(3, 23);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.ScrollAlwaysVisible = true;
-            this.listBox1.Size = new System.Drawing.Size(244, 69);
-            this.listBox1.TabIndex = 2;
+            this.listBoxFilterType.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listBoxFilterType.FormattingEnabled = true;
+            this.listBoxFilterType.Location = new System.Drawing.Point(3, 23);
+            this.listBoxFilterType.Name = "listBoxFilterType";
+            this.listBoxFilterType.ScrollAlwaysVisible = true;
+            this.listBoxFilterType.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
+            this.listBoxFilterType.Size = new System.Drawing.Size(244, 69);
+            this.listBoxFilterType.TabIndex = 2;
             // 
-            // listBox2
+            // listBoxFilterPackage
             // 
-            this.listBox2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listBox2.FormattingEnabled = true;
-            this.listBox2.Location = new System.Drawing.Point(253, 23);
-            this.listBox2.Name = "listBox2";
-            this.listBox2.ScrollAlwaysVisible = true;
-            this.listBox2.Size = new System.Drawing.Size(239, 69);
-            this.listBox2.TabIndex = 3;
+            this.listBoxFilterPackage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listBoxFilterPackage.FormattingEnabled = true;
+            this.listBoxFilterPackage.Location = new System.Drawing.Point(253, 23);
+            this.listBoxFilterPackage.Name = "listBoxFilterPackage";
+            this.listBoxFilterPackage.ScrollAlwaysVisible = true;
+            this.listBoxFilterPackage.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
+            this.listBoxFilterPackage.Size = new System.Drawing.Size(239, 69);
+            this.listBoxFilterPackage.TabIndex = 3;
             // 
             // dataGridViewStorage
             // 
@@ -887,12 +895,12 @@
             this.dataGridViewStorage.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGridViewStorage.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
             this.dataGridViewStorage.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewStorage.Location = new System.Drawing.Point(10, 151);
             this.dataGridViewStorage.Name = "dataGridViewStorage";
             this.dataGridViewStorage.Size = new System.Drawing.Size(1136, 251);
             this.dataGridViewStorage.TabIndex = 0;
-            this.dataGridViewStorage.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewStorage_CellContentDoubleClick);
             this.dataGridViewStorage.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewStorage_CellDoubleClick);
             this.dataGridViewStorage.UserDeletingRow += new System.Windows.Forms.DataGridViewRowCancelEventHandler(this.dataGridViewStorage_UserDeletingRow);
             // 
@@ -1291,6 +1299,16 @@
             this.toolStrip1.TabIndex = 2;
             this.toolStrip1.Text = "toolStrip1";
             // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(905, 32);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(75, 23);
+            this.button3.TabIndex = 5;
+            this.button3.Text = "button3";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1433,15 +1451,15 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.ListBox listBox1;
-        private System.Windows.Forms.ListBox listBox2;
-        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button buttonListFilter;
+        private System.Windows.Forms.ListBox listBoxFilterType;
+        private System.Windows.Forms.ListBox listBoxFilterPackage;
+        private System.Windows.Forms.Button buttonListFilterClear;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button buttonFulltextClear;
+        private System.Windows.Forms.Button buttonFulltextFilter;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.TextBox textBox7;
+        private System.Windows.Forms.TextBox textBoxStorageFulltext;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.TextBox textBox8;
         private System.Windows.Forms.ToolStripMenuItem showConsoleToolStripMenuItem;
@@ -1457,6 +1475,7 @@
         private System.Windows.Forms.ToolStripMenuItem editPartTypesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem editPackagesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem editPlaceTypesToolStripMenuItem;
+        private System.Windows.Forms.Button button3;
     }
 }
 

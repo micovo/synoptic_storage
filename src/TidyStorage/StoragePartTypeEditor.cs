@@ -50,6 +50,7 @@ namespace TidyStorage
                     table_name = StorageConst.Str_PartType;
                     column_id_name = StorageConst.Str_PartType_id;
                     column_name_name = StorageConst.Str_PartType_name;
+                    this.Width = 600;
                     break;
                 case StorageTypeTables.Package:
                     this.Text += " - Packages";
@@ -87,7 +88,41 @@ namespace TidyStorage
             {
                 dataGridViewType.Columns[0].Width = IdColumnWidth;
                 dataGridViewType.Columns[0].HeaderText = "ID";
+                dataGridViewType.Columns[0].ReadOnly = true;
+                dataGridViewType.Columns[0].Visible = false;
+
+                switch (tabletype)
+                {
+                    case StorageTypeTables.Manufacturer:
+                        dataGridViewType.Columns[1].HeaderText = "Manufacturer name";
+                        break;
+
+                    case StorageTypeTables.PartType:
+                        dataGridViewType.Columns[1].HeaderText = "Part type name";
+                        dataGridViewType.Columns[2].HeaderText = "Primary value";
+                        dataGridViewType.Columns[3].HeaderText = "Secondary value";
+                        dataGridViewType.Columns[4].HeaderText = "Third value";
+                        break;
+
+                    case StorageTypeTables.Package:
+                        dataGridViewType.Columns[1].HeaderText = "Package name";
+                        break;
+
+                    case StorageTypeTables.PlaceType:
+                        dataGridViewType.Columns[1].HeaderText = "Supplier name";
+                        break;
+
+                    case StorageTypeTables.Supplier:
+                        dataGridViewType.Columns[1].HeaderText = "Supplier name";
+                        dataGridViewType.Columns["read_only"].Visible = false;
+                        dataGridViewType.Columns["read_only"].ReadOnly = true;
+                        break;
+                    default:
+                        break;
+                }
             }
+
+            
 
 
             ContentChanged = false;
@@ -150,6 +185,19 @@ namespace TidyStorage
             if ((e.Row != null) && (e.Row.Cells.Count > 0))
             {
                 int id = int.Parse(e.Row.Cells[0].Value.ToString());
+                var o = e.Row.Cells[e.Row.Cells.Count - 1];
+
+                //Check for readonly error. Read only is always last integer column
+                if ((o.Visible == false) && (o.ValueType == typeof(Int64)))
+                {
+                    int read_only = (int)(Int64)o.Value;
+                    if (read_only == 1)
+                    {
+                        e.Cancel = true;
+                        MessageBox.Show("Readonly row cannot be deleted", "Row delete error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                }
 
                 if (storage.ColumnValueIsInUse(column_id_name, id))
                 {

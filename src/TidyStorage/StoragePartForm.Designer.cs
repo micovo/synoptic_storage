@@ -34,15 +34,15 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label16 = new System.Windows.Forms.Label();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.label9 = new System.Windows.Forms.Label();
+            this.labelValuePrimary = new System.Windows.Forms.Label();
             this.textBoxPrimaryValue = new System.Windows.Forms.TextBox();
             this.textBoxSecondaryValue = new System.Windows.Forms.TextBox();
-            this.label7 = new System.Windows.Forms.Label();
+            this.labelValueSecondary = new System.Windows.Forms.Label();
             this.textBoxThridValue = new System.Windows.Forms.TextBox();
             this.textBoxPrimaryTolerance = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
+            this.labelValueThird = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
@@ -81,12 +81,14 @@
             this.numericUpDownStock = new System.Windows.Forms.NumericUpDown();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
-            this.button2 = new System.Windows.Forms.Button();
+            this.label26 = new System.Windows.Forms.Label();
+            this.buttonSupplierOpen = new System.Windows.Forms.Button();
             this.comboBoxSupplier = new System.Windows.Forms.ComboBox();
             this.buttonEditSuplier = new System.Windows.Forms.Button();
             this.label27 = new System.Windows.Forms.Label();
             this.label28 = new System.Windows.Forms.Label();
             this.textBoxSupplierNumber = new System.Windows.Forms.TextBox();
+            this.textBoxCurrency = new System.Windows.Forms.TextBox();
             this.label21 = new System.Windows.Forms.Label();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.label23 = new System.Windows.Forms.Label();
@@ -99,8 +101,6 @@
             this.textBoxPrice1000pcs = new System.Windows.Forms.TextBox();
             this.buttonPriceCheck = new System.Windows.Forms.Button();
             this.buttonApply = new System.Windows.Forms.Button();
-            this.label26 = new System.Windows.Forms.Label();
-            this.textBoxCurrency = new System.Windows.Forms.TextBox();
             this.groupBox2.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -139,7 +139,6 @@
             // buttonImport
             // 
             this.buttonImport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonImport.Enabled = false;
             this.buttonImport.Location = new System.Drawing.Point(12, 478);
             this.buttonImport.Name = "buttonImport";
             this.buttonImport.Size = new System.Drawing.Size(111, 23);
@@ -178,15 +177,15 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 117F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.Controls.Add(this.label9, 0, 1);
+            this.tableLayoutPanel2.Controls.Add(this.labelValuePrimary, 0, 1);
             this.tableLayoutPanel2.Controls.Add(this.textBoxPrimaryValue, 1, 1);
             this.tableLayoutPanel2.Controls.Add(this.textBoxSecondaryValue, 1, 2);
-            this.tableLayoutPanel2.Controls.Add(this.label7, 0, 2);
+            this.tableLayoutPanel2.Controls.Add(this.labelValueSecondary, 0, 2);
             this.tableLayoutPanel2.Controls.Add(this.textBoxThridValue, 1, 3);
             this.tableLayoutPanel2.Controls.Add(this.textBoxPrimaryTolerance, 2, 1);
             this.tableLayoutPanel2.Controls.Add(this.label12, 1, 0);
             this.tableLayoutPanel2.Controls.Add(this.label14, 2, 0);
-            this.tableLayoutPanel2.Controls.Add(this.label10, 0, 3);
+            this.tableLayoutPanel2.Controls.Add(this.labelValueThird, 0, 3);
             this.tableLayoutPanel2.Controls.Add(this.label8, 1, 4);
             this.tableLayoutPanel2.Controls.Add(this.label15, 2, 4);
             this.tableLayoutPanel2.Controls.Add(this.label13, 0, 5);
@@ -207,15 +206,15 @@
             this.tableLayoutPanel2.Size = new System.Drawing.Size(308, 180);
             this.tableLayoutPanel2.TabIndex = 1;
             // 
-            // label9
+            // labelValuePrimary
             // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(3, 38);
-            this.label9.Margin = new System.Windows.Forms.Padding(3, 8, 3, 0);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(41, 13);
-            this.label9.TabIndex = 2;
-            this.label9.Text = "Primary";
+            this.labelValuePrimary.AutoSize = true;
+            this.labelValuePrimary.Location = new System.Drawing.Point(3, 38);
+            this.labelValuePrimary.Margin = new System.Windows.Forms.Padding(3, 8, 3, 0);
+            this.labelValuePrimary.Name = "labelValuePrimary";
+            this.labelValuePrimary.Size = new System.Drawing.Size(41, 13);
+            this.labelValuePrimary.TabIndex = 2;
+            this.labelValuePrimary.Text = "Primary";
             // 
             // textBoxPrimaryValue
             // 
@@ -239,15 +238,15 @@
             this.textBoxSecondaryValue.TabIndex = 2;
             this.textBoxSecondaryValue.TextChanged += new System.EventHandler(this.textBoxProductName_TextChanged);
             // 
-            // label7
+            // labelValueSecondary
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(3, 68);
-            this.label7.Margin = new System.Windows.Forms.Padding(3, 8, 3, 0);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(58, 13);
-            this.label7.TabIndex = 25;
-            this.label7.Text = "Secondary";
+            this.labelValueSecondary.AutoSize = true;
+            this.labelValueSecondary.Location = new System.Drawing.Point(3, 68);
+            this.labelValueSecondary.Margin = new System.Windows.Forms.Padding(3, 8, 3, 0);
+            this.labelValueSecondary.Name = "labelValueSecondary";
+            this.labelValueSecondary.Size = new System.Drawing.Size(58, 13);
+            this.labelValueSecondary.TabIndex = 25;
+            this.labelValueSecondary.Text = "Secondary";
             // 
             // textBoxThridValue
             // 
@@ -291,15 +290,15 @@
             this.label14.TabIndex = 34;
             this.label14.Text = "Tolerance";
             // 
-            // label10
+            // labelValueThird
             // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(3, 98);
-            this.label10.Margin = new System.Windows.Forms.Padding(3, 8, 3, 0);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(31, 13);
-            this.label10.TabIndex = 27;
-            this.label10.Text = "Third";
+            this.labelValueThird.AutoSize = true;
+            this.labelValueThird.Location = new System.Drawing.Point(3, 98);
+            this.labelValueThird.Margin = new System.Windows.Forms.Padding(3, 8, 3, 0);
+            this.labelValueThird.Name = "labelValueThird";
+            this.labelValueThird.Size = new System.Drawing.Size(31, 13);
+            this.labelValueThird.TabIndex = 27;
+            this.labelValueThird.Text = "Third";
             // 
             // label8
             // 
@@ -384,7 +383,7 @@
             this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(320, 268);
+            this.groupBox1.Size = new System.Drawing.Size(320, 299);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             // 
@@ -432,7 +431,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 8F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(307, 216);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(307, 247);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // buttonEditType
@@ -457,6 +456,7 @@
             this.comboBoxPartType.Name = "comboBoxPartType";
             this.comboBoxPartType.Size = new System.Drawing.Size(171, 21);
             this.comboBoxPartType.TabIndex = 2;
+            this.comboBoxPartType.SelectedIndexChanged += new System.EventHandler(this.comboBoxPartType_SelectedIndexChanged);
             // 
             // label4
             // 
@@ -492,6 +492,7 @@
             // 
             this.textBoxProductName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxProductName.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.textBoxProductName.Location = new System.Drawing.Point(83, 6);
             this.textBoxProductName.Margin = new System.Windows.Forms.Padding(3, 6, 3, 3);
             this.textBoxProductName.Name = "textBoxProductName";
@@ -555,7 +556,7 @@
             this.textBoxComment.Margin = new System.Windows.Forms.Padding(3, 6, 3, 3);
             this.textBoxComment.Multiline = true;
             this.textBoxComment.Name = "textBoxComment";
-            this.textBoxComment.Size = new System.Drawing.Size(171, 57);
+            this.textBoxComment.Size = new System.Drawing.Size(171, 88);
             this.textBoxComment.TabIndex = 5;
             this.textBoxComment.TextChanged += new System.EventHandler(this.textBoxProductName_TextChanged);
             // 
@@ -619,7 +620,7 @@
             this.groupBox3.Controls.Add(this.tableLayoutPanel3);
             this.groupBox3.Cursor = System.Windows.Forms.Cursors.Default;
             this.groupBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.groupBox3.Location = new System.Drawing.Point(12, 289);
+            this.groupBox3.Location = new System.Drawing.Point(12, 319);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(320, 141);
             this.groupBox3.TabIndex = 1;
@@ -727,6 +728,8 @@
             // 
             // numericUpDownStock
             // 
+            this.numericUpDownStock.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.numericUpDownStock.Location = new System.Drawing.Point(83, 66);
             this.numericUpDownStock.Margin = new System.Windows.Forms.Padding(3, 6, 3, 3);
             this.numericUpDownStock.Maximum = new decimal(new int[] {
@@ -735,8 +738,10 @@
             0,
             0});
             this.numericUpDownStock.Name = "numericUpDownStock";
-            this.numericUpDownStock.Size = new System.Drawing.Size(156, 20);
+            this.numericUpDownStock.Size = new System.Drawing.Size(171, 20);
             this.numericUpDownStock.TabIndex = 2;
+            this.numericUpDownStock.KeyDown += new System.Windows.Forms.KeyEventHandler(this.numericUpDownStock_KeyDown);
+            this.numericUpDownStock.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.numericUpDownStock_KeyPress);
             // 
             // groupBox4
             // 
@@ -762,7 +767,7 @@
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tableLayoutPanel5.Controls.Add(this.label26, 0, 2);
-            this.tableLayoutPanel5.Controls.Add(this.button2, 2, 1);
+            this.tableLayoutPanel5.Controls.Add(this.buttonSupplierOpen, 2, 1);
             this.tableLayoutPanel5.Controls.Add(this.comboBoxSupplier, 1, 0);
             this.tableLayoutPanel5.Controls.Add(this.buttonEditSuplier, 2, 0);
             this.tableLayoutPanel5.Controls.Add(this.label27, 0, 0);
@@ -779,16 +784,27 @@
             this.tableLayoutPanel5.Size = new System.Drawing.Size(307, 89);
             this.tableLayoutPanel5.TabIndex = 0;
             // 
-            // button2
+            // label26
             // 
-            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.label26.AutoSize = true;
+            this.label26.Location = new System.Drawing.Point(3, 68);
+            this.label26.Margin = new System.Windows.Forms.Padding(3, 8, 3, 0);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(49, 13);
+            this.label26.TabIndex = 23;
+            this.label26.Text = "Currency";
+            // 
+            // buttonSupplierOpen
+            // 
+            this.buttonSupplierOpen.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.Location = new System.Drawing.Point(260, 33);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(44, 24);
-            this.button2.TabIndex = 4;
-            this.button2.Text = "Open";
-            this.button2.UseVisualStyleBackColor = true;
+            this.buttonSupplierOpen.Location = new System.Drawing.Point(260, 33);
+            this.buttonSupplierOpen.Name = "buttonSupplierOpen";
+            this.buttonSupplierOpen.Size = new System.Drawing.Size(44, 24);
+            this.buttonSupplierOpen.TabIndex = 4;
+            this.buttonSupplierOpen.Text = "Open";
+            this.buttonSupplierOpen.UseVisualStyleBackColor = true;
+            this.buttonSupplierOpen.Click += new System.EventHandler(this.buttonSupplierOpen_Click);
             // 
             // comboBoxSupplier
             // 
@@ -843,6 +859,16 @@
             this.textBoxSupplierNumber.Name = "textBoxSupplierNumber";
             this.textBoxSupplierNumber.Size = new System.Drawing.Size(171, 20);
             this.textBoxSupplierNumber.TabIndex = 1;
+            // 
+            // textBoxCurrency
+            // 
+            this.textBoxCurrency.Location = new System.Drawing.Point(83, 66);
+            this.textBoxCurrency.Margin = new System.Windows.Forms.Padding(3, 6, 3, 3);
+            this.textBoxCurrency.MaxLength = 3;
+            this.textBoxCurrency.Name = "textBoxCurrency";
+            this.textBoxCurrency.Size = new System.Drawing.Size(171, 20);
+            this.textBoxCurrency.TabIndex = 2;
+            this.textBoxCurrency.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label21
             // 
@@ -967,7 +993,6 @@
             // buttonPriceCheck
             // 
             this.buttonPriceCheck.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonPriceCheck.Enabled = false;
             this.buttonPriceCheck.Location = new System.Drawing.Point(130, 478);
             this.buttonPriceCheck.Name = "buttonPriceCheck";
             this.buttonPriceCheck.Size = new System.Drawing.Size(98, 23);
@@ -987,29 +1012,8 @@
             this.buttonApply.UseVisualStyleBackColor = true;
             this.buttonApply.Click += new System.EventHandler(this.buttonApply_Click);
             // 
-            // label26
-            // 
-            this.label26.AutoSize = true;
-            this.label26.Location = new System.Drawing.Point(3, 68);
-            this.label26.Margin = new System.Windows.Forms.Padding(3, 8, 3, 0);
-            this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(49, 13);
-            this.label26.TabIndex = 23;
-            this.label26.Text = "Currency";
-            // 
-            // textBoxCurrency
-            // 
-            this.textBoxCurrency.Location = new System.Drawing.Point(83, 66);
-            this.textBoxCurrency.Margin = new System.Windows.Forms.Padding(3, 6, 3, 3);
-            this.textBoxCurrency.MaxLength = 3;
-            this.textBoxCurrency.Name = "textBoxCurrency";
-            this.textBoxCurrency.Size = new System.Drawing.Size(171, 20);
-            this.textBoxCurrency.TabIndex = 2;
-            this.textBoxCurrency.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
             // StoragePartForm
             // 
-            this.AcceptButton = this.buttonOk;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
@@ -1028,7 +1032,9 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "StoragePartForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Storage Part Editor";
+            this.Load += new System.EventHandler(this.StoragePartForm_Load);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
@@ -1058,15 +1064,15 @@
         private System.Windows.Forms.Button buttonImport;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
-        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label labelValuePrimary;
         private System.Windows.Forms.TextBox textBoxPrimaryValue;
         private System.Windows.Forms.TextBox textBoxSecondaryValue;
-        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label labelValueSecondary;
         private System.Windows.Forms.TextBox textBoxThridValue;
         private System.Windows.Forms.TextBox textBoxPrimaryTolerance;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label labelValueThird;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Label label13;
@@ -1118,7 +1124,7 @@
         private System.Windows.Forms.Button buttonPriceCheck;
         private System.Windows.Forms.Button buttonApply;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button buttonSupplierOpen;
         private System.Windows.Forms.ComboBox comboBoxSupplier;
         private System.Windows.Forms.Button buttonEditSuplier;
         private System.Windows.Forms.Label label27;

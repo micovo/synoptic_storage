@@ -68,12 +68,12 @@ namespace TidyStorage
             " + Str_Manufacturer_id + @" INTEGER, 
             " + Str_Supplier_id + @" INTEGER, 
             suppliernumber VARCHAR(64), 
-            primary_value REAL, 
-            primary_tolerance REAL, 
-            secondary_value REAL, 
-            secondary_tolerance REAL, 
-            tertiary_value REAL, 
-            tertiary_tolerance REAL, 
+            primary_value VARCHAR(32), 
+            primary_tolerance VARCHAR(16), 
+            secondary_value VARCHAR(32), 
+            secondary_tolerance VARCHAR(16), 
+            tertiary_value VARCHAR(32), 
+            tertiary_tolerance VARCHAR(16), 
             stock INTEGER DEFAULT 0, 
             currency CHAR(3), 
             price_1pcs REAL, 
@@ -85,7 +85,7 @@ namespace TidyStorage
             temperature_from INTEGER,
             temperature_to INTEGER,
             " + Str_PlaceType_id + @" INTEGER,
-            storage_place_number INTEGER
+            storage_place_number VARCHAR(64)
         )";
 
 
@@ -158,6 +158,6 @@ namespace TidyStorage
             " + Str_Supplier_name + @" VARCHAR(64) NOT NULL,
             read_only INTEGER DEFAULT(0)
         );
-        INSERT INTO " + Str_Supplier + "(" + Str_Supplier_name + ",read_only) VALUES ('Farnell', 1), ('Mouser', 1), ('GME', 1)";
+        INSERT INTO " + Str_Supplier + "(" + Str_Supplier_name + ",read_only) VALUES ('Farnell', 1), ('Mouser', 1), ('GME', 1), ('TME', 1)";
     }
 }
