@@ -9,6 +9,8 @@ namespace TidyStorage.Suppliers.Data
     public class SupplierPart
     {
         public List<PartPrice> prices;
+        public List<PartRow> rows;
+
         public string name;
         public string order_num;
 

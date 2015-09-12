@@ -66,8 +66,8 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tableLayoutPanel1.ColumnCount = 2;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 41.53355F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 58.46645F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 35.88235F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 64.11765F));
             this.tableLayoutPanel1.Controls.Add(this.label13, 0, 11);
             this.tableLayoutPanel1.Controls.Add(this.comboBox11, 1, 10);
             this.tableLayoutPanel1.Controls.Add(this.label8, 0, 10);
@@ -110,7 +110,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(272, 328);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(340, 328);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // label13
@@ -119,19 +119,22 @@
             this.label13.Location = new System.Drawing.Point(3, 283);
             this.label13.Margin = new System.Windows.Forms.Padding(3, 8, 3, 0);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(102, 13);
+            this.label13.Size = new System.Drawing.Size(87, 13);
             this.label13.TabIndex = 40;
-            this.label13.Text = "Temperature Range";
+            this.label13.Text = "Temperature Min";
             // 
             // comboBox11
             // 
             this.comboBox11.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboBox11.DropDownWidth = 250;
             this.comboBox11.FormattingEnabled = true;
-            this.comboBox11.Location = new System.Drawing.Point(115, 253);
+            this.comboBox11.Location = new System.Drawing.Point(125, 253);
             this.comboBox11.Name = "comboBox11";
-            this.comboBox11.Size = new System.Drawing.Size(154, 21);
+            this.comboBox11.Size = new System.Drawing.Size(212, 21);
             this.comboBox11.TabIndex = 39;
+            this.comboBox11.SelectedIndexChanged += new System.EventHandler(this.comboBox_SelectedIndexChanged);
+            this.comboBox11.SelectedValueChanged += new System.EventHandler(this.comboBox_SelectedValueChanged);
             // 
             // label8
             // 
@@ -139,19 +142,22 @@
             this.label8.Location = new System.Drawing.Point(3, 258);
             this.label8.Margin = new System.Windows.Forms.Padding(3, 8, 3, 0);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(31, 13);
+            this.label8.Size = new System.Drawing.Size(82, 13);
             this.label8.TabIndex = 38;
-            this.label8.Text = "Third";
+            this.label8.Text = "Third Tolerance";
             // 
             // comboBox10
             // 
             this.comboBox10.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboBox10.DropDownWidth = 250;
             this.comboBox10.FormattingEnabled = true;
-            this.comboBox10.Location = new System.Drawing.Point(115, 228);
+            this.comboBox10.Location = new System.Drawing.Point(125, 228);
             this.comboBox10.Name = "comboBox10";
-            this.comboBox10.Size = new System.Drawing.Size(154, 21);
+            this.comboBox10.Size = new System.Drawing.Size(212, 21);
             this.comboBox10.TabIndex = 37;
+            this.comboBox10.SelectedIndexChanged += new System.EventHandler(this.comboBox_SelectedIndexChanged);
+            this.comboBox10.SelectedValueChanged += new System.EventHandler(this.comboBox_SelectedValueChanged);
             // 
             // labelValueThird
             // 
@@ -159,19 +165,22 @@
             this.labelValueThird.Location = new System.Drawing.Point(3, 233);
             this.labelValueThird.Margin = new System.Windows.Forms.Padding(3, 8, 3, 0);
             this.labelValueThird.Name = "labelValueThird";
-            this.labelValueThird.Size = new System.Drawing.Size(31, 13);
+            this.labelValueThird.Size = new System.Drawing.Size(61, 13);
             this.labelValueThird.TabIndex = 36;
-            this.labelValueThird.Text = "Third";
+            this.labelValueThird.Text = "Third Value";
             // 
             // comboBox9
             // 
             this.comboBox9.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboBox9.DropDownWidth = 250;
             this.comboBox9.FormattingEnabled = true;
-            this.comboBox9.Location = new System.Drawing.Point(115, 203);
+            this.comboBox9.Location = new System.Drawing.Point(125, 203);
             this.comboBox9.Name = "comboBox9";
-            this.comboBox9.Size = new System.Drawing.Size(154, 21);
+            this.comboBox9.Size = new System.Drawing.Size(212, 21);
             this.comboBox9.TabIndex = 35;
+            this.comboBox9.SelectedIndexChanged += new System.EventHandler(this.comboBox_SelectedIndexChanged);
+            this.comboBox9.SelectedValueChanged += new System.EventHandler(this.comboBox_SelectedValueChanged);
             // 
             // label7
             // 
@@ -179,19 +188,22 @@
             this.label7.Location = new System.Drawing.Point(3, 208);
             this.label7.Margin = new System.Windows.Forms.Padding(3, 8, 3, 0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(58, 13);
+            this.label7.Size = new System.Drawing.Size(109, 13);
             this.label7.TabIndex = 34;
-            this.label7.Text = "Secondary";
+            this.label7.Text = "Secondary Tolerance";
             // 
             // comboBox8
             // 
             this.comboBox8.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboBox8.DropDownWidth = 250;
             this.comboBox8.FormattingEnabled = true;
-            this.comboBox8.Location = new System.Drawing.Point(115, 178);
+            this.comboBox8.Location = new System.Drawing.Point(125, 178);
             this.comboBox8.Name = "comboBox8";
-            this.comboBox8.Size = new System.Drawing.Size(154, 21);
+            this.comboBox8.Size = new System.Drawing.Size(212, 21);
             this.comboBox8.TabIndex = 33;
+            this.comboBox8.SelectedIndexChanged += new System.EventHandler(this.comboBox_SelectedIndexChanged);
+            this.comboBox8.SelectedValueChanged += new System.EventHandler(this.comboBox_SelectedValueChanged);
             // 
             // labelValueSecondary
             // 
@@ -199,19 +211,22 @@
             this.labelValueSecondary.Location = new System.Drawing.Point(3, 183);
             this.labelValueSecondary.Margin = new System.Windows.Forms.Padding(3, 8, 3, 0);
             this.labelValueSecondary.Name = "labelValueSecondary";
-            this.labelValueSecondary.Size = new System.Drawing.Size(58, 13);
+            this.labelValueSecondary.Size = new System.Drawing.Size(88, 13);
             this.labelValueSecondary.TabIndex = 32;
-            this.labelValueSecondary.Text = "Secondary";
+            this.labelValueSecondary.Text = "Secondary Value";
             // 
             // comboBox7
             // 
             this.comboBox7.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboBox7.DropDownWidth = 250;
             this.comboBox7.FormattingEnabled = true;
-            this.comboBox7.Location = new System.Drawing.Point(115, 153);
+            this.comboBox7.Location = new System.Drawing.Point(125, 153);
             this.comboBox7.Name = "comboBox7";
-            this.comboBox7.Size = new System.Drawing.Size(154, 21);
+            this.comboBox7.Size = new System.Drawing.Size(212, 21);
             this.comboBox7.TabIndex = 31;
+            this.comboBox7.SelectedIndexChanged += new System.EventHandler(this.comboBox_SelectedIndexChanged);
+            this.comboBox7.SelectedValueChanged += new System.EventHandler(this.comboBox_SelectedValueChanged);
             // 
             // label3
             // 
@@ -219,19 +234,22 @@
             this.label3.Location = new System.Drawing.Point(3, 158);
             this.label3.Margin = new System.Windows.Forms.Padding(3, 8, 3, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(41, 13);
+            this.label3.Size = new System.Drawing.Size(92, 13);
             this.label3.TabIndex = 30;
-            this.label3.Text = "Primary";
+            this.label3.Text = "Primary Tolerance";
             // 
             // comboBox6
             // 
             this.comboBox6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboBox6.DropDownWidth = 250;
             this.comboBox6.FormattingEnabled = true;
-            this.comboBox6.Location = new System.Drawing.Point(115, 128);
+            this.comboBox6.Location = new System.Drawing.Point(125, 128);
             this.comboBox6.Name = "comboBox6";
-            this.comboBox6.Size = new System.Drawing.Size(154, 21);
+            this.comboBox6.Size = new System.Drawing.Size(212, 21);
             this.comboBox6.TabIndex = 29;
+            this.comboBox6.SelectedIndexChanged += new System.EventHandler(this.comboBox_SelectedIndexChanged);
+            this.comboBox6.SelectedValueChanged += new System.EventHandler(this.comboBox_SelectedValueChanged);
             // 
             // labelValuePrimary
             // 
@@ -239,29 +257,35 @@
             this.labelValuePrimary.Location = new System.Drawing.Point(3, 133);
             this.labelValuePrimary.Margin = new System.Windows.Forms.Padding(3, 8, 3, 0);
             this.labelValuePrimary.Name = "labelValuePrimary";
-            this.labelValuePrimary.Size = new System.Drawing.Size(41, 13);
+            this.labelValuePrimary.Size = new System.Drawing.Size(71, 13);
             this.labelValuePrimary.TabIndex = 28;
-            this.labelValuePrimary.Text = "Primary";
+            this.labelValuePrimary.Text = "Primary Value";
             // 
             // comboBox5
             // 
             this.comboBox5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboBox5.DropDownWidth = 250;
             this.comboBox5.FormattingEnabled = true;
-            this.comboBox5.Location = new System.Drawing.Point(115, 103);
+            this.comboBox5.Location = new System.Drawing.Point(125, 103);
             this.comboBox5.Name = "comboBox5";
-            this.comboBox5.Size = new System.Drawing.Size(154, 21);
+            this.comboBox5.Size = new System.Drawing.Size(212, 21);
             this.comboBox5.TabIndex = 27;
+            this.comboBox5.SelectedIndexChanged += new System.EventHandler(this.comboBox_SelectedIndexChanged);
+            this.comboBox5.SelectedValueChanged += new System.EventHandler(this.comboBox_SelectedValueChanged);
             // 
             // comboBox4
             // 
             this.comboBox4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboBox4.DropDownWidth = 250;
             this.comboBox4.FormattingEnabled = true;
-            this.comboBox4.Location = new System.Drawing.Point(115, 78);
+            this.comboBox4.Location = new System.Drawing.Point(125, 78);
             this.comboBox4.Name = "comboBox4";
-            this.comboBox4.Size = new System.Drawing.Size(154, 21);
+            this.comboBox4.Size = new System.Drawing.Size(212, 21);
             this.comboBox4.TabIndex = 26;
+            this.comboBox4.SelectedIndexChanged += new System.EventHandler(this.comboBox_SelectedIndexChanged);
+            this.comboBox4.SelectedValueChanged += new System.EventHandler(this.comboBox_SelectedValueChanged);
             // 
             // label5
             // 
@@ -287,11 +311,14 @@
             // 
             this.comboBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboBox3.DropDownWidth = 250;
             this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Location = new System.Drawing.Point(115, 53);
+            this.comboBox3.Location = new System.Drawing.Point(125, 53);
             this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(154, 21);
+            this.comboBox3.Size = new System.Drawing.Size(212, 21);
             this.comboBox3.TabIndex = 8;
+            this.comboBox3.SelectedIndexChanged += new System.EventHandler(this.comboBox_SelectedIndexChanged);
+            this.comboBox3.SelectedValueChanged += new System.EventHandler(this.comboBox_SelectedValueChanged);
             // 
             // label4
             // 
@@ -307,11 +334,14 @@
             // 
             this.comboBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboBox2.DropDownWidth = 250;
             this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(115, 28);
+            this.comboBox2.Location = new System.Drawing.Point(125, 28);
             this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(154, 21);
+            this.comboBox2.Size = new System.Drawing.Size(212, 21);
             this.comboBox2.TabIndex = 4;
+            this.comboBox2.SelectedIndexChanged += new System.EventHandler(this.comboBox_SelectedIndexChanged);
+            this.comboBox2.SelectedValueChanged += new System.EventHandler(this.comboBox_SelectedValueChanged);
             // 
             // label2
             // 
@@ -337,11 +367,14 @@
             // 
             this.comboBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboBox1.DropDownWidth = 250;
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(115, 3);
+            this.comboBox1.Location = new System.Drawing.Point(125, 3);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(154, 21);
+            this.comboBox1.Size = new System.Drawing.Size(212, 21);
             this.comboBox1.TabIndex = 2;
+            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox_SelectedIndexChanged);
+            this.comboBox1.SelectedValueChanged += new System.EventHandler(this.comboBox_SelectedValueChanged);
             // 
             // label9
             // 
@@ -349,35 +382,41 @@
             this.label9.Location = new System.Drawing.Point(3, 308);
             this.label9.Margin = new System.Windows.Forms.Padding(3, 8, 3, 0);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(102, 13);
+            this.label9.Size = new System.Drawing.Size(90, 13);
             this.label9.TabIndex = 42;
-            this.label9.Text = "Temperature Range";
+            this.label9.Text = "Temperature Max";
             // 
             // comboBox13
             // 
             this.comboBox13.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboBox13.DropDownWidth = 250;
             this.comboBox13.FormattingEnabled = true;
-            this.comboBox13.Location = new System.Drawing.Point(115, 278);
+            this.comboBox13.Location = new System.Drawing.Point(125, 278);
             this.comboBox13.Name = "comboBox13";
-            this.comboBox13.Size = new System.Drawing.Size(154, 21);
+            this.comboBox13.Size = new System.Drawing.Size(212, 21);
             this.comboBox13.TabIndex = 43;
+            this.comboBox13.SelectedIndexChanged += new System.EventHandler(this.comboBox_SelectedIndexChanged);
+            this.comboBox13.SelectedValueChanged += new System.EventHandler(this.comboBox_SelectedValueChanged);
             // 
             // comboBox12
             // 
             this.comboBox12.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboBox12.DropDownWidth = 250;
             this.comboBox12.FormattingEnabled = true;
-            this.comboBox12.Location = new System.Drawing.Point(115, 303);
+            this.comboBox12.Location = new System.Drawing.Point(125, 303);
             this.comboBox12.Name = "comboBox12";
-            this.comboBox12.Size = new System.Drawing.Size(154, 21);
+            this.comboBox12.Size = new System.Drawing.Size(212, 21);
             this.comboBox12.TabIndex = 41;
+            this.comboBox12.SelectedIndexChanged += new System.EventHandler(this.comboBox_SelectedIndexChanged);
+            this.comboBox12.SelectedValueChanged += new System.EventHandler(this.comboBox_SelectedValueChanged);
             // 
             // buttonCancel
             // 
             this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.buttonCancel.Location = new System.Drawing.Point(209, 346);
+            this.buttonCancel.Location = new System.Drawing.Point(277, 346);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(75, 23);
             this.buttonCancel.TabIndex = 9;
@@ -388,7 +427,7 @@
             // buttonOk
             // 
             this.buttonOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonOk.Location = new System.Drawing.Point(128, 346);
+            this.buttonOk.Location = new System.Drawing.Point(196, 346);
             this.buttonOk.Name = "buttonOk";
             this.buttonOk.Size = new System.Drawing.Size(75, 23);
             this.buttonOk.TabIndex = 8;
@@ -402,7 +441,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.buttonCancel;
-            this.ClientSize = new System.Drawing.Size(296, 381);
+            this.ClientSize = new System.Drawing.Size(364, 381);
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.buttonOk);
             this.Controls.Add(this.tableLayoutPanel1);
@@ -410,8 +449,11 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "StoragePartImporter";
+            this.ShowIcon = false;
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "StoragePartImporter";
+            this.Text = "Import from Web";
+            this.Load += new System.EventHandler(this.StoragePartImporter_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);

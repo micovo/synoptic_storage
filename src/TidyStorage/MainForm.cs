@@ -235,6 +235,13 @@ namespace TidyStorage
             RefreshStorageTable();
             RefreshListBox();
 
+            Rectangle rec = Screen.FromControl(this).Bounds;
+
+            if ((rec.Width <= 1280) && (rec.Height <= 800))
+            {
+                this.WindowState = FormWindowState.Maximized;
+            }
+
         }
 
         private void dataGridViewStorage_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
@@ -372,10 +379,17 @@ namespace TidyStorage
             part_filter = "1";
             RefreshStorageTable();
         }
+        
 
-        private void button3_Click(object sender, EventArgs e)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            AboutBox ab = new AboutBox();
+            ab.ShowDialog();
         }
     }
 }

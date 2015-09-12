@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TidyStorage.Suppliers.Data;
 
 
 namespace TidyStorage
@@ -109,23 +110,57 @@ namespace TidyStorage
                     StoragePartImporter spi = new StoragePartImporter(supp, suppnum);
                     if (spi.ShowDialog() == DialogResult.OK)
                     {
+                        string v = "";
                         string manuf = "";
                         string pack = "";
 
-                        if (spi.comboBox1.Text != "") textBoxProductName.Text = spi.comboBox1.Text;
-                        if (spi.comboBox2.Text != "") manuf = spi.comboBox2.Text;
-                        if (spi.comboBox3.Text != "") pack = spi.comboBox3.Text;
-                        if (spi.comboBox4.Text != "") textBoxDatasheet.Text = spi.comboBox4.Text;
-                        if (spi.comboBox5.Text != "") textBoxComment.Text = spi.comboBox5.Text;
-                        if (spi.comboBox6.Text != "") textBoxPrimaryValue.Text = spi.comboBox6.Text;
-                        if (spi.comboBox7.Text != "") textBoxPrimaryTolerance.Text = spi.comboBox7.Text;
-                        if (spi.comboBox8.Text != "") textBoxSecondaryValue.Text = spi.comboBox8.Text;
-                        if (spi.comboBox9.Text != "") textBoxSecondaryTolerance.Text = spi.comboBox9.Text;
-                        if (spi.comboBox10.Text != "") textBoxThridValue.Text = spi.comboBox10.Text;
-                        if (spi.comboBox11.Text != "") textBoxThridTolerance.Text = spi.comboBox11.Text;
-                        if (spi.comboBox12.Text != "") textBoxTempRangeMin.Text = spi.comboBox12.Text;
-                        if (spi.comboBox13.Text != "") textBoxTempRangeMax.Text = spi.comboBox13.Text;
+                        v = ((PartRow)spi.comboBox1.SelectedItem).Value;
+                        if (v != "") textBoxProductName.Text = v;
 
+                        v = ((PartRow)spi.comboBox2.SelectedItem).Value;
+                        if (v != "") manuf = v;
+
+                        v = ((PartRow)spi.comboBox3.SelectedItem).Value;
+                        if (v != "") pack = v;
+
+                        v = ((PartRow)spi.comboBox4.SelectedItem).Value;
+                        if (v != "") textBoxDatasheet.Text = v;
+
+                        v = ((PartRow)spi.comboBox5.SelectedItem).Value;
+                        if (v != "") textBoxComment.Text = v;
+
+                        v = ((PartRow)spi.comboBox6.SelectedItem).Value;
+                        if (v != "") textBoxPrimaryValue.Text = v;
+
+                        v = ((PartRow)spi.comboBox7.SelectedItem).Value;
+                        if (v != "") textBoxPrimaryTolerance.Text = v;
+
+                        v = ((PartRow)spi.comboBox8.SelectedItem).Value;
+                        if (v != "") textBoxSecondaryValue.Text = v;
+
+                        v = ((PartRow)spi.comboBox9.SelectedItem).Value;
+                        if (v != "") textBoxSecondaryTolerance.Text = v;
+
+                        v = ((PartRow)spi.comboBox10.SelectedItem).Value;
+                        if (v != "") textBoxThridValue.Text = v;
+
+                        v = ((PartRow)spi.comboBox11.SelectedItem).Value;
+                        if (v != "") textBoxThridTolerance.Text = v;
+
+                        v = ((PartRow)spi.comboBox12.SelectedItem).Value;
+                        if (v != "") textBoxTempRangeMin.Text = v;
+
+                        v = ((PartRow)spi.comboBox13.SelectedItem).Value;
+                        if (v != "") textBoxTempRangeMax.Text = v;
+
+                        
+
+                        SupplierPart sp = spi.supplierPart;
+                        textBoxCurrency.Text = "CZK";
+                        textBoxPrice1pcs.Text = sp.prices[0].price.ToString();
+                        textBoxPrice10pcs.Text = sp.prices[1].price.ToString();
+                        textBoxPrice100pcs.Text = sp.prices[2].price.ToString();
+                        textBoxPrice1000pcs.Text = sp.prices[3].price.ToString();
 
                     }
                 }
