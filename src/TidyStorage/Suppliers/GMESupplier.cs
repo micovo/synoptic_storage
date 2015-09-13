@@ -28,6 +28,7 @@ namespace TidyStorage.Suppliers
 
         }
 
+        public override string Name { get { return "GME CZ"; } }
 
         public override string GetLink()
         {

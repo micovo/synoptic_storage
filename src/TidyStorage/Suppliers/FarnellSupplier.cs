@@ -33,6 +33,9 @@ namespace TidyStorage.Suppliers
         }
 
 
+        public override string Name { get { return "Farnell CZ"; } }
+
+
         public override SupplierPart DownloadPart()
         {
             SupplierPart p = new SupplierPart();
@@ -118,29 +121,6 @@ namespace TidyStorage.Suppliers
                             }
                         }
 
-
-                        hnc = document.DocumentNode.SelectNodes("//ul[@class='productAttributes']");
-
-                        if (hnc != null)
-                        {
-                            hn = hnc.First();
-
-                            HtmlNode [] rows  = hn.ChildNodes.Where(x => (x.Name == "li")).ToArray();
-
-                            foreach (HtmlNode li_node in rows)
-                            {
-                                HtmlNode[] spans = li_node.ChildNodes.Where(cond => (cond.Name == "span")).ToArray();
-
-                                if (spans.Count() == 2)
-                                {
-                                    string value = spans[1].InnerText.Trim();
-                                    value = value.Replace('µ', 'u');
-
-                                    p.rows.Add(new PartRow(spans[0].InnerText.Trim(), value));
-                                }
-                            }
-                        }
-
                         hnc = document.DocumentNode.SelectNodes("//ul[@id='technicalData']");
 
                         if (hnc != null)
@@ -158,7 +138,33 @@ namespace TidyStorage.Suppliers
                                 }
                             }
                         }
-                            
+
+
+                        hnc = document.DocumentNode.SelectNodes("//ul[@class='productAttributes']");
+
+                        if (hnc != null)
+                        {
+                            hn = hnc.First();
+
+                            HtmlNode [] rows  = hn.ChildNodes.Where(x => (x.Name == "li")).ToArray();
+
+                            foreach (HtmlNode li_node in rows)
+                            {
+                                HtmlNode[] spans = li_node.ChildNodes.Where(cond => (cond.Name == "span")).ToArray();
+
+                                if (spans.Count() == 2)
+                                {
+                                    string value = spans[1].InnerText;
+                                    value = value.Replace('µ', 'u');
+                                    value = value.Replace('±', ' ');
+                                    value = value.Trim();
+
+                                    
+                                    p.rows.Add(new PartRow(spans[0].InnerText.Trim(), value));
+                                }
+                            }
+                        }
+ 
 
 
                     }

@@ -16,6 +16,11 @@ namespace TidyStorage.Suppliers.Data
             get { return value; }
         }
 
+        public string Name
+        {
+            get { return name; }
+        }
+
         public PartRow(string name, string value = "")
         {
             this.name = name;

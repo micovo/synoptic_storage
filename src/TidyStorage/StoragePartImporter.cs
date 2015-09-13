@@ -16,7 +16,6 @@ namespace TidyStorage
     public partial class StoragePartImporter : Form
     {
         Supplier supplier;
-        string suppliernumber;
         LoadingForm loadingForm;
         Task downloadTask;
         public SupplierPart supplierPart;
@@ -25,21 +24,16 @@ namespace TidyStorage
         List<PartRow> downloadedPartRows = new List<PartRow>();
         PartRow nullItem;
 
+        public string PrimaryValueUnit = "";
+        public string PrimaryValueTolernceUnit = "%";
+        public string SecondaryValueUnit = "";
+        public string ThirdValueUnit = "";
 
-        public StoragePartImporter(string supplier, string suppliernumber)
+        public StoragePartImporter(Supplier supplier)
         {
-            this.suppliernumber = suppliernumber;
-            nullItem = new PartRow("Do no update");
-           
+            this.supplier = supplier;
 
-            switch (supplier)
-            {
-                case "Farnell": this.supplier = new FarnellSupplier(suppliernumber); break;
-                case "Mouser": this.supplier = new MouserSupplier(suppliernumber); break;
-                case "GME": this.supplier = new GMESupplier(suppliernumber); break;
-                case "TME": this.supplier = new TMESupplier(suppliernumber); break;
-                default: MessageBox.Show("Supplier is not implemented, please enter parameters manualy or contact developers.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation); break;
-            }
+            nullItem = new PartRow("Do no update");
 
             InitializeComponent();
         }
@@ -93,23 +87,39 @@ namespace TidyStorage
         {
             int timeout = 0;
             bool DownloadDone = false;
-            int progress = 0;
 
+            Thread.Sleep(250);
+
+            loadingForm.UpdateProgress(0);
+
+            loadingForm.UpdateLabel("Downloading part " + supplier.PartNumber + " from " + this.supplier.Name);
 
             supplierPart = supplier.DownloadPart();
 
+            loadingForm.UpdateProgress(25);
+
+            loadingForm.UpdateLabel("Saving and processing");
+
             downloadedPartRows.AddRange(supplierPart.rows);
+
+
+            loadingForm.UpdateProgress(50);
+
+
+            loadingForm.UpdateLabel("Loading into form");
 
             while ((DownloadDone == false) && (timeout < 10000))
             {
-                loadingForm.UpdateProgress(progress++);
-                loadingForm.UpdateLabel("Test");
+
                 this.Invoke(new Action(UpdateComboBoxes));
 
                 //supplierPart = supplier.DownloadPart();
                 Thread.Sleep(500);
                 timeout += 15000;
             }
+
+            loadingForm.UpdateProgress(100);
+            loadingForm.UpdateLabel("Done");
 
             loadingForm.AllowedToClose = true;
             loadingForm.Invoke(new Action(loadingForm.Close));
@@ -138,29 +148,28 @@ namespace TidyStorage
                     cb.SelectedIndex = 0;
                 }
             }
+
+            if (supplier.GetType() == typeof(FarnellSupplier))
+            {
+                comboBox1.SelectedItem = unusedPartRows[2];
+                comboBox2.SelectedItem = unusedPartRows[0];
+                comboBox3.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Name.Contains("Pouzdr")));
+                comboBox4.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Name == "Datasheet"));
+            }
+
+           
+
+            if (PrimaryValueUnit != "") comboBox6.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Value.Contains(PrimaryValueUnit)));
+            if (PrimaryValueTolernceUnit != "") comboBox7.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Value.Contains(PrimaryValueTolernceUnit)));
+            if (SecondaryValueUnit != "") comboBox8.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Value.Contains(SecondaryValueUnit)));
+            if (ThirdValueUnit != "") comboBox10.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Value.Contains(ThirdValueUnit)));
+
+            comboBox12.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Value.Contains("°C") && (x.Value.Contains("ppm") == false) && x.Value[0] == '-')) ?? nullItem;
+            comboBox13.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Value.Contains("°C") && (x.Value.Contains("ppm") == false) && x.Value[0] != '-')) ?? nullItem ;
+
+
         }
 
-
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void comboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-        
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void comboBox_SelectedValueChanged(object sender, EventArgs e)
-        {
-
-        }
 
     }
 }

@@ -200,9 +200,9 @@ namespace TidyStorage
             dataGridViewStorage.Columns["primary_value"].HeaderText = "Primary";
             dataGridViewStorage.Columns["primary_tolerance"].HeaderText = "Tolerance";
             dataGridViewStorage.Columns["secondary_value"].HeaderText = "Secondary";
-            dataGridViewStorage.Columns["secondary_tolerance"].HeaderText = "Tolerance";
+            //dataGridViewStorage.Columns["secondary_tolerance"].HeaderText = "Tolerance";
             dataGridViewStorage.Columns["tertiary_value"].HeaderText = "Third";
-            dataGridViewStorage.Columns["tertiary_tolerance"].HeaderText = "Tolerance";
+            //dataGridViewStorage.Columns["tertiary_tolerance"].HeaderText = "Tolerance";
             dataGridViewStorage.Columns["temperature_from"].HeaderText = "Temp\r\nMIN";
             dataGridViewStorage.Columns["temperature_to"].HeaderText = "Temp\r\nMAX";
             dataGridViewStorage.Columns["suppliername"].HeaderText = "Supplier";
@@ -246,7 +246,7 @@ namespace TidyStorage
 
         private void dataGridViewStorage_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
         {
-            e.Cancel = true;
+            e.Cancel = false;
         }
 
         private void partToolStripMenuItem_Click(object sender, EventArgs e)

@@ -14,6 +14,8 @@ namespace TidyStorage.Suppliers
 
         }
 
+        public override string Name { get { return "Mouse"; } }
+
         public override string GetLink()
         {
             throw new NotImplementedException();

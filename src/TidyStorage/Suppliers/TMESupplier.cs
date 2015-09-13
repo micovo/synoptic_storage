@@ -27,6 +27,8 @@ namespace TidyStorage.Suppliers
 
         }
 
+        public override string Name { get { return "TME CZ"; } }
+
         public override string GetLink()
         {
             return "http://www.tme.eu/cz/details/" + part_number + "/";

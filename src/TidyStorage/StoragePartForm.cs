@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TidyStorage.Suppliers;
 using TidyStorage.Suppliers.Data;
 
 
@@ -21,6 +22,8 @@ namespace TidyStorage
         List<IndexedName> PartTypeList;
         List<IndexedName> PlaceTypeList;
         List<IndexedName> SupplierList;
+
+        Supplier supplier;
 
 
         public StoragePartForm(Storage storage, StoragePart part)
@@ -95,10 +98,11 @@ namespace TidyStorage
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void buttonImport_Click(object sender, EventArgs e)
+        /// <returns></returns>
+        bool PrepareSupplier()
         {
+            supplier = null;
+
             // Process part import here
             if (comboBoxSupplier.SelectedIndex > -1)
             {
@@ -107,62 +111,17 @@ namespace TidyStorage
                     string supp = comboBoxSupplier.Text;
                     string suppnum = textBoxSupplierNumber.Text;
 
-                    StoragePartImporter spi = new StoragePartImporter(supp, suppnum);
-                    if (spi.ShowDialog() == DialogResult.OK)
+                    switch (supp)
                     {
-                        string v = "";
-                        string manuf = "";
-                        string pack = "";
-
-                        v = ((PartRow)spi.comboBox1.SelectedItem).Value;
-                        if (v != "") textBoxProductName.Text = v;
-
-                        v = ((PartRow)spi.comboBox2.SelectedItem).Value;
-                        if (v != "") manuf = v;
-
-                        v = ((PartRow)spi.comboBox3.SelectedItem).Value;
-                        if (v != "") pack = v;
-
-                        v = ((PartRow)spi.comboBox4.SelectedItem).Value;
-                        if (v != "") textBoxDatasheet.Text = v;
-
-                        v = ((PartRow)spi.comboBox5.SelectedItem).Value;
-                        if (v != "") textBoxComment.Text = v;
-
-                        v = ((PartRow)spi.comboBox6.SelectedItem).Value;
-                        if (v != "") textBoxPrimaryValue.Text = v;
-
-                        v = ((PartRow)spi.comboBox7.SelectedItem).Value;
-                        if (v != "") textBoxPrimaryTolerance.Text = v;
-
-                        v = ((PartRow)spi.comboBox8.SelectedItem).Value;
-                        if (v != "") textBoxSecondaryValue.Text = v;
-
-                        v = ((PartRow)spi.comboBox9.SelectedItem).Value;
-                        if (v != "") textBoxSecondaryTolerance.Text = v;
-
-                        v = ((PartRow)spi.comboBox10.SelectedItem).Value;
-                        if (v != "") textBoxThridValue.Text = v;
-
-                        v = ((PartRow)spi.comboBox11.SelectedItem).Value;
-                        if (v != "") textBoxThridTolerance.Text = v;
-
-                        v = ((PartRow)spi.comboBox12.SelectedItem).Value;
-                        if (v != "") textBoxTempRangeMin.Text = v;
-
-                        v = ((PartRow)spi.comboBox13.SelectedItem).Value;
-                        if (v != "") textBoxTempRangeMax.Text = v;
-
-                        
-
-                        SupplierPart sp = spi.supplierPart;
-                        textBoxCurrency.Text = "CZK";
-                        textBoxPrice1pcs.Text = sp.prices[0].price.ToString();
-                        textBoxPrice10pcs.Text = sp.prices[1].price.ToString();
-                        textBoxPrice100pcs.Text = sp.prices[2].price.ToString();
-                        textBoxPrice1000pcs.Text = sp.prices[3].price.ToString();
-
+                        case "Farnell": this.supplier = new FarnellSupplier(suppnum); break;
+                        case "Mouser": this.supplier = new MouserSupplier(suppnum); break;
+                        case "GME": this.supplier = new GMESupplier(suppnum); break;
+                        case "TME": this.supplier = new TMESupplier(suppnum); break;
+                        default: MessageBox.Show("Supplier is not implemented, please enter parameters manualy or contact developers.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation); break;
                     }
+
+                    
+                    return true;
                 }
                 else
                 {
@@ -172,6 +131,100 @@ namespace TidyStorage
             else
             {
                 MessageBox.Show("Please choose supplier first", "Import from Web", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+            }
+
+            return false;
+        }
+
+        public string Between(string STR, string FirstString, string LastString)
+        {
+            string FinalString = "";
+            int Pos1 = STR.IndexOf(FirstString) + FirstString.Length;
+            int Pos2 = STR.IndexOf(LastString);
+            if ((Pos1 > 0) && (Pos2 > 0))
+            {
+                FinalString = STR.Substring(Pos1, Pos2 - Pos1);
+            }
+
+            return FinalString;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void buttonImport_Click(object sender, EventArgs e)
+        {         
+            if (PrepareSupplier())
+            {
+                StoragePartImporter spi = new StoragePartImporter(supplier);
+
+                int i = ProcessTypeComboBox(comboBoxPartType);
+
+                string[] s = new string[3];
+
+                s = storage.GetPartTypeStrings(i);
+
+                spi.PrimaryValueUnit = Between(s[0], "[", "]");
+                spi.SecondaryValueUnit = Between(s[1], "[", "]");
+                spi.ThirdValueUnit = Between(s[2], "[", "]");
+
+
+                if (spi.ShowDialog() == DialogResult.OK)
+                {
+                    string v = "";
+                    string manuf = "";
+                    string pack = "";
+
+                    v = ((PartRow)spi.comboBox1.SelectedItem).Value;
+                    if (v != "") textBoxProductName.Text = v;
+
+                    v = ((PartRow)spi.comboBox2.SelectedItem).Value;
+                    if (v != "") manuf = v;
+
+                    v = ((PartRow)spi.comboBox3.SelectedItem).Value;
+                    if (v != "") pack = v;
+
+                    v = ((PartRow)spi.comboBox4.SelectedItem).Value;
+                    if (v != "") textBoxDatasheet.Text = v;
+
+                    v = ((PartRow)spi.comboBox5.SelectedItem).Value;
+                    if (v != "") textBoxComment.Text = v;
+
+                    v = ((PartRow)spi.comboBox6.SelectedItem).Value;
+                    if (v != "") textBoxPrimaryValue.Text = v;
+
+                    v = ((PartRow)spi.comboBox7.SelectedItem).Value;
+                    if (v != "") textBoxPrimaryTolerance.Text = v;
+
+                    v = ((PartRow)spi.comboBox8.SelectedItem).Value;
+                    if (v != "") textBoxSecondaryValue.Text = v;
+
+                    v = ((PartRow)spi.comboBox9.SelectedItem).Value;
+                    if (v != "") textBoxSecondaryTolerance.Text = v;
+
+                    v = ((PartRow)spi.comboBox10.SelectedItem).Value;
+                    if (v != "") textBoxThridValue.Text = v;
+
+                    v = ((PartRow)spi.comboBox11.SelectedItem).Value;
+                    if (v != "") textBoxThridTolerance.Text = v;
+
+                    v = ((PartRow)spi.comboBox12.SelectedItem).Value;
+                    if (v != "") textBoxTempRangeMin.Text = v.Replace("°C", "").Trim();
+
+                    v = ((PartRow)spi.comboBox13.SelectedItem).Value;
+                    if (v != "") textBoxTempRangeMax.Text = v.Replace("°C","").Trim();
+
+
+
+                    SupplierPart sp = spi.supplierPart;
+                    textBoxCurrency.Text = "CZK";
+                    textBoxPrice1pcs.Text = sp.prices[0].price.ToString();
+                    textBoxPrice10pcs.Text = sp.prices[1].price.ToString();
+                    textBoxPrice100pcs.Text = sp.prices[2].price.ToString();
+                    textBoxPrice1000pcs.Text = sp.prices[3].price.ToString();
+                }
             }
         }
 
@@ -625,17 +678,18 @@ namespace TidyStorage
         /// <param name="e"></param>
         private void buttonSupplierOpen_Click(object sender, EventArgs e)
         {
-            string url = "";
-            //TODO get supplier link
+            if (PrepareSupplier())
+            {
+                string url = supplier.GetLink();
 
-           
-            if (url != "")
-            {
-                System.Diagnostics.Process.Start(url);
-            }
-            else
-            {
-                MessageBox.Show("Importer or URL formatter is not available for this supplier.\r\nRequest importer or URL formatter on TidiStorage github.", "Not supported", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                if (url != "")
+                {
+                    System.Diagnostics.Process.Start(url);
+                }
+                else
+                {
+                    MessageBox.Show("Importer or URL formatter is not available for this supplier.\r\nRequest importer or URL formatter on TidiStorage github.", "Not supported", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                }
             }
         }
 

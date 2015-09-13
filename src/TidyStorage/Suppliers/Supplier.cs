@@ -11,11 +11,18 @@ namespace TidyStorage.Suppliers
     {
         protected string part_number;
 
+        public string PartNumber
+        {
+            get { return part_number; }
+        }
+
+
         public Supplier(string part_number)
         {
             this.part_number = part_number;
         }
 
+        public abstract string Name { get; }
         public abstract string GetLink();
         public abstract SupplierPart DownloadPart();
     }

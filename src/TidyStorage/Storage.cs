@@ -240,9 +240,7 @@ namespace TidyStorage
 	`primary_value`	,
 	`primary_tolerance`	,
 	`secondary_value`	,
-	`secondary_tolerance`	,
 	`tertiary_value`	,
-	`tertiary_tolerance`	,
 	`temperature_from`,
 	`temperature_to`,
 	supplier.suppliername AS suppliername,
@@ -301,9 +299,9 @@ currency
             if ((dt != null) && (dt.Rows.Count > 0))
             {
                 DataRow dr = dt.Rows[0];
-                o[0] = (string)dr.ItemArray[0];
-                o[1] = (string)dr.ItemArray[1];
-                o[2] = (string)dr.ItemArray[2];
+                o[0] = (dr.ItemArray[0].GetType() == typeof(System.DBNull)) ? "" : (string)dr.ItemArray[0];
+                o[1] = (dr.ItemArray[1].GetType() == typeof(System.DBNull)) ? "" : (string)dr.ItemArray[1];
+                o[2] = (dr.ItemArray[2].GetType() == typeof(System.DBNull)) ? "" : (string)dr.ItemArray[2];
             }
 
             return o;
