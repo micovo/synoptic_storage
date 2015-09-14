@@ -20,6 +20,9 @@ namespace TidyStorage
         string part_filter = "1";
         string part_filter_fulltext = "";
 
+        /// <summary>
+        /// 
+        /// </summary>
         public MainForm()
         {
             InitializeComponent();
@@ -46,6 +49,7 @@ namespace TidyStorage
                 spf.StartPosition = FormStartPosition.CenterParent;
                 spf.ShowDialog();
                 RefreshStorageTable();
+                RefreshListBox();
             }
             else
             {
@@ -72,10 +76,15 @@ namespace TidyStorage
             else
             {
                 NoStorageError();
+                RefreshListBox();
             }
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void newToolStripButton_Click(object sender, EventArgs e)
         {
             if (tabControl1.SelectedIndex == 0)
@@ -83,16 +92,16 @@ namespace TidyStorage
                 CreateNewStoragePart();
             }
         }
-
-        private void groupBox1_Enter(object sender, EventArgs e)
-        {
-           
-
-        }
+        
 
 
+        /// <summary>
+        /// Excel file import/export debugging
+        /// </summary>
         public void ExcellTest()
         {
+            return;
+
             FileInfo newFile = new FileInfo("sample6.xlsx");
 
             ExcelPackage pck = new ExcelPackage(newFile);
@@ -103,7 +112,7 @@ namespace TidyStorage
 
             ws.View.ShowGridLines = true;
 
-            textBox8.Text += ws.Cells["B1"].Value;
+            //textBoxConsole.Text += ws.Cells["B1"].Value;
 
             ws.Cells["C2"].Formula = "SUM(B1:B5)";
             ws.Cells["B1"].Value = 6;
@@ -173,13 +182,22 @@ namespace TidyStorage
             */
         }
         
-
+        /// <summary>
+        /// 
+        /// </summary>
         public void RefreshStorageTable()
         {
            
 
 
-            string filter = part_filter + part_filter_fulltext;
+            string filter = part_filter;
+
+            if (part_filter_fulltext != "")
+            {
+                filter += " AND ";
+                filter += part_filter_fulltext;
+            }
+
             dataGridViewStorage.DataSource = currentStorage.GetPartTable(filter);
 
             dataGridViewStorage.Columns["id_part"].HeaderText = "ID";
@@ -216,7 +234,9 @@ namespace TidyStorage
 
 
 
-
+        /// <summary>
+        /// 
+        /// </summary>
         public void RefreshListBox()
         {
             listBoxFilterType.DataSource = currentStorage.GetStringIdArray(StorageTypeTables.PartType);
@@ -227,6 +247,11 @@ namespace TidyStorage
         }
 
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MainForm_Load(object sender, EventArgs e)
         {
             ExcellTest();
@@ -244,21 +269,46 @@ namespace TidyStorage
 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void dataGridViewStorage_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
         {
             e.Cancel = false;
+
+            if (e.Row != null)
+            {
+                currentStorage.DeleteRow(StorageConst.Str_Part, StorageConst.Str_Part_id, (int)(Int64)e.Row.Cells[0].Value);
+            }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void partToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CreateNewStoragePart();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             currentStorage.Save();
@@ -363,7 +413,15 @@ namespace TidyStorage
         {
             string text = textBoxStorageFulltext.Text;
             part_filter_fulltext = "";
-            RefreshStorageTable();
+
+            string[] columns = { "primary_value", "secondary_value", "tertiary_value", "comment", "productnumber" ,"suppliernumber"};
+            string[] keywords = text.Split(' ');
+
+            if (keywords.Count() > 0)
+            {
+                part_filter_fulltext = StringHelpers.LikeCondition(columns, keywords);
+                RefreshStorageTable();
+            }
         }
 
         /// <summary>
@@ -390,6 +448,62 @@ namespace TidyStorage
         {
             AboutBox ab = new AboutBox();
             ab.ShowDialog();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void editManufacturersToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            StoragePartTypeEditor spte = new StoragePartTypeEditor(currentStorage, StorageTypeTables.Manufacturer);
+            spte.ShowDialog();
+        }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void editPartTypesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            StoragePartTypeEditor spte = new StoragePartTypeEditor(currentStorage, StorageTypeTables.PartType);
+            spte.ShowDialog();
+            RefreshListBox();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void editPackagesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            StoragePartTypeEditor spte = new StoragePartTypeEditor(currentStorage, StorageTypeTables.Package);
+            spte.ShowDialog();
+            RefreshListBox();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void editPlaceTypesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            StoragePartTypeEditor spte = new StoragePartTypeEditor(currentStorage, StorageTypeTables.PlaceType);
+            spte.ShowDialog();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

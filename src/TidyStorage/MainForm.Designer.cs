@@ -101,9 +101,8 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.button3 = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.textBox8 = new System.Windows.Forms.TextBox();
+            this.textBoxConsole = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.buttonFulltextClear = new System.Windows.Forms.Button();
             this.buttonFulltextFilter = new System.Windows.Forms.Button();
@@ -438,6 +437,7 @@
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
             this.exitToolStripMenuItem.Text = "E&xit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
             // editToolStripMenuItem
             // 
@@ -597,24 +597,28 @@
             this.editManufacturersToolStripMenuItem.Name = "editManufacturersToolStripMenuItem";
             this.editManufacturersToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
             this.editManufacturersToolStripMenuItem.Text = "Edit Manufacturers";
+            this.editManufacturersToolStripMenuItem.Click += new System.EventHandler(this.editManufacturersToolStripMenuItem_Click);
             // 
             // editPartTypesToolStripMenuItem
             // 
             this.editPartTypesToolStripMenuItem.Name = "editPartTypesToolStripMenuItem";
             this.editPartTypesToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
             this.editPartTypesToolStripMenuItem.Text = "Edit Part Types";
+            this.editPartTypesToolStripMenuItem.Click += new System.EventHandler(this.editPartTypesToolStripMenuItem_Click);
             // 
             // editPackagesToolStripMenuItem
             // 
             this.editPackagesToolStripMenuItem.Name = "editPackagesToolStripMenuItem";
             this.editPackagesToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
             this.editPackagesToolStripMenuItem.Text = "Edit Packages";
+            this.editPackagesToolStripMenuItem.Click += new System.EventHandler(this.editPackagesToolStripMenuItem_Click);
             // 
             // editPlaceTypesToolStripMenuItem
             // 
             this.editPlaceTypesToolStripMenuItem.Name = "editPlaceTypesToolStripMenuItem";
             this.editPlaceTypesToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
             this.editPlaceTypesToolStripMenuItem.Text = "Edit Place Types";
+            this.editPlaceTypesToolStripMenuItem.Click += new System.EventHandler(this.editPlaceTypesToolStripMenuItem_Click);
             // 
             // deviceToolStripMenuItem2
             // 
@@ -702,7 +706,6 @@
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.button3);
             this.tabPage1.Controls.Add(this.groupBox3);
             this.tabPage1.Controls.Add(this.groupBox2);
             this.tabPage1.Controls.Add(this.groupBox1);
@@ -715,20 +718,11 @@
             this.tabPage1.Text = "Storage";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(905, 32);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
-            this.button3.TabIndex = 5;
-            this.button3.Text = "button3";
-            this.button3.UseVisualStyleBackColor = true;
-            // 
             // groupBox3
             // 
             this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox3.Controls.Add(this.textBox8);
+            this.groupBox3.Controls.Add(this.textBoxConsole);
             this.groupBox3.Location = new System.Drawing.Point(10, 412);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Padding = new System.Windows.Forms.Padding(10);
@@ -737,17 +731,17 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Console";
             // 
-            // textBox8
+            // textBoxConsole
             // 
-            this.textBox8.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.textBoxConsole.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox8.Location = new System.Drawing.Point(13, 26);
-            this.textBox8.Multiline = true;
-            this.textBox8.Name = "textBox8";
-            this.textBox8.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox8.Size = new System.Drawing.Size(1110, 61);
-            this.textBox8.TabIndex = 0;
+            this.textBoxConsole.Location = new System.Drawing.Point(13, 26);
+            this.textBoxConsole.Multiline = true;
+            this.textBoxConsole.Name = "textBoxConsole";
+            this.textBoxConsole.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textBoxConsole.Size = new System.Drawing.Size(1110, 61);
+            this.textBoxConsole.TabIndex = 0;
             // 
             // groupBox2
             // 
@@ -811,7 +805,6 @@
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Filter";
-            this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
             // buttonListFilterClear
             // 
@@ -1219,6 +1212,7 @@
             // openToolStripButton
             // 
             this.openToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.openToolStripButton.Enabled = false;
             this.openToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("openToolStripButton.Image")));
             this.openToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.openToolStripButton.Name = "openToolStripButton";
@@ -1238,6 +1232,7 @@
             // printToolStripButton
             // 
             this.printToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.printToolStripButton.Enabled = false;
             this.printToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("printToolStripButton.Image")));
             this.printToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.printToolStripButton.Name = "printToolStripButton";
@@ -1252,6 +1247,7 @@
             // cutToolStripButton
             // 
             this.cutToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.cutToolStripButton.Enabled = false;
             this.cutToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("cutToolStripButton.Image")));
             this.cutToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.cutToolStripButton.Name = "cutToolStripButton";
@@ -1261,6 +1257,7 @@
             // copyToolStripButton
             // 
             this.copyToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.copyToolStripButton.Enabled = false;
             this.copyToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("copyToolStripButton.Image")));
             this.copyToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.copyToolStripButton.Name = "copyToolStripButton";
@@ -1270,6 +1267,7 @@
             // pasteToolStripButton
             // 
             this.pasteToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.pasteToolStripButton.Enabled = false;
             this.pasteToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("pasteToolStripButton.Image")));
             this.pasteToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.pasteToolStripButton.Name = "pasteToolStripButton";
@@ -1284,6 +1282,7 @@
             // helpToolStripButton
             // 
             this.helpToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.helpToolStripButton.Enabled = false;
             this.helpToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("helpToolStripButton.Image")));
             this.helpToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.helpToolStripButton.Name = "helpToolStripButton";
@@ -1462,7 +1461,7 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TextBox textBoxStorageFulltext;
         private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.TextBox textBox8;
+        private System.Windows.Forms.TextBox textBoxConsole;
         private System.Windows.Forms.ToolStripMenuItem showConsoleToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator13;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
@@ -1476,7 +1475,6 @@
         private System.Windows.Forms.ToolStripMenuItem editPartTypesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem editPackagesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem editPlaceTypesToolStripMenuItem;
-        private System.Windows.Forms.Button button3;
     }
 }
 
