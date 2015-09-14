@@ -230,7 +230,7 @@ namespace TidyStorage
 
             if (dr == DialogResult.Yes)
             {
-                storage.InsertEmptyRow(table_name, column_name_name);
+                storage.InsertNewRow(table_name, column_name_name);
                 LoadTable();
             }
         }

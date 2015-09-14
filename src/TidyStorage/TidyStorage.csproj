@@ -138,6 +138,7 @@
     <Compile Include="StoragePartTypeEditor.Designer.cs">
       <DependentUpon>StoragePartTypeEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="StringHelpers.cs" />
     <Compile Include="Suppliers\Data\PartRow.cs" />
     <Compile Include="Suppliers\FarnellSupplier.cs" />
     <Compile Include="Suppliers\GMESupplier.cs" />

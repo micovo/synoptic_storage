@@ -20,6 +20,9 @@ namespace TidyStorage
         Task downloadTask;
         public SupplierPart supplierPart;
 
+        public int FoundPartType;
+        Storage storage;
+
         List<PartRow> unusedPartRows = new List<PartRow>();
         List<PartRow> downloadedPartRows = new List<PartRow>();
         PartRow nullItem;
@@ -29,8 +32,9 @@ namespace TidyStorage
         public string SecondaryValueUnit = "";
         public string ThirdValueUnit = "";
 
-        public StoragePartImporter(Supplier supplier)
+        public StoragePartImporter(Storage storage, Supplier supplier)
         {
+            this.storage = storage;
             this.supplier = supplier;
 
             nullItem = new PartRow("Do no update");
@@ -97,26 +101,16 @@ namespace TidyStorage
             supplierPart = supplier.DownloadPart();
 
             loadingForm.UpdateProgress(25);
-
             loadingForm.UpdateLabel("Saving and processing");
 
             downloadedPartRows.AddRange(supplierPart.rows);
 
-
             loadingForm.UpdateProgress(50);
-
-
             loadingForm.UpdateLabel("Loading into form");
 
-            while ((DownloadDone == false) && (timeout < 10000))
-            {
+            this.Invoke(new Action(UpdateComboBoxes));
 
-                this.Invoke(new Action(UpdateComboBoxes));
-
-                //supplierPart = supplier.DownloadPart();
-                Thread.Sleep(500);
-                timeout += 15000;
-            }
+            Thread.Sleep(500);
 
             loadingForm.UpdateProgress(100);
             loadingForm.UpdateLabel("Done");
@@ -151,21 +145,70 @@ namespace TidyStorage
 
             if (supplier.GetType() == typeof(FarnellSupplier))
             {
-                comboBox1.SelectedItem = unusedPartRows[2];
-                comboBox2.SelectedItem = unusedPartRows[0];
-                comboBox3.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Name.Contains("Pouzdr")));
-                comboBox4.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Name == "Datasheet"));
+                comboBox1.SelectedItem = unusedPartRows[2] ?? nullItem;
+                comboBox2.SelectedItem = unusedPartRows[0] ?? nullItem;
+                comboBox3.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Name.Contains("Pouzdr"))) ?? nullItem;
+                comboBox4.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Name == "Datasheet")) ?? nullItem;
             }
 
-           
 
-            if (PrimaryValueUnit != "") comboBox6.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Value.Contains(PrimaryValueUnit)));
-            if (PrimaryValueTolernceUnit != "") comboBox7.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Value.Contains(PrimaryValueTolernceUnit)));
-            if (SecondaryValueUnit != "") comboBox8.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Value.Contains(SecondaryValueUnit)));
-            if (ThirdValueUnit != "") comboBox10.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Value.Contains(ThirdValueUnit)));
 
             comboBox12.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Value.Contains("°C") && (x.Value.Contains("ppm") == false) && x.Value[0] == '-')) ?? nullItem;
-            comboBox13.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Value.Contains("°C") && (x.Value.Contains("ppm") == false) && x.Value[0] != '-')) ?? nullItem ;
+            comboBox13.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Value.Contains("°C") && (x.Value.Contains("ppm") == false) && x.Value[0] != '-')) ?? nullItem;
+
+
+
+            FoundPartType = -1;
+
+            string[] s = new string[3];
+            
+            if ((PrimaryValueUnit == "") &&
+                (SecondaryValueUnit == "") &&
+                (ThirdValueUnit == ""))
+            {
+                DataTable dt = storage.GetTable(StorageConst.Str_PartType, StorageConst.Str_PartType_id + ",primary_valuename,secondary_valuename,tertiary_valuename");
+
+                if (dt != null)
+                {
+                    foreach (DataRow dr in dt.Rows)
+                    {
+                        var pvu = (dr.ItemArray[1] is string) ? (string)dr.ItemArray[1] : "";
+                        var svu = (dr.ItemArray[2] is string) ? (string)dr.ItemArray[2] : "";
+                        var tvu = (dr.ItemArray[3] is string) ? (string)dr.ItemArray[3] : "";
+
+                        pvu = StringHelpers.Between(pvu, "[", "]");
+                        svu = StringHelpers.Between(svu, "[", "]");
+                        tvu = StringHelpers.Between(tvu, "[", "]");
+
+                        if ((pvu != "") && (svu != ""))
+                        {
+                            var pvuo = unusedPartRows.FirstOrDefault(x => (x.Value.EndsWith(pvu)));
+                            var svuo = unusedPartRows.FirstOrDefault(x => (x.Value.EndsWith(svu)));
+
+                            if ((pvuo != null) && (svuo != null))
+                            {
+                                PrimaryValueUnit = pvu;
+                                SecondaryValueUnit = svu;
+
+                                var tvuo = unusedPartRows.FirstOrDefault(x => (x.Value.Contains(tvu)));
+
+                                if (tvuo != null) ThirdValueUnit = tvu;
+
+                                FoundPartType = (int)(Int64)dr.ItemArray[0];
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+
+
+            if (PrimaryValueUnit != "") comboBox6.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Value.EndsWith(PrimaryValueUnit))) ?? nullItem;
+            if (PrimaryValueTolernceUnit != "") comboBox7.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Value.EndsWith(PrimaryValueTolernceUnit))) ?? nullItem;
+            if (SecondaryValueUnit != "") comboBox8.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Value.EndsWith(SecondaryValueUnit))) ?? nullItem;
+            if (ThirdValueUnit != "") comboBox10.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Value.Contains(ThirdValueUnit))) ?? nullItem;
+
 
 
         }

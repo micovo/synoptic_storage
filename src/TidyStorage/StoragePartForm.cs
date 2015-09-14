@@ -136,18 +136,7 @@ namespace TidyStorage
             return false;
         }
 
-        public string Between(string STR, string FirstString, string LastString)
-        {
-            string FinalString = "";
-            int Pos1 = STR.IndexOf(FirstString) + FirstString.Length;
-            int Pos2 = STR.IndexOf(LastString);
-            if ((Pos1 > 0) && (Pos2 > 0))
-            {
-                FinalString = STR.Substring(Pos1, Pos2 - Pos1);
-            }
-
-            return FinalString;
-        }
+        
 
         /// <summary>
         /// 
@@ -158,17 +147,20 @@ namespace TidyStorage
         {         
             if (PrepareSupplier())
             {
-                StoragePartImporter spi = new StoragePartImporter(supplier);
+                StoragePartImporter spi = new StoragePartImporter(storage, supplier);
 
-                int i = ProcessTypeComboBox(comboBoxPartType);
+                int SelectedPartType = ProcessTypeComboBox(comboBoxPartType);
 
-                string[] s = new string[3];
+                if (SelectedPartType > -1)
+                {
+                    string[] s = new string[3];
 
-                s = storage.GetPartTypeStrings(i);
+                    s = storage.GetPartTypeStrings(SelectedPartType);
 
-                spi.PrimaryValueUnit = Between(s[0], "[", "]");
-                spi.SecondaryValueUnit = Between(s[1], "[", "]");
-                spi.ThirdValueUnit = Between(s[2], "[", "]");
+                    spi.PrimaryValueUnit = StringHelpers.Between(s[0], "[", "]");
+                    spi.SecondaryValueUnit = StringHelpers.Between(s[1], "[", "]");
+                    spi.ThirdValueUnit = StringHelpers.Between(s[2], "[", "]");
+                }
 
 
                 if (spi.ShowDialog() == DialogResult.OK)
@@ -177,14 +169,81 @@ namespace TidyStorage
                     string manuf = "";
                     string pack = "";
 
-                    v = ((PartRow)spi.comboBox1.SelectedItem).Value;
-                    if (v != "") textBoxProductName.Text = v;
-
                     v = ((PartRow)spi.comboBox2.SelectedItem).Value;
                     if (v != "") manuf = v;
 
+
+                    string cond = StringHelpers.LikeCondition(StorageConst.Str_Manufacturer_name, manuf.Split(' '), "OR");
+
+                    DataTable dt = storage.GetTable(StorageConst.Str_Manufacturer, "*",  cond);
+
+                    if ((dt != null) && (dt.Rows.Count > 0))
+                    {
+                        var manuf_id = (int)(Int64)dt.Rows[0].ItemArray[0];
+
+                        SelectNamedIndexComboBox(comboBoxManufacturer, manuf_id);
+                    }
+                    else
+                    {
+                        DialogResult dr = MessageBox.Show("Manufacturer \"" + manuf + "\" was not found in database." + System.Environment.NewLine + "Do you want to add new manufacturer?", "New manufacturer", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                        if (dr == DialogResult.Yes)
+                        {
+                            var new_id = storage.InsertNewRow(StorageConst.Str_Manufacturer, StorageConst.Str_Manufacturer_name, manuf);
+
+                            if (new_id > -1)
+                            {
+                                RefreshComboBoxes();
+                                SelectNamedIndexComboBox(comboBoxManufacturer, new_id);
+                            }
+                        }
+                    }
+
+
+
+
+
                     v = ((PartRow)spi.comboBox3.SelectedItem).Value;
                     if (v != "") pack = v;
+
+                    //Remove extra package information
+                    int epi = pack.IndexOfAny(("({[").ToCharArray());
+                    if (epi > 0) pack = pack.Substring(0, epi).Trim();
+
+                    cond = StringHelpers.LikeCondition(StorageConst.Str_Package_name, pack.Split(' '), "OR");
+
+                    dt = storage.GetTable(StorageConst.Str_Package, "*", cond);
+
+                    if ((dt != null) && (dt.Rows.Count > 0))
+                    {
+                        var package_id = (int)(Int64)dt.Rows[0].ItemArray[0];
+
+                        SelectNamedIndexComboBox(comboBoxPackage, package_id);
+                    }
+                    else
+                    {
+                        DialogResult dr = MessageBox.Show("Package \"" + pack + "\" was not found in database." + System.Environment.NewLine + "Do you want to add new package?", "New package", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                        if (dr == DialogResult.Yes)
+                        {
+                            var new_id = storage.InsertNewRow(StorageConst.Str_Package, StorageConst.Str_Package_name, pack);
+
+                            if (new_id > -1)
+                            {
+                                RefreshComboBoxes();
+                                SelectNamedIndexComboBox(comboBoxPackage, new_id);
+                            }
+                        }
+                    }
+
+
+
+
+
+
+
+                    v = ((PartRow)spi.comboBox1.SelectedItem).Value;
+                    if (v != "") textBoxProductName.Text = v;
+
+                   
 
                     v = ((PartRow)spi.comboBox4.SelectedItem).Value;
                     if (v != "") textBoxDatasheet.Text = v;
@@ -218,15 +277,46 @@ namespace TidyStorage
 
 
 
-                    SupplierPart sp = spi.supplierPart;
-                    textBoxCurrency.Text = "CZK";
-                    textBoxPrice1pcs.Text = sp.prices[0].price.ToString();
-                    textBoxPrice10pcs.Text = sp.prices[1].price.ToString();
-                    textBoxPrice100pcs.Text = sp.prices[2].price.ToString();
-                    textBoxPrice1000pcs.Text = sp.prices[3].price.ToString();
+                    UpdatePrices(spi.supplierPart);
+                    
+
+                    if (SelectedPartType < 0)
+                    {
+                        SelectNamedIndexComboBox(comboBoxPartType, spi.FoundPartType);
+                    }
                 }
             }
         }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sp"></param>
+        void UpdatePrices(SupplierPart sp)
+        {
+            textBoxCurrency.Text = sp.currency;
+
+            textBoxPrice1pcs.Text = "";
+            textBoxPrice10pcs.Text = "";
+            textBoxPrice100pcs.Text = "";
+            textBoxPrice1000pcs.Text = "";
+
+            var priceobj = sp.prices.FirstOrDefault(x => (x.amount_max < 10));
+            textBoxPrice1pcs.Text = (priceobj != null) ? priceobj.price.ToString() : "";
+
+            priceobj = sp.prices.FirstOrDefault(x => (x.amount_min >= 10));
+            textBoxPrice10pcs.Text = (priceobj != null) ? priceobj.price.ToString() : "";
+
+
+            priceobj = sp.prices.FirstOrDefault(x => (x.amount_min >= 100));
+            textBoxPrice100pcs.Text = (priceobj != null) ? priceobj.price.ToString() : "";
+
+
+            priceobj = sp.prices.FirstOrDefault(x => (x.amount_min <= 1000) && (x.amount_max > 1000));
+            textBoxPrice1000pcs.Text = (priceobj != null) ? priceobj.price.ToString() : "";
+        }
+
 
         /// <summary>
         /// 
@@ -235,7 +325,28 @@ namespace TidyStorage
         /// <param name="e"></param>
         private void buttonPriceCheck_Click(object sender, EventArgs e)
         {
-            // Process Price check
+            ((Button)sender).Enabled = false;
+
+            if (PrepareSupplier())
+            {
+                LoadingForm lf = new LoadingForm();
+                lf.Show();
+                lf.Left = this.Left + this.Width/2 - lf.Width/2;
+                lf.Top = this.Top + this.Height / 2 - lf.Height / 2;
+                Application.DoEvents();
+
+                SupplierPart supplierPart = supplier.DownloadPart();
+                UpdatePrices(supplierPart);
+
+                lf.UpdateProgress(100);
+                lf.UpdateLabel("Done");
+                Application.DoEvents();
+           
+                lf.AllowedToClose = true;
+                lf.Close();
+            }
+
+             ((Button)sender).Enabled = true;
         }
 
         /// <summary>
@@ -300,7 +411,6 @@ namespace TidyStorage
                 return;
             }
             
-            spte.StartPosition = FormStartPosition.CenterParent;
             DialogResult ds = spte.ShowDialog();
 
             RefreshComboBoxes();
@@ -331,6 +441,10 @@ namespace TidyStorage
             labelValuePrimary.Text = s[0];
             labelValueSecondary.Text = s[1];
             labelValueThird.Text = s[2];
+
+
+            textBoxThridValue.Enabled = (s[2] != "");
+            textBoxThridTolerance.Enabled = (s[2] != "");
 
         }
 
@@ -654,6 +768,28 @@ namespace TidyStorage
             return i;
         }
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="cb"></param>
+        /// <param name="index"></param>
+        void SelectNamedIndexComboBox(ComboBox cb, int index)
+        {
+            if (index != -1)
+            {
+                for (int x = 0; x < cb.Items.Count; x++)
+                {
+                    var ob = (IndexedName)cb.Items[x];
+
+                    if (ob.id == index)
+                    {
+                        cb.SelectedItem = ob;
+                        break;
+                    }
+                }
+            }
+        }
 
 
 

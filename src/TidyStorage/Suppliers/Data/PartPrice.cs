@@ -13,6 +13,7 @@ namespace TidyStorage.Suppliers.Data
 
         public float price;
 
+
         public PartPrice(int amount_min, int amount_max, float price)
         {
             this.amount_max = amount_max;

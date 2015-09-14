@@ -75,6 +75,7 @@ namespace TidyStorage.Suppliers
 
                                     if (tdp.Contains("Kč"))
                                     {
+                                        p.currency = "CZK";
 
                                         var aaa = tda.Split('-');
                                         var min = int.Parse(aaa[0].Trim().Trim('+'));
@@ -84,6 +85,7 @@ namespace TidyStorage.Suppliers
                                         {
                                             max = int.Parse(aaa[1].Trim());
                                         }
+
 
                                         int ix = tdp.IndexOfAny(("0123456789").ToCharArray());
                                         var price = float.Parse(tdp.Substring(ix, tdp.Length - ix - 3));

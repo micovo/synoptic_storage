@@ -580,8 +580,10 @@ currency
         /// </summary>
         /// <param name="table"></param>
         /// <param name="namecolumn"></param>
-        public void InsertEmptyRow (string table, string namecolumn)
+        public int InsertNewRow (string table, string namecolumn, string name = "###### Enter new #####")
         {
+            int new_id = -1;
+
             using (SQLiteConnection con = new SQLiteConnection(string.Format(StorageConst.sqlite_connection_str, workfile)))
             {
                 string sql = "";
@@ -591,9 +593,21 @@ currency
                     con.Open();
 
 
-                    sql = string.Format("INSERT INTO {0} ({1}) VALUES ('Enter new')", table, namecolumn);
-                    var command = new SQLiteCommand(sql, con);
-                    command.ExecuteNonQuery();
+                    sql = string.Format("INSERT INTO {0} ({1}) VALUES ('" + name + "')", table, namecolumn);
+                    var cmd = new SQLiteCommand(sql, con);
+                    cmd.ExecuteNonQuery();
+
+                    sql = String.Format(@"SELECT last_insert_rowid()");
+                    cmd = new SQLiteCommand(sql, con);
+
+
+                    using (SQLiteDataReader rdr = cmd.ExecuteReader())
+                    {
+                        if (rdr.Read())
+                        {
+                            new_id = (int)rdr.GetInt64(0);
+                        }
+                    }
 
                 }
                 catch (SQLiteException ex)
@@ -605,6 +619,8 @@ currency
             }
 
             GC.Collect();
+
+            return new_id;
         }
 
 

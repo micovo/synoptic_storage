@@ -14,6 +14,8 @@ namespace TidyStorage.Suppliers.Data
         public string name;
         public string order_num;
 
+        public string currency;
+
         public float GetPrice(int amount)
         {
             if ((prices != null) && (prices.Count > 0))

@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dataGridViewType = new System.Windows.Forms.DataGridView();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.buttonOk = new System.Windows.Forms.Button();
@@ -47,8 +47,8 @@
             this.dataGridViewType.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewType.Location = new System.Drawing.Point(12, 12);
             this.dataGridViewType.Name = "dataGridViewType";
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewType.RowsDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewType.RowsDefaultCellStyle = dataGridViewCellStyle1;
             this.dataGridViewType.Size = new System.Drawing.Size(360, 138);
             this.dataGridViewType.TabIndex = 5;
             this.dataGridViewType.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewType_CellValueChanged);
@@ -116,6 +116,7 @@
             this.MaximizeBox = false;
             this.MinimumSize = new System.Drawing.Size(400, 240);
             this.Name = "StoragePartTypeEditor";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Type Editor";
             this.Load += new System.EventHandler(this.StoragePartTypeEditor_Load);
             this.Resize += new System.EventHandler(this.StoragePartTypeEditor_Resize);
