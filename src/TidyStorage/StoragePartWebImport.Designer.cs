@@ -1,6 +1,6 @@
 ﻿namespace TidyStorage
 {
-    partial class StoragePartImporter
+    partial class StoragePartWebImport
     {
         /// <summary>
         /// Required designer variable.
@@ -409,7 +409,7 @@
             this.buttonOk.UseVisualStyleBackColor = true;
             this.buttonOk.Click += new System.EventHandler(this.buttonOk_Click);
             // 
-            // StoragePartImporter
+            // StoragePartWebImport
             // 
             this.AcceptButton = this.buttonOk;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -422,7 +422,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "StoragePartImporter";
+            this.Name = "StoragePartWebImport";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;

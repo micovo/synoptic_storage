@@ -13,7 +13,7 @@ using TidyStorage.Suppliers.Data;
 
 namespace TidyStorage
 {
-    public partial class StoragePartImporter : Form
+    public partial class StoragePartWebImport : Form
     {
         Supplier supplier;
         LoadingForm loadingForm;
@@ -32,7 +32,7 @@ namespace TidyStorage
         public string SecondaryValueUnit = "";
         public string ThirdValueUnit = "";
 
-        public StoragePartImporter(Storage storage, Supplier supplier)
+        public StoragePartWebImport(Storage storage, Supplier supplier)
         {
             this.storage = storage;
             this.supplier = supplier;

@@ -147,7 +147,7 @@ namespace TidyStorage
         {         
             if (PrepareSupplier())
             {
-                StoragePartImporter spi = new StoragePartImporter(storage, supplier);
+                StoragePartWebImport spi = new StoragePartWebImport(storage, supplier);
 
                 int SelectedPartType = ProcessTypeComboBox(comboBoxPartType);
 

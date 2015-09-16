@@ -20,6 +20,9 @@ namespace TidyStorage
         string part_filter = "1";
         string part_filter_fulltext = "";
 
+        string[] TabFilename = new string[3];
+
+
         /// <summary>
         /// 
         /// </summary>
@@ -29,13 +32,42 @@ namespace TidyStorage
         }
 
 
+
         /// <summary>
         /// 
         /// </summary>
-        private void NoStorageError()
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MainForm_Load(object sender, EventArgs e)
         {
-            MessageBox.Show("There is no storage. Please open or create new storage first.", "Storage Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            ExcellTest();
+
+            showConsoleToolStripMenuItem.Checked = false; //Commits ChangeConsoleVisibility(false);
+            RefreshStorageTable();
+
+            Rectangle rec = Screen.FromControl(this).Bounds;
+
+            if ((rec.Width <= 1280) && (rec.Height <= 800))
+            {
+                this.WindowState = FormWindowState.Maximized;
+            }
         }
+
+
+        /// <summary>
+        /// Main form closing processing, files are checked for unsaved changes
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (StorageChangesProcedure() == DialogResult.Cancel)
+            {
+                e.Cancel = true;
+            }
+        }
+
+        
 
 
         /// <summary>
@@ -48,14 +80,18 @@ namespace TidyStorage
                 StoragePartForm spf = new StoragePartForm(currentStorage, null);
                 spf.StartPosition = FormStartPosition.CenterParent;
                 spf.ShowDialog();
-                RefreshStorageTable();
-                RefreshListBox();
             }
             else
             {
-                NoStorageError();
-                RefreshListBox();
+                DialogResult dr = MessageBox.Show("There is no storage. Do tou want to create new Storage?", "Cannot create new Storage part", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                if (dr == DialogResult.Yes)
+                {
+                    CreateNewStorage();
+                }
             }
+
+            RefreshStorageTable();
+            RefreshListBox();
         }
 
 
@@ -70,14 +106,10 @@ namespace TidyStorage
                 StoragePartForm spf = new StoragePartForm(currentStorage, part);
                 spf.StartPosition = FormStartPosition.CenterParent;
                 spf.ShowDialog();
-                RefreshStorageTable();
-                RefreshListBox();
             }
-            else
-            {
-                NoStorageError();
-                RefreshListBox();
-            }
+
+            RefreshStorageTable();
+            RefreshListBox();
         }
 
         /// <summary>
@@ -90,6 +122,10 @@ namespace TidyStorage
             if (tabControl1.SelectedIndex == 0)
             {
                 CreateNewStoragePart();
+            }
+            else if (tabControl1.SelectedIndex == 1)
+            {
+              
             }
         }
         
@@ -181,93 +217,298 @@ namespace TidyStorage
             }
             */
         }
-        
+
+
+        /// <summary>
+        /// Upgrades Main Form text based on the selected tab and openned file
+        /// </summary>
+        private void UpdateMainFormText()
+        {
+            string text = "TidyStorage";
+            int ti = tabControl1.SelectedIndex;
+
+            if ((ti >= 0) && (ti < TabFilename.Length))
+            {
+                var x = TabFilename[ti];
+                if ((x != null) && (x != ""))
+                {
+                    text += " - " + x;
+                }
+            }
+
+            this.Text = text;
+        }
+
+
         /// <summary>
         /// 
         /// </summary>
         public void RefreshStorageTable()
         {
-           
-
-
-            string filter = part_filter;
-
-            if (part_filter_fulltext != "")
+            bool curr = (currentStorage != null);
+            if (curr)
             {
-                filter += " AND ";
-                filter += part_filter_fulltext;
+                
+                string filter = part_filter;
+
+                if (part_filter_fulltext != "")
+                {
+                    filter += " AND ";
+                    filter += part_filter_fulltext;
+                }
+
+                dataGridViewStorage.DataSource = currentStorage.GetPartTable(filter);
+
+                dataGridViewStorage.Columns["id_part"].HeaderText = "ID";
+                dataGridViewStorage.Columns["productnumber"].HeaderText = "Part name";
+                dataGridViewStorage.Columns["productnumber"].DefaultCellStyle.Font = new Font(DataGridView.DefaultFont, FontStyle.Bold);
+
+                dataGridViewStorage.Columns["manufacturername"].HeaderText = "Manufacturer";
+                dataGridViewStorage.Columns["typename"].HeaderText = "Type";
+                dataGridViewStorage.Columns["packagename"].HeaderText = "Package";
+                dataGridViewStorage.Columns["stock"].HeaderText = "Stock";
+                dataGridViewStorage.Columns["stock"].DefaultCellStyle.Font = new Font(DataGridView.DefaultFont, FontStyle.Bold);
+
+                dataGridViewStorage.Columns["placename"].HeaderText = "Storage place";
+
+                dataGridViewStorage.Columns["storage_place_number"].HeaderText = "Storage number";
+                dataGridViewStorage.Columns["storage_place_number"].DefaultCellStyle.Font = new Font(DataGridView.DefaultFont, FontStyle.Bold);
+
+                dataGridViewStorage.Columns["primary_value"].HeaderText = "Primary";
+                dataGridViewStorage.Columns["primary_tolerance"].HeaderText = "Tolerance";
+                dataGridViewStorage.Columns["secondary_value"].HeaderText = "Secondary";
+                //dataGridViewStorage.Columns["secondary_tolerance"].HeaderText = "Tolerance";
+                dataGridViewStorage.Columns["tertiary_value"].HeaderText = "Third";
+                //dataGridViewStorage.Columns["tertiary_tolerance"].HeaderText = "Tolerance";
+                dataGridViewStorage.Columns["temperature_from"].HeaderText = "Temp\r\nMIN";
+                dataGridViewStorage.Columns["temperature_to"].HeaderText = "Temp\r\nMAX";
+                dataGridViewStorage.Columns["suppliername"].HeaderText = "Supplier";
+                dataGridViewStorage.Columns["suppliernumber"].HeaderText = "Supplier number";
+                dataGridViewStorage.Columns["price_1pcs"].HeaderText = "Price per\r\n1";
+                dataGridViewStorage.Columns["price_10pcs"].HeaderText = "Price per\r\n10";
+                dataGridViewStorage.Columns["price_100pcs"].HeaderText = "Price per\r\n100";
+                dataGridViewStorage.Columns["price_1000pcs"].HeaderText = "Part per\r\n1000";
+                dataGridViewStorage.Columns["currency"].HeaderText = "";
+
+                TabFilename[0] = Path.GetFileNameWithoutExtension(currentStorage.Filename);
+            }
+            else
+            {
+                dataGridViewStorage.DataSource = null;
+                textBoxStorageFulltext.Text = "";
+                TabFilename[0] = "";
             }
 
-            dataGridViewStorage.DataSource = currentStorage.GetPartTable(filter);
 
-            dataGridViewStorage.Columns["id_part"].HeaderText = "ID";
-            dataGridViewStorage.Columns["productnumber"].HeaderText = "Part name";
-            dataGridViewStorage.Columns["productnumber"].DefaultCellStyle.Font = new Font(DataGridView.DefaultFont, FontStyle.Bold);
 
-            dataGridViewStorage.Columns["manufacturername"].HeaderText = "Manufacturer";
-            dataGridViewStorage.Columns["typename"].HeaderText = "Type";
-            dataGridViewStorage.Columns["packagename"].HeaderText = "Package";
-            dataGridViewStorage.Columns["stock"].HeaderText = "Stock";
-            dataGridViewStorage.Columns["stock"].DefaultCellStyle.Font = new Font(DataGridView.DefaultFont, FontStyle.Bold);
+            saveToolStripButton.Enabled = curr;
+            saveToolStripMenuItem.Enabled = curr;
+            saveAsToolStripMenuItem.Enabled = curr;
+            closeToolStripMenuItem.Enabled = curr;
 
-            dataGridViewStorage.Columns["placename"].HeaderText = "Storage place";
-
-            dataGridViewStorage.Columns["storage_place_number"].HeaderText = "Storage number";
-            dataGridViewStorage.Columns["storage_place_number"].DefaultCellStyle.Font = new Font(DataGridView.DefaultFont, FontStyle.Bold);
-
-            dataGridViewStorage.Columns["primary_value"].HeaderText = "Primary";
-            dataGridViewStorage.Columns["primary_tolerance"].HeaderText = "Tolerance";
-            dataGridViewStorage.Columns["secondary_value"].HeaderText = "Secondary";
-            //dataGridViewStorage.Columns["secondary_tolerance"].HeaderText = "Tolerance";
-            dataGridViewStorage.Columns["tertiary_value"].HeaderText = "Third";
-            //dataGridViewStorage.Columns["tertiary_tolerance"].HeaderText = "Tolerance";
-            dataGridViewStorage.Columns["temperature_from"].HeaderText = "Temp\r\nMIN";
-            dataGridViewStorage.Columns["temperature_to"].HeaderText = "Temp\r\nMAX";
-            dataGridViewStorage.Columns["suppliername"].HeaderText = "Supplier";
-            dataGridViewStorage.Columns["suppliernumber"].HeaderText = "Supplier number";
-            dataGridViewStorage.Columns["price_1pcs"].HeaderText = "Price per\r\n1";
-            dataGridViewStorage.Columns["price_10pcs"].HeaderText = "Price per\r\n10";
-            dataGridViewStorage.Columns["price_100pcs"].HeaderText = "Price per\r\n100";
-            dataGridViewStorage.Columns["price_1000pcs"].HeaderText = "Part per\r\n1000";
-            dataGridViewStorage.Columns["currency"].HeaderText = "";
+            UpdateMainFormText();
         }
 
 
 
         /// <summary>
-        /// 
+        /// Refreshes storage filter listboxes
         /// </summary>
         public void RefreshListBox()
         {
-            listBoxFilterType.DataSource = currentStorage.GetStringIdArray(StorageTypeTables.PartType);
-            listBoxFilterPackage.DataSource = currentStorage.GetStringIdArray(StorageTypeTables.Package);
+            if (currentStorage != null)
+            {
+                listBoxFilterType.DataSource = currentStorage.GetStringIdArray(StorageTypeTables.PartType);
+                listBoxFilterPackage.DataSource = currentStorage.GetStringIdArray(StorageTypeTables.Package);
 
-            listBoxFilterType.ClearSelected();
-            listBoxFilterPackage.ClearSelected();
+                listBoxFilterType.ClearSelected();
+                listBoxFilterPackage.ClearSelected();
+            }
+            else
+            {
+                listBoxFilterType.DataSource = null;
+                listBoxFilterPackage.DataSource = null;
+            }
+
+        }
+
+
+        /// <summary>
+        /// Storage close procedure. Storage is checked for changes before close.
+        /// </summary>
+        private void CloseStorage()
+        {
+            if (StorageChangesProcedure() == DialogResult.Cancel)
+            {
+                return;
+            }
+
+            currentStorage = null;
+            RefreshStorageTable();
+            RefreshListBox();
+        }
+
+
+        /// <summary>
+        /// Storage "Save as" procedure. Procedure shwos and process "Save As" dialog.
+        /// </summary>
+        private void StorageSaveAs()
+        {
+            if (currentStorage != null)
+            {
+                SaveFileDialog sfd = new SaveFileDialog();
+
+                sfd.Filter = "TidyStorage Database File|*.sqlite";
+                sfd.SupportMultiDottedExtensions = true;
+                sfd.CheckPathExists = true;
+                sfd.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
+
+                DialogResult sfd_dr = sfd.ShowDialog();
+
+                if (sfd_dr == DialogResult.OK)
+                {
+                    string filename = sfd.FileName;
+                    if (Path.GetExtension(filename) != ".sqlite")
+                    {
+                        filename += ".sqlite";
+                    }
+
+
+                    currentStorage.Save(filename);
+                    currentStorage = new Storage(filename);
+                }
+            }
+
+            RefreshStorageTable();
+            RefreshListBox();
         }
 
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void MainForm_Load(object sender, EventArgs e)
+        private void CreateNewStorage()
         {
-            ExcellTest();
-
-            currentStorage = new Storage("test5.sqlite");
-            RefreshStorageTable();
-            RefreshListBox();
-
-            Rectangle rec = Screen.FromControl(this).Bounds;
-
-            if ((rec.Width <= 1280) && (rec.Height <= 800))
+            if (StorageChangesProcedure() == DialogResult.Cancel)
             {
-                this.WindowState = FormWindowState.Maximized;
+                return;
+            }
+            
+            SaveFileDialog sfd = new SaveFileDialog();
+
+            sfd.Filter = "TidyStorage Database File|*.sqlite";
+            sfd.SupportMultiDottedExtensions = true;
+            sfd.CheckPathExists = true;
+            sfd.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
+
+            DialogResult sfd_dr = sfd.ShowDialog();
+
+            if (sfd_dr == DialogResult.OK)
+            {
+                string filename = sfd.FileName;
+                if (Path.GetExtension(filename) != ".sqlite")
+                {
+                    filename += ".sqlite";
+                }
+
+                currentStorage = new Storage(filename);
+                RefreshStorageTable();
+                RefreshListBox();
+            }
+        }
+        
+
+
+
+        /// <summary>
+        /// Checks current storage for changes, Shows and process save storage dialog
+        /// </summary>
+        /// <returns>Save file dialog result</returns>
+        private DialogResult StorageChangesProcedure()
+        {
+            DialogResult dr = DialogResult.No;
+
+            if (currentStorage != null)
+            {
+                if (currentStorage.ChangeCommited)
+                {
+                    dr = MessageBox.Show("Changes in the storage was not saved. Do You want to save changes?", "Save storage", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+
+                    if (dr == DialogResult.Yes)
+                    {
+                        currentStorage.Save();
+                    }
+                }
+            }
+
+            return dr;
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void OpenStorageFileRequest()
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+
+            ofd.Multiselect = false;
+            ofd.Filter = "TidyStorage Database File|*.sqlite";
+            ofd.SupportMultiDottedExtensions = true;
+            ofd.CheckPathExists = true;
+            ofd.CheckFileExists = true;
+            ofd.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
+
+            DialogResult ofd_dr = ofd.ShowDialog();
+
+            if (ofd_dr == DialogResult.OK)
+            {
+                if (StorageChangesProcedure() == DialogResult.Cancel)
+                {
+                    return;
+                }
+
+                OpenStorageFile(ofd.FileName);
+            }
+        }
+
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="fileName"></param>
+        private void OpenStorageFile(string fileName)
+        {
+            if (File.Exists(fileName))
+            {
+                currentStorage = new Storage(fileName);
+                RefreshStorageTable();
+                RefreshListBox();
+            }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="visible"></param>
+        private void ChangeConsoleVisibility(bool visible)
+        {
+            if (visible)
+            {
+                groupBoxConsole.Visible = true;
+                dataGridViewStorage.Height -= groupBoxConsole.Height + 12;
+            }
+            else
+            {
+                groupBoxConsole.Visible = false;
+                dataGridViewStorage.Height += groupBoxConsole.Height + 12;
             }
 
         }
+
+
 
         /// <summary>
         /// 
@@ -311,7 +552,10 @@ namespace TidyStorage
         /// <param name="e"></param>
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            currentStorage.Save();
+            if (currentStorage != null)
+            {
+                currentStorage.Save();
+            }
         }
 
         /// <summary>
@@ -321,7 +565,13 @@ namespace TidyStorage
         /// <param name="e"></param>
         private void saveToolStripButton_Click(object sender, EventArgs e)
         {
-            currentStorage.Save();
+            if (tabControl1.SelectedIndex == 0)
+            {
+                if (currentStorage != null)
+                {
+                    currentStorage.Save();
+                }
+            }
         }
         
 
@@ -505,5 +755,76 @@ namespace TidyStorage
         {
             this.Close();
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void storagePartsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+
+
+
+
+
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void storageToolStripMenuItem3_Click(object sender, EventArgs e)
+        {
+            OpenStorageFileRequest();
+        }
+
+
+
+
+
+        private void openToolStripButton_Click(object sender, EventArgs e)
+        {
+            if (tabControl1.SelectedIndex == 0)
+            {
+                OpenStorageFileRequest();
+            }
+        }
+
+
+
+
+
+        private void storageToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            CreateNewStorage();
+        }
+
+        private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            StorageSaveAs();
+        }
+
+
+        private void showConsoleToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
+        {
+            ChangeConsoleVisibility(showConsoleToolStripMenuItem.Checked);
+        }
+
+        private void closeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CloseStorage();
+        }
+
+        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UpdateMainFormText();
+        }
+
+        
     }
 }

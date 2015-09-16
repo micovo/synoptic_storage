@@ -232,6 +232,9 @@ namespace TidyStorage
             {
                 storage.InsertNewRow(table_name, column_name_name);
                 LoadTable();
+
+                //Scroll to bottom
+                dataGridViewType.FirstDisplayedScrollingRowIndex = dataGridViewType.RowCount - 1;
             }
         }
 

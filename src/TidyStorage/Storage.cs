@@ -31,8 +31,27 @@ namespace TidyStorage
 
     public class Storage
     {
-        private string filename;
         private string workfile;
+
+        private string filename;
+        public string Filename
+        {
+            get
+            {
+                return filename;
+            }
+        }
+
+
+
+        bool changeCommited;
+        public bool ChangeCommited
+        {
+            get
+            {
+                 return changeCommited;
+            }
+        }
         
 
 
@@ -49,8 +68,11 @@ namespace TidyStorage
         {
             if (target_filename == "")
             {
-                File.Copy(this.workfile, this.filename, true);
+                target_filename = this.filename;
             }
+
+            File.Copy(this.workfile, target_filename, true);
+            changeCommited = false;
         }
 
 
@@ -75,6 +97,7 @@ namespace TidyStorage
         public Storage(string filename)
         {
             this.filename = filename;
+            this.changeCommited = false;
 
             workfile = filename + ".tmp";
 
@@ -89,6 +112,7 @@ namespace TidyStorage
             if (File.Exists(filename) == false)
             {
                 //If database file do not exist
+                changeCommited = true;
 
                 //Create new database file
                 SQLiteConnection.CreateFile(workfile);
@@ -319,6 +343,7 @@ currency
             DataTable tab = null;
 
             int new_id = -1;
+            
 
             try
             {
@@ -330,6 +355,7 @@ currency
                     var cmd = new SQLiteCommand(sql, con);
 
                     cmd.ExecuteNonQuery();
+                    changeCommited = true;
 
                     sql = String.Format(@"SELECT last_insert_rowid()");
                     cmd = new SQLiteCommand(sql, con);
@@ -367,6 +393,7 @@ currency
         {
             DataTable tab = null;
             string sql = "";
+            changeCommited = true;
 
             using (SQLiteConnection con = new SQLiteConnection(string.Format(StorageConst.sqlite_connection_str, workfile)))
             {
@@ -378,6 +405,7 @@ currency
                     var cmd = new SQLiteCommand(sql, con);
 
                     cmd.ExecuteNonQuery();
+                    changeCommited = true;
                 }
                 catch (SQLiteException ex)
                 {
@@ -551,9 +579,11 @@ currency
 
                             update_query = update_query.Trim(',');
 
+
                             sql = string.Format("UPDATE {0} SET {1} WHERE {2} = {3}", table, update_query, id_column_name, id);
                             var command = new SQLiteCommand(sql, con);
                             command.ExecuteNonQuery();
+                            changeCommited = true;
                         }
                     }
                     catch (SQLiteException ex)
@@ -596,6 +626,7 @@ currency
                     sql = string.Format("INSERT INTO {0} ({1}) VALUES ('" + name + "')", table, namecolumn);
                     var cmd = new SQLiteCommand(sql, con);
                     cmd.ExecuteNonQuery();
+                    changeCommited = true;
 
                     sql = String.Format(@"SELECT last_insert_rowid()");
                     cmd = new SQLiteCommand(sql, con);
@@ -643,6 +674,7 @@ currency
                     sql = string.Format("DELETE FROM {0} WHERE ({1} = {2})", table, id_column, id);
                     var command = new SQLiteCommand(sql, con);
                     command.ExecuteNonQuery();
+                    changeCommited = true;
 
                 }
                 catch (SQLiteException ex)
