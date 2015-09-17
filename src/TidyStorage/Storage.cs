@@ -188,10 +188,10 @@ namespace TidyStorage
         }
 
 
-        
 
 
- 
+
+
 
 
         /// <summary>
@@ -201,7 +201,7 @@ namespace TidyStorage
         /// <param name="columns"></param>
         /// <param name="where_condition"></param>
         /// <returns></returns>
-        public DataTable GetTable(string table, string columns = "*", string where_condition = "1")
+        public DataTable GetTable(string table, string columns = "*", string where_condition = "1", string order_by = "")
         {
             DataTable tab = null;
 
@@ -211,7 +211,12 @@ namespace TidyStorage
                 {
                     con.Open();
 
-                    var sql = String.Format(@"SELECT {0} FROM {1} WHERE {2}", columns, table, where_condition);
+                    var sql = String.Format(@"SELECT {0} FROM {1} WHERE {2} {3} {4}", 
+                        columns, 
+                        table, 
+                        where_condition, 
+                        (order_by != "") ? "ORDER BY" : "",
+                        order_by);
                     var cmd = new SQLiteCommand(sql, con);
 
 
@@ -433,32 +438,38 @@ currency
         {
             string table = "";
             string columns = "";
+            string namecolumn = "";
 
             switch (t)
             {
                 case StorageTypeTables.Manufacturer:
                     table = StorageConst.Str_Manufacturer;
                     columns = StorageConst.Str_Manufacturer_id + "," + StorageConst.Str_Manufacturer_name;
+                    namecolumn = StorageConst.Str_Manufacturer_name;
                     break;
                 case StorageTypeTables.PartType:
                     table = StorageConst.Str_PartType;
                     columns = StorageConst.Str_PartType_id + "," + StorageConst.Str_PartType_name;
+                    namecolumn = StorageConst.Str_PartType_name;
                     break;
                 case StorageTypeTables.Package:
                     table = StorageConst.Str_Package;
                     columns = StorageConst.Str_Package_id + "," + StorageConst.Str_Package_name;
+                    namecolumn = StorageConst.Str_Package_name;
                     break;
                 case StorageTypeTables.PlaceType:
                     table = StorageConst.Str_PlaceType;
                     columns = StorageConst.Str_PlaceType_id + "," + StorageConst.Str_PlaceType_name;
+                    namecolumn = StorageConst.Str_PlaceType_name;
                     break;
                 case StorageTypeTables.Supplier:
                     table = StorageConst.Str_Supplier;
                     columns = StorageConst.Str_Supplier_id + "," + StorageConst.Str_Supplier_name;
+                    namecolumn = StorageConst.Str_Supplier_name;
                     break;
             }
 
-            DataTable dt = GetTable(table, columns);
+            DataTable dt = GetTable(table, columns, "1", namecolumn);
             List<IndexedName> lst = new List<IndexedName>();
 
             foreach (DataRow dr in dt.Rows)

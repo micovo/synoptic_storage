@@ -8,7 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SQLite;
-using OfficeOpenXml;
 using System.IO;
 
 namespace TidyStorage
@@ -21,6 +20,12 @@ namespace TidyStorage
         string part_filter_fulltext = "";
 
         string[] TabFilename = new string[3];
+
+
+        const string GitHubLink = @"https://github.com/micovo/tidy_storage";
+        const string HomepageLink = @"http://tidystorage.micovo.cz/";
+
+        ExcelImporter excelImporter;
 
 
         /// <summary>
@@ -40,8 +45,6 @@ namespace TidyStorage
         /// <param name="e"></param>
         private void MainForm_Load(object sender, EventArgs e)
         {
-            ExcellTest();
-
             showConsoleToolStripMenuItem.Checked = false; //Commits ChangeConsoleVisibility(false);
             RefreshStorageTable();
 
@@ -77,7 +80,7 @@ namespace TidyStorage
         {
             if (currentStorage != null)
             {
-                StoragePartForm spf = new StoragePartForm(currentStorage, null);
+                StorageForm spf = new StorageForm(currentStorage, null);
                 spf.StartPosition = FormStartPosition.CenterParent;
                 spf.ShowDialog();
             }
@@ -103,7 +106,7 @@ namespace TidyStorage
         {
             if (currentStorage != null)
             {
-                StoragePartForm spf = new StoragePartForm(currentStorage, part);
+                StorageForm spf = new StorageForm(currentStorage, part);
                 spf.StartPosition = FormStartPosition.CenterParent;
                 spf.ShowDialog();
             }
@@ -131,92 +134,6 @@ namespace TidyStorage
         
 
 
-        /// <summary>
-        /// Excel file import/export debugging
-        /// </summary>
-        public void ExcellTest()
-        {
-            return;
-
-            FileInfo newFile = new FileInfo("sample6.xlsx");
-
-            ExcelPackage pck = new ExcelPackage(newFile);
-            //Add the Content sheet
-
-
-            var ws = pck.Workbook.Worksheets["Content"];
-
-            ws.View.ShowGridLines = true;
-
-            //textBoxConsole.Text += ws.Cells["B1"].Value;
-
-            ws.Cells["C2"].Formula = "SUM(B1:B5)";
-            ws.Cells["B1"].Value = 6;
-            ws.Cells["B2"].Value = 2;
-            ws.Cells["B3"].Value = 3;
-            ws.Cells["B4"].Value = 4;
-            ws.Cells["B5"].Value = 5;
-            
-            pck.Save();
-
-            /*
-            ExcelWorkbook exw = OfficeOpenXml.ExcelWorksheets()
-            Microsoft.Office.Interop.Excel.Application excelApp = null;
-            Workbooks workBooks = null;
-            Workbook workBook = null;
-            Worksheet workSheet;
-
-            try
-            {
-
-                excelApp = new Microsoft.Office.Interop.Excel.Application();
-                excelApp.DisplayAlerts = false;
-
-                workBooks = excelApp.Workbooks;
-                workBook = workBooks.Open(@"D:\Visual Studio\TidyStorage\src\TidyStorage\bin\Debug\test.xlsx", AddToMru: false);
-                workSheet = workBook.Worksheets.get_Item(1);
-
-                int nOfColumns = workSheet.UsedRange.Columns.Count;
-                int lastRowNumber = workSheet.UsedRange.Rows.Count;
-
-                Range rng = workSheet.Range["C1"];
-                rng.Formula = "=SUM(B2:B4)";
-                String formula = rng.Formula; //retrieve the formula successfully
-
-
-                rng.FormulaHidden = false;
-                workSheet.Unprotect();
-
-                workBook.SaveAs(@"D:\Visual Studio\TidyStorage\src\TidyStorage\bin\Debug\test.xlsx", AccessMode: XlSaveAsAccessMode.xlExclusive);
-
-                formula = rng.Formula;  //retrieve the formula successfully
-                bool hidden = rng.FormulaHidden;
-
-            }
-            catch (Exception e)
-            {
-                throw;
-            }
-            finally
-            {
-                if (workBook != null)
-                {
-                    workBook.Close();
-                    workBook = null;
-                }
-                if (workBooks != null)
-                {
-                    workBooks.Close();
-                    workBooks = null;
-                }
-                if (excelApp != null)
-                {
-                    excelApp.Quit();
-                    excelApp = null;
-                }
-            }
-            */
-        }
 
 
         /// <summary>
@@ -305,6 +222,8 @@ namespace TidyStorage
             saveToolStripMenuItem.Enabled = curr;
             saveAsToolStripMenuItem.Enabled = curr;
             closeToolStripMenuItem.Enabled = curr;
+            storageToolStripMenuItem.Enabled = curr;
+            storagePartsToolStripMenuItem.Enabled = curr;
 
             UpdateMainFormText();
         }
@@ -707,8 +626,11 @@ namespace TidyStorage
         /// <param name="e"></param>
         private void editManufacturersToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            StoragePartTypeEditor spte = new StoragePartTypeEditor(currentStorage, StorageTypeTables.Manufacturer);
-            spte.ShowDialog();
+            if (currentStorage != null)
+            {
+                StorageTypeEditor spte = new StorageTypeEditor(currentStorage, StorageTypeTables.Manufacturer);
+                spte.ShowDialog();
+            }
         }
         
         /// <summary>
@@ -718,9 +640,12 @@ namespace TidyStorage
         /// <param name="e"></param>
         private void editPartTypesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            StoragePartTypeEditor spte = new StoragePartTypeEditor(currentStorage, StorageTypeTables.PartType);
-            spte.ShowDialog();
-            RefreshListBox();
+            if (currentStorage != null)
+            {
+                StorageTypeEditor spte = new StorageTypeEditor(currentStorage, StorageTypeTables.PartType);
+                spte.ShowDialog();
+                RefreshListBox();
+            }
         }
 
         /// <summary>
@@ -730,9 +655,12 @@ namespace TidyStorage
         /// <param name="e"></param>
         private void editPackagesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            StoragePartTypeEditor spte = new StoragePartTypeEditor(currentStorage, StorageTypeTables.Package);
-            spte.ShowDialog();
-            RefreshListBox();
+            if (currentStorage != null)
+            {
+                StorageTypeEditor spte = new StorageTypeEditor(currentStorage, StorageTypeTables.Package);
+                spte.ShowDialog();
+                RefreshListBox();
+            }
         }
 
         /// <summary>
@@ -742,8 +670,11 @@ namespace TidyStorage
         /// <param name="e"></param>
         private void editPlaceTypesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            StoragePartTypeEditor spte = new StoragePartTypeEditor(currentStorage, StorageTypeTables.PlaceType);
-            spte.ShowDialog();
+            if (currentStorage != null)
+            {
+                StorageTypeEditor spte = new StorageTypeEditor(currentStorage, StorageTypeTables.PlaceType);
+                spte.ShowDialog();
+            }
         }
 
         /// <summary>
@@ -763,14 +694,13 @@ namespace TidyStorage
         /// <param name="e"></param>
         private void storagePartsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            if (currentStorage != null)
+            {
+                excelImporter = new ExcelImporter(currentStorage);
+                excelImporter.Start();
+            }
         }
-
-
-
-
-
-
+        
 
 
         /// <summary>
@@ -825,6 +755,14 @@ namespace TidyStorage
             UpdateMainFormText();
         }
 
-        
+        private void tidyStorageGitHubToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start(GitHubLink);
+        }
+
+        private void tidyStorageWebsiteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start(HomepageLink); 
+        }
     }
 }

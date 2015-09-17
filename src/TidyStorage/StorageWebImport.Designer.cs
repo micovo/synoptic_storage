@@ -1,6 +1,6 @@
 ﻿namespace TidyStorage
 {
-    partial class StoragePartWebImport
+    partial class StorageWebImport
     {
         /// <summary>
         /// Required designer variable.

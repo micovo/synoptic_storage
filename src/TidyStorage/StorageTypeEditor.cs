@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace TidyStorage
 {
-    public partial class StoragePartTypeEditor : Form
+    public partial class StorageTypeEditor : Form
     {
         StorageTypeTables tabletype;
         Storage storage;
@@ -31,7 +31,7 @@ namespace TidyStorage
         /// Constructor
         /// </summary>
         /// <param name="tabletype">Table type to be edited</param>
-        public StoragePartTypeEditor(Storage storage, StorageTypeTables tabletype)
+        public StorageTypeEditor(Storage storage, StorageTypeTables tabletype)
         {
             InitializeComponent();
             this.tabletype = tabletype;
@@ -81,53 +81,59 @@ namespace TidyStorage
         /// </summary>
         void LoadTable()
         {
-
-            dataGridViewType.DataSource = storage.GetTable(table_name);
-
-            if (dataGridViewType.Columns.Count > 0)
+            if (storage != null)
             {
-                dataGridViewType.Columns[0].Width = IdColumnWidth;
-                dataGridViewType.Columns[0].HeaderText = "ID";
-                dataGridViewType.Columns[0].ReadOnly = true;
-                dataGridViewType.Columns[0].Visible = false;
+                dataGridViewType.DataSource = storage.GetTable(table_name, "*", "1", column_name_name);
 
-                switch (tabletype)
+                if (dataGridViewType.Columns.Count > 0)
                 {
-                    case StorageTypeTables.Manufacturer:
-                        dataGridViewType.Columns[1].HeaderText = "Manufacturer name";
-                        break;
+                    dataGridViewType.Columns[0].Width = IdColumnWidth;
+                    dataGridViewType.Columns[0].HeaderText = "ID";
+                    dataGridViewType.Columns[0].ReadOnly = true;
+                    dataGridViewType.Columns[0].Visible = false;
 
-                    case StorageTypeTables.PartType:
-                        dataGridViewType.Columns[1].HeaderText = "Part type name";
-                        dataGridViewType.Columns[2].HeaderText = "Primary value";
-                        dataGridViewType.Columns[3].HeaderText = "Secondary value";
-                        dataGridViewType.Columns[4].HeaderText = "Third value";
-                        break;
+                    switch (tabletype)
+                    {
+                        case StorageTypeTables.Manufacturer:
+                            dataGridViewType.Columns[1].HeaderText = "Manufacturer name";
+                            break;
 
-                    case StorageTypeTables.Package:
-                        dataGridViewType.Columns[1].HeaderText = "Package name";
-                        break;
+                        case StorageTypeTables.PartType:
+                            dataGridViewType.Columns[1].HeaderText = "Part type name";
+                            dataGridViewType.Columns[2].HeaderText = "Primary value";
+                            dataGridViewType.Columns[3].HeaderText = "Secondary value";
+                            dataGridViewType.Columns[4].HeaderText = "Third value";
+                            break;
 
-                    case StorageTypeTables.PlaceType:
-                        dataGridViewType.Columns[1].HeaderText = "Supplier name";
-                        break;
+                        case StorageTypeTables.Package:
+                            dataGridViewType.Columns[1].HeaderText = "Package name";
+                            break;
 
-                    case StorageTypeTables.Supplier:
-                        dataGridViewType.Columns[1].HeaderText = "Supplier name";
-                        dataGridViewType.Columns["read_only"].Visible = false;
-                        dataGridViewType.Columns["read_only"].ReadOnly = true;
-                        break;
-                    default:
-                        break;
+                        case StorageTypeTables.PlaceType:
+                            dataGridViewType.Columns[1].HeaderText = "Supplier name";
+                            break;
+
+                        case StorageTypeTables.Supplier:
+                            dataGridViewType.Columns[1].HeaderText = "Supplier name";
+                            dataGridViewType.Columns["read_only"].Visible = false;
+                            dataGridViewType.Columns["read_only"].ReadOnly = true;
+                            break;
+                        default:
+                            break;
+                    }
                 }
+
+
+
+
+                ContentChanged = false;
+
+                buttonApply.Enabled = false;
             }
-
-            
-
-
-            ContentChanged = false;
-
-            buttonApply.Enabled = false;
+            else
+            {
+                throw new Exception("No storage available");
+            }
         }
 
 

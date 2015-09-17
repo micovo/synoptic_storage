@@ -13,7 +13,7 @@ using TidyStorage.Suppliers.Data;
 
 namespace TidyStorage
 {
-    public partial class StoragePartForm : Form
+    public partial class StorageForm : Form
     {
         StoragePart part;
         Storage storage;
@@ -26,7 +26,7 @@ namespace TidyStorage
         Supplier supplier;
 
 
-        public StoragePartForm(Storage storage, StoragePart part)
+        public StorageForm(Storage storage, StoragePart part)
         {
             InitializeComponent();
 
@@ -147,7 +147,7 @@ namespace TidyStorage
         {         
             if (PrepareSupplier())
             {
-                StoragePartWebImport spi = new StoragePartWebImport(storage, supplier);
+                StorageWebImport spi = new StorageWebImport(storage, supplier);
 
                 int SelectedPartType = ProcessTypeComboBox(comboBoxPartType);
 
@@ -384,27 +384,27 @@ namespace TidyStorage
         /// <param name="e"></param>
         private void buttonEdit_Click(object sender, EventArgs e)
         {
-            StoragePartTypeEditor spte;
+            StorageTypeEditor spte;
 
             if (sender == buttonEditManuf)
             {
-                spte = new StoragePartTypeEditor(storage, StorageTypeTables.Manufacturer);
+                spte = new StorageTypeEditor(storage, StorageTypeTables.Manufacturer);
             }
             else if (sender == buttonEditPackage)
             {
-                spte = new StoragePartTypeEditor(storage, StorageTypeTables.Package);
+                spte = new StorageTypeEditor(storage, StorageTypeTables.Package);
             }
             else if (sender == buttonEditPlaceType)
             {
-                spte = new StoragePartTypeEditor(storage, StorageTypeTables.PlaceType);
+                spte = new StorageTypeEditor(storage, StorageTypeTables.PlaceType);
             }
             else if (sender == buttonEditType)
             {
-                spte = new StoragePartTypeEditor(storage, StorageTypeTables.PartType);
+                spte = new StorageTypeEditor(storage, StorageTypeTables.PartType);
             }
             else if (sender == buttonEditSuplier)
             {
-                spte = new StoragePartTypeEditor(storage, StorageTypeTables.Supplier);
+                spte = new StorageTypeEditor(storage, StorageTypeTables.Supplier);
             }
             else
             {

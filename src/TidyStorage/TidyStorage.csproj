@@ -103,6 +103,7 @@
     <Compile Include="Device.cs" />
     <Compile Include="DeviceAssembly.cs" />
     <Compile Include="DevicePart.cs" />
+    <Compile Include="ExcelImporter.cs" />
     <Compile Include="LoadingForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -119,24 +120,30 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Storage.cs" />
     <Compile Include="StorageConst.cs" />
+    <Compile Include="StorageExcelImport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="StorageExcelImport.Designer.cs">
+      <DependentUpon>StorageExcelImport.cs</DependentUpon>
+    </Compile>
     <Compile Include="StoragePart.cs" />
-    <Compile Include="StoragePartForm.cs">
+    <Compile Include="StorageForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="StoragePartForm.Designer.cs">
-      <DependentUpon>StoragePartForm.cs</DependentUpon>
+    <Compile Include="StorageForm.Designer.cs">
+      <DependentUpon>StorageForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="StoragePartWebImport.cs">
+    <Compile Include="StorageWebImport.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="StoragePartWebImport.Designer.cs">
-      <DependentUpon>StoragePartWebImport.cs</DependentUpon>
+    <Compile Include="StorageWebImport.Designer.cs">
+      <DependentUpon>StorageWebImport.cs</DependentUpon>
     </Compile>
-    <Compile Include="StoragePartTypeEditor.cs">
+    <Compile Include="StorageTypeEditor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="StoragePartTypeEditor.Designer.cs">
-      <DependentUpon>StoragePartTypeEditor.cs</DependentUpon>
+    <Compile Include="StorageTypeEditor.Designer.cs">
+      <DependentUpon>StorageTypeEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="StringHelpers.cs" />
     <Compile Include="Suppliers\Data\PartRow.cs" />
@@ -166,14 +173,17 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="StoragePartForm.resx">
-      <DependentUpon>StoragePartForm.cs</DependentUpon>
+    <EmbeddedResource Include="StorageExcelImport.resx">
+      <DependentUpon>StorageExcelImport.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StoragePartWebImport.resx">
-      <DependentUpon>StoragePartWebImport.cs</DependentUpon>
+    <EmbeddedResource Include="StorageForm.resx">
+      <DependentUpon>StorageForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StoragePartTypeEditor.resx">
-      <DependentUpon>StoragePartTypeEditor.cs</DependentUpon>
+    <EmbeddedResource Include="StorageWebImport.resx">
+      <DependentUpon>StorageWebImport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StorageTypeEditor.resx">
+      <DependentUpon>StorageTypeEditor.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

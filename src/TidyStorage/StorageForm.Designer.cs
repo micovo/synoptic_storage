@@ -1,6 +1,6 @@
 ﻿namespace TidyStorage
 {
-    partial class StoragePartForm
+    partial class StorageForm
     {
         /// <summary>
         /// Required designer variable.

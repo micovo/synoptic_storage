@@ -1,6 +1,6 @@
 ﻿namespace TidyStorage
 {
-    partial class StoragePartTypeEditor
+    partial class StorageTypeEditor
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dataGridViewType = new System.Windows.Forms.DataGridView();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.buttonOk = new System.Windows.Forms.Button();
@@ -47,9 +47,9 @@
             this.dataGridViewType.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewType.Location = new System.Drawing.Point(12, 12);
             this.dataGridViewType.Name = "dataGridViewType";
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewType.RowsDefaultCellStyle = dataGridViewCellStyle1;
-            this.dataGridViewType.Size = new System.Drawing.Size(360, 138);
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewType.RowsDefaultCellStyle = dataGridViewCellStyle3;
+            this.dataGridViewType.Size = new System.Drawing.Size(360, 235);
             this.dataGridViewType.TabIndex = 5;
             this.dataGridViewType.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewType_CellValueChanged);
             this.dataGridViewType.UserDeletedRow += new System.Windows.Forms.DataGridViewRowEventHandler(this.dataGridViewType_UserDeletedRow);
@@ -59,7 +59,7 @@
             // 
             this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.buttonCancel.Location = new System.Drawing.Point(216, 167);
+            this.buttonCancel.Location = new System.Drawing.Point(216, 264);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(75, 23);
             this.buttonCancel.TabIndex = 4;
@@ -70,7 +70,7 @@
             // buttonOk
             // 
             this.buttonOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonOk.Location = new System.Drawing.Point(135, 167);
+            this.buttonOk.Location = new System.Drawing.Point(135, 264);
             this.buttonOk.Name = "buttonOk";
             this.buttonOk.Size = new System.Drawing.Size(75, 23);
             this.buttonOk.TabIndex = 3;
@@ -81,7 +81,7 @@
             // buttonCreateNew
             // 
             this.buttonCreateNew.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonCreateNew.Location = new System.Drawing.Point(12, 167);
+            this.buttonCreateNew.Location = new System.Drawing.Point(12, 264);
             this.buttonCreateNew.Name = "buttonCreateNew";
             this.buttonCreateNew.Size = new System.Drawing.Size(75, 23);
             this.buttonCreateNew.TabIndex = 6;
@@ -93,7 +93,7 @@
             // 
             this.buttonApply.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonApply.Enabled = false;
-            this.buttonApply.Location = new System.Drawing.Point(297, 167);
+            this.buttonApply.Location = new System.Drawing.Point(297, 264);
             this.buttonApply.Name = "buttonApply";
             this.buttonApply.Size = new System.Drawing.Size(75, 23);
             this.buttonApply.TabIndex = 7;
@@ -101,13 +101,13 @@
             this.buttonApply.UseVisualStyleBackColor = true;
             this.buttonApply.Click += new System.EventHandler(this.buttonApply_Click);
             // 
-            // StoragePartTypeEditor
+            // StorageTypeEditor
             // 
             this.AcceptButton = this.buttonOk;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.buttonCancel;
-            this.ClientSize = new System.Drawing.Size(384, 202);
+            this.ClientSize = new System.Drawing.Size(384, 299);
             this.Controls.Add(this.buttonApply);
             this.Controls.Add(this.buttonCreateNew);
             this.Controls.Add(this.dataGridViewType);
@@ -115,9 +115,11 @@
             this.Controls.Add(this.buttonOk);
             this.MaximizeBox = false;
             this.MinimumSize = new System.Drawing.Size(400, 240);
-            this.Name = "StoragePartTypeEditor";
+            this.Name = "StorageTypeEditor";
+            this.ShowIcon = false;
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Type Editor";
+            this.Text = "Storage Types Editor";
             this.Load += new System.EventHandler(this.StoragePartTypeEditor_Load);
             this.Resize += new System.EventHandler(this.StoragePartTypeEditor_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewType)).EndInit();
