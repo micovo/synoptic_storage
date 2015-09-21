@@ -12,5 +12,4 @@ You have to download Visual Studio Community 2015 (Available for free) and compi
 ### Screenshots
 ![alt tag](http://img.micovo.cz/tidystorage3.gif)
 
-### YouTube
-[![Storage Excel Import @ YouTube](http://img.youtube.com/vi/tmEAVzC14K8/0.jpg)](https://www.youtube.com/watch?v=tmEAVzC14K8)
+[Storage Excel Import @ YouTube](https://www.youtube.com/watch?v=tmEAVzC14K8)
