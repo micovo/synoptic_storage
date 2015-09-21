@@ -5,5 +5,12 @@ Application for effective administration of the electronics parts storage.
 - Cooperation with parts disributors such as Farnell or Mouser
 - Device assembly helper
 
+### Releases
+Not available yet, this app is still in alpha alpha stage. 
+You have to download Visual Studio Community 2015 (Available for free) and compile this app by yourself to test it. 
+
 ### Screenshots
 ![alt tag](http://img.micovo.cz/tidystorage3.gif)
+
+### YouTube
+[![Storage Excel Import @ YouTube](http://img.youtube.com/vi/tmEAVzC14K8/0.jpg)](https://www.youtube.com/watch?v=tmEAVzC14K8)
