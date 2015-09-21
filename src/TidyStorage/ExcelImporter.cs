@@ -82,10 +82,9 @@ namespace TidyStorage
 
                                 seim = new StorageExcelImportMenu(this);
                                 seim.buttonCancel.Click += ExcelImportMenuCancel_Click;
+                                
 
-                                ExcelRange wsRow;
-
-                                StoragePart part = null;
+                                
 
                                 string SupplierName;
                                 string SupplierNumber;
@@ -94,11 +93,19 @@ namespace TidyStorage
                                 string PartName;
                                 string r;
 
+                                string columns = string.Format("{0},{1},{2},{3}", StorageConst.Str_Part_id, "suppliernumber", "productnumber", "storage_place_number");
+
+
                                 seim.Show();
+
+                                seim.Top = mainForm.Top;
+                                seim.Left = mainForm.Left;
 
                                 for (int rowNum = 1; rowNum <= totalRows; rowNum++)
                                 {
                                     if (CancelRequested) break;
+
+                                    StoragePart part = null;
 
                                     seim.labelCount.Text = rowNum.ToString() + " / " + totalRows.ToString();
 
@@ -118,7 +125,6 @@ namespace TidyStorage
 
 
 
-                                    string columns = string.Format("{0},{1},{2},{3}", StorageConst.Str_Part_id, "suppliernumber", "productnumber", "storage_place_number");
                                     string where_cond = "0 ";
 
                                     if ((SupplierName != "") && (SupplierNumber != ""))
@@ -137,7 +143,7 @@ namespace TidyStorage
                                     }
 
 
-                                    if (where_cond != "")
+                                    if (where_cond.Length > 3)
                                     {
                                         DataTable dt = storage.GetTable(StorageConst.Str_Part, columns , where_cond);
 
@@ -169,6 +175,7 @@ namespace TidyStorage
                                         StorageForm spf = new StorageForm(storage, part, PartName, SupplierName, SupplierNumber, StoragePlace, Stock);
                                         spf.Show();
                                         spf.Center(mainForm);
+                                        spf.Left += 100;
 
                                         while ((CancelRequested == false) && (spf.Closed == false))
                                         {
@@ -180,11 +187,12 @@ namespace TidyStorage
                                             spf.Close();
                                         }
 
-                                        mainForm.RefreshStorageTable();
-                                        mainForm.RefreshListBox();
-                                        
                                     }
                                 }
+
+                                mainForm.RefreshStorageTable();
+                                mainForm.RefreshListBox();
+
 
 
                                 seim.labelCount.Text = "Done";
