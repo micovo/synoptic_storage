@@ -510,6 +510,7 @@
             this.comboBoxManufacturer.Name = "comboBoxManufacturer";
             this.comboBoxManufacturer.Size = new System.Drawing.Size(171, 21);
             this.comboBoxManufacturer.TabIndex = 1;
+            this.comboBoxManufacturer.SelectedIndexChanged += new System.EventHandler(this.comboBoxManufacturer_SelectedIndexChanged);
             this.comboBoxManufacturer.SelectionChangeCommitted += new System.EventHandler(this.comboBoxManufacturer_SelectionChangeCommitted);
             // 
             // buttonEditManuf
@@ -534,6 +535,7 @@
             this.comboBoxPackage.Name = "comboBoxPackage";
             this.comboBoxPackage.Size = new System.Drawing.Size(171, 21);
             this.comboBoxPackage.TabIndex = 3;
+            this.comboBoxPackage.SelectedIndexChanged += new System.EventHandler(this.comboBoxPackage_SelectedIndexChanged);
             // 
             // buttonEditPackage
             // 
@@ -682,6 +684,7 @@
             this.comboBoxPlaceType.Name = "comboBoxPlaceType";
             this.comboBoxPlaceType.Size = new System.Drawing.Size(171, 21);
             this.comboBoxPlaceType.TabIndex = 0;
+            this.comboBoxPlaceType.SelectedIndexChanged += new System.EventHandler(this.comboBoxPlaceType_SelectedIndexChanged);
             // 
             // buttonEditPlaceType
             // 
@@ -817,6 +820,7 @@
             this.comboBoxSupplier.Name = "comboBoxSupplier";
             this.comboBoxSupplier.Size = new System.Drawing.Size(171, 21);
             this.comboBoxSupplier.TabIndex = 0;
+            this.comboBoxSupplier.SelectedIndexChanged += new System.EventHandler(this.comboBoxSupplier_SelectedIndexChanged);
             // 
             // buttonEditSuplier
             // 
@@ -1012,7 +1016,7 @@
             this.buttonApply.UseVisualStyleBackColor = true;
             this.buttonApply.Click += new System.EventHandler(this.buttonApply_Click);
             // 
-            // StoragePartForm
+            // StorageForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -1031,11 +1035,10 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "StoragePartForm";
-            this.ShowIcon = false;
-            this.ShowInTaskbar = false;
+            this.Name = "StorageForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Storage Part Editor";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.StorageForm_FormClosed);
             this.Load += new System.EventHandler(this.StoragePartForm_Load);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();

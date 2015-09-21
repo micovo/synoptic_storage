@@ -34,6 +34,9 @@
             this.label2 = new System.Windows.Forms.Label();
             this.labelSelect = new System.Windows.Forms.Label();
             this.labelSelected = new System.Windows.Forms.Label();
+            this.buttonUndo = new System.Windows.Forms.Button();
+            this.buttonCancel = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTable)).BeginInit();
             this.SuspendLayout();
             // 
@@ -45,9 +48,10 @@
             this.dataGridViewTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewTable.Location = new System.Drawing.Point(12, 52);
             this.dataGridViewTable.Name = "dataGridViewTable";
-            this.dataGridViewTable.Size = new System.Drawing.Size(1160, 578);
+            this.dataGridViewTable.Size = new System.Drawing.Size(760, 180);
             this.dataGridViewTable.TabIndex = 0;
             this.dataGridViewTable.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewTable_CellClick);
+            this.dataGridViewTable.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewTable_CellDoubleClick);
             // 
             // label1
             // 
@@ -61,12 +65,12 @@
             // 
             // buttonOK
             // 
-            this.buttonOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonOK.Location = new System.Drawing.Point(1097, 16);
+            this.buttonOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonOK.Location = new System.Drawing.Point(616, 247);
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(75, 23);
             this.buttonOK.TabIndex = 2;
-            this.buttonOK.Text = "OK";
+            this.buttonOK.Text = "Select";
             this.buttonOK.UseVisualStyleBackColor = true;
             this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
             // 
@@ -103,11 +107,52 @@
             this.labelSelected.TabIndex = 5;
             this.labelSelected.Text = "None";
             // 
+            // buttonUndo
+            // 
+            this.buttonUndo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonUndo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.buttonUndo.Enabled = false;
+            this.buttonUndo.Location = new System.Drawing.Point(12, 247);
+            this.buttonUndo.Name = "buttonUndo";
+            this.buttonUndo.Size = new System.Drawing.Size(75, 23);
+            this.buttonUndo.TabIndex = 6;
+            this.buttonUndo.Text = "Undo";
+            this.buttonUndo.UseVisualStyleBackColor = true;
+            this.buttonUndo.Click += new System.EventHandler(this.buttonUndo_Click);
+            // 
+            // buttonCancel
+            // 
+            this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.buttonCancel.Location = new System.Drawing.Point(697, 247);
+            this.buttonCancel.Name = "buttonCancel";
+            this.buttonCancel.Size = new System.Drawing.Size(75, 23);
+            this.buttonCancel.TabIndex = 7;
+            this.buttonCancel.Text = "Cancel";
+            this.buttonCancel.UseVisualStyleBackColor = true;
+            this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
+            // 
+            // label3
+            // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label3.Location = new System.Drawing.Point(93, 252);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(517, 13);
+            this.label3.TabIndex = 8;
+            this.label3.Text = "Note: Alll columns are optional and the supplier information have the highest pri" +
+    "ority.";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
             // StorageExcelImport
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1184, 642);
+            this.CancelButton = this.buttonCancel;
+            this.ClientSize = new System.Drawing.Size(784, 282);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.buttonCancel);
+            this.Controls.Add(this.buttonUndo);
             this.Controls.Add(this.labelSelected);
             this.Controls.Add(this.labelSelect);
             this.Controls.Add(this.label2);
@@ -135,5 +180,8 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label labelSelect;
         private System.Windows.Forms.Label labelSelected;
+        private System.Windows.Forms.Button buttonUndo;
+        private System.Windows.Forms.Button buttonCancel;
+        private System.Windows.Forms.Label label3;
     }
 }

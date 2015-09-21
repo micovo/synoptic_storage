@@ -33,6 +33,7 @@ namespace TidyStorage
         public static string RemoveUnsafeCharacters(string str)
         {
             //TODO
+
             return str;
         }
 

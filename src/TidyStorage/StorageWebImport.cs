@@ -103,7 +103,10 @@ namespace TidyStorage
             loadingForm.UpdateProgress(25);
             loadingForm.UpdateLabel("Saving and processing");
 
-            downloadedPartRows.AddRange(supplierPart.rows);
+            if ((supplierPart != null) && (supplierPart.rows != null))
+            {
+                downloadedPartRows.AddRange(supplierPart.rows);
+            }
 
             loadingForm.UpdateProgress(50);
             loadingForm.UpdateLabel("Loading into form");
@@ -143,72 +146,79 @@ namespace TidyStorage
                 }
             }
 
-            if (supplier.GetType() == typeof(FarnellSupplier))
+
+
+            if (unusedPartRows.Count > 0)
             {
-                comboBox1.SelectedItem = unusedPartRows[2] ?? nullItem;
-                comboBox2.SelectedItem = unusedPartRows[0] ?? nullItem;
-                comboBox3.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Name.Contains("Pouzdr"))) ?? nullItem;
-                comboBox4.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Name == "Datasheet")) ?? nullItem;
-            }
 
-
-
-            comboBox12.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Value.Contains("°C") && (x.Value.Contains("ppm") == false) && x.Value[0] == '-')) ?? nullItem;
-            comboBox13.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Value.Contains("°C") && (x.Value.Contains("ppm") == false) && x.Value[0] != '-')) ?? nullItem;
-
-
-
-            FoundPartType = -1;
-
-            string[] s = new string[3];
-            
-            if ((PrimaryValueUnit == "") &&
-                (SecondaryValueUnit == "") &&
-                (ThirdValueUnit == ""))
-            {
-                DataTable dt = storage.GetTable(StorageConst.Str_PartType, StorageConst.Str_PartType_id + ",primary_valuename,secondary_valuename,tertiary_valuename");
-
-                if (dt != null)
+                if (supplier.GetType() == typeof(FarnellSupplier))
                 {
-                    foreach (DataRow dr in dt.Rows)
+                    comboBox1.SelectedItem = unusedPartRows[2] ?? nullItem;
+                    comboBox2.SelectedItem = unusedPartRows[0] ?? nullItem;
+                    comboBox3.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Name.Contains("Pouzdr"))) ?? nullItem;
+                    comboBox4.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Name == "Datasheet")) ?? nullItem;
+                }
+
+
+
+                comboBox12.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Value.Contains("°C") && (x.Value.Contains("ppm") == false) && x.Value[0] == '-')) ?? nullItem;
+                comboBox13.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Value.Contains("°C") && (x.Value.Contains("ppm") == false) && x.Value[0] != '-')) ?? nullItem;
+
+
+
+
+                FoundPartType = -1;
+
+                string[] s = new string[3];
+
+                if ((PrimaryValueUnit == "") &&
+                    (SecondaryValueUnit == "") &&
+                    (ThirdValueUnit == ""))
+                {
+                    DataTable dt = storage.GetTable(StorageConst.Str_PartType, StorageConst.Str_PartType_id + ",primary_valuename,secondary_valuename,tertiary_valuename");
+
+                    if (dt != null)
                     {
-                        var pvu = (dr.ItemArray[1] is string) ? (string)dr.ItemArray[1] : "";
-                        var svu = (dr.ItemArray[2] is string) ? (string)dr.ItemArray[2] : "";
-                        var tvu = (dr.ItemArray[3] is string) ? (string)dr.ItemArray[3] : "";
-
-                        pvu = StringHelpers.Between(pvu, "[", "]");
-                        svu = StringHelpers.Between(svu, "[", "]");
-                        tvu = StringHelpers.Between(tvu, "[", "]");
-
-                        if ((pvu != "") && (svu != ""))
+                        foreach (DataRow dr in dt.Rows)
                         {
-                            var pvuo = unusedPartRows.FirstOrDefault(x => (x.Value.EndsWith(pvu)));
-                            var svuo = unusedPartRows.FirstOrDefault(x => (x.Value.EndsWith(svu)));
+                            var pvu = (dr.ItemArray[1] is string) ? (string)dr.ItemArray[1] : "";
+                            var svu = (dr.ItemArray[2] is string) ? (string)dr.ItemArray[2] : "";
+                            var tvu = (dr.ItemArray[3] is string) ? (string)dr.ItemArray[3] : "";
 
-                            if ((pvuo != null) && (svuo != null))
+                            pvu = StringHelpers.Between(pvu, "[", "]");
+                            svu = StringHelpers.Between(svu, "[", "]");
+                            tvu = StringHelpers.Between(tvu, "[", "]");
+
+                            if ((pvu != "") && (svu != ""))
                             {
-                                PrimaryValueUnit = pvu;
-                                SecondaryValueUnit = svu;
+                                var pvuo = unusedPartRows.FirstOrDefault(x => (x.Value.EndsWith(pvu)));
+                                var svuo = unusedPartRows.FirstOrDefault(x => (x.Value.Contains(svu)));
 
-                                var tvuo = unusedPartRows.FirstOrDefault(x => (x.Value.Contains(tvu)));
+                                if ((pvuo != null) && (svuo != null))
+                                {
+                                    PrimaryValueUnit = pvu;
+                                    SecondaryValueUnit = svu;
 
-                                if (tvuo != null) ThirdValueUnit = tvu;
+                                    var tvuo = unusedPartRows.FirstOrDefault(x => (x.Value.Contains(tvu)));
 
-                                FoundPartType = (int)(Int64)dr.ItemArray[0];
-                                break;
+                                    if (tvuo != null) ThirdValueUnit = tvu;
+
+                                    FoundPartType = (int)(Int64)dr.ItemArray[0];
+                                    break;
+                                }
                             }
                         }
                     }
                 }
+
+
+
+                if (PrimaryValueUnit != "") comboBox6.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Value.EndsWith(PrimaryValueUnit))) ?? nullItem;
+                if (PrimaryValueTolernceUnit != "") comboBox7.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Value.EndsWith(PrimaryValueTolernceUnit))) ?? nullItem;
+                if (SecondaryValueUnit != "") comboBox8.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Value.Contains(SecondaryValueUnit))) ?? nullItem;
+                if (ThirdValueUnit != "") comboBox10.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Value.Contains(ThirdValueUnit))) ?? nullItem;
+
             }
-
-
-
-            if (PrimaryValueUnit != "") comboBox6.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Value.EndsWith(PrimaryValueUnit))) ?? nullItem;
-            if (PrimaryValueTolernceUnit != "") comboBox7.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Value.EndsWith(PrimaryValueTolernceUnit))) ?? nullItem;
-            if (SecondaryValueUnit != "") comboBox8.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Value.EndsWith(SecondaryValueUnit))) ?? nullItem;
-            if (ThirdValueUnit != "") comboBox10.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Value.Contains(ThirdValueUnit))) ?? nullItem;
-
 
 
         }

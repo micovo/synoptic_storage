@@ -25,12 +25,23 @@ namespace TidyStorage
 
         Supplier supplier;
 
+        bool closed;
+        public bool Closed
+        {
+            get
+            {
+                return closed;
+            }
+        }
 
-        public StorageForm(Storage storage, StoragePart part)
+
+        public StorageForm(Storage storage, StoragePart part, string PartName = "", string SupplierName = "", string SupplierNumber = "", string StoragePlace = "", string Stock = "")
         {
             InitializeComponent();
 
             this.storage = storage;
+
+            closed = false;
 
             if  (part == null)
             {
@@ -45,6 +56,16 @@ namespace TidyStorage
             RefreshComboBoxes();
             LoadPartTypeStrings();
             RefreshForm();
+
+            if (PartName != "") textBoxProductName.Text = PartName;
+            if (SupplierNumber != "") textBoxSupplierNumber.Text = SupplierNumber;
+            if (StoragePlace != "") textBoxPlaceNumber.Text = StoragePlace;
+
+            int stock = 0;
+            if ((Stock != "") && (int.TryParse(Stock, out stock))) numericUpDownStock.Value = stock;
+
+
+            if (SupplierName != "") comboBoxSupplier.SelectedItem = SupplierList.FirstOrDefault(x => x.name == SupplierName);
         }
 
         /// <summary>
@@ -331,8 +352,7 @@ namespace TidyStorage
             {
                 LoadingForm lf = new LoadingForm();
                 lf.Show();
-                lf.Left = this.Left + this.Width/2 - lf.Width/2;
-                lf.Top = this.Top + this.Height / 2 - lf.Height / 2;
+                lf.Center(this);
                 Application.DoEvents();
 
                 SupplierPart supplierPart = supplier.DownloadPart();
@@ -849,7 +869,12 @@ namespace TidyStorage
         /// <param name="e"></param>
         private void comboBoxPartType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            LoadPartTypeStrings();
+            ComboBox s = (ComboBox)sender;
+            if (s.SelectedIndex > -1)
+            {
+                this.part.id_part_type = ((IndexedName)s.SelectedItem).id;
+                LoadPartTypeStrings();
+            }
         }
 
         private void numericUpDownStock_KeyPress(object sender, KeyPressEventArgs e)
@@ -995,5 +1020,76 @@ namespace TidyStorage
 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void comboBoxSupplier_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ComboBox s = (ComboBox)sender;
+            if (s.SelectedIndex > -1)
+            {
+                this.part.id_supplier = ((IndexedName)s.SelectedItem).id;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void comboBoxManufacturer_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ComboBox s = (ComboBox)sender;
+            if (s.SelectedIndex > -1)
+            {
+                this.part.id_manufacturer = ((IndexedName)s.SelectedItem).id;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void comboBoxPackage_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ComboBox s = (ComboBox)sender;
+            if (s.SelectedIndex > -1)
+            {
+                this.part.id_part_package = ((IndexedName)s.SelectedItem).id;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void comboBoxPlaceType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ComboBox s = (ComboBox)sender;
+            if (s.SelectedIndex > -1)
+            {
+                this.part.id_storage_place = ((IndexedName)s.SelectedItem).id;
+            }
+        }
+
+        private void StorageForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            closed = true;
+        }
+
+
+        /// <summary>
+        /// Set position of this form in the center of the requested form
+        /// </summary>
+        /// <param name="form"></param>
+        public void Center(Form form)
+        {
+            this.Left = form.Left + form.Width / 2 - this.Width / 2;
+            this.Top = form.Top + form.Height / 2 - this.Height / 2;
+        }
     }
 }

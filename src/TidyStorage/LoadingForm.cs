@@ -73,5 +73,16 @@ namespace TidyStorage
         {
             label1.Invoke(new Action(() => { label1.Text = v; }));
         }
+
+
+        /// <summary>
+        /// Set position of this form in the center of the requested form
+        /// </summary>
+        /// <param name="form"></param>
+        public void Center(Form form)
+        {
+            this.Left = form.Left + form.Width / 2 - this.Width / 2;
+            this.Top = form.Top + form.Height / 2 - this.Height / 2;
+        }
     }
 }

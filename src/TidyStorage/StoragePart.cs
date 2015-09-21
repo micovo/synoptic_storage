@@ -155,16 +155,38 @@ namespace TidyStorage
         }
 
 
+
+
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="storage"></param>
+        /// <param name="part_id"></param>
+        public StoragePart(Storage storage, int part_id)
+        {
+            DataTable dt = storage.GetTable(StorageConst.Str_Part, "*", StorageConst.Str_Part_id + "=" + part_id.ToString());
+
+            Fill(dt);
+        }
+
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="dt"></param>
         public StoragePart(DataTable dt)
         {
-            this.dt = dt;
+            Fill(dt);
+        }
 
+
+        public void Fill(DataTable dt)
+        {
             if (dt.Rows.Count > 0)
             {
+                this.dt = dt;
                 DataRow dr = dt.Rows[0];
 
                 this.id_part = GetCellINTEGER(dt, dr, StorageConst.Str_Part_id);
@@ -209,7 +231,6 @@ namespace TidyStorage
                 this.price_1000pcs = GetCellREAL(dt, dr, "price_1000pcs");
             }
         }
-
 
         /// <summary>
         /// 

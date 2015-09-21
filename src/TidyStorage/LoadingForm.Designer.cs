@@ -69,6 +69,7 @@ namespace TidyStorage
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Loading...";
+            this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.LoadingForm_FormClosing);
             this.ResumeLayout(false);
 
@@ -79,5 +80,7 @@ namespace TidyStorage
 
         public System.Windows.Forms.ProgressBar progressBar1;
         public System.Windows.Forms.Label label1;
+
+       
     }
 }

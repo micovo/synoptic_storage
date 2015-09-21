@@ -27,11 +27,22 @@ namespace TidyStorage
 
         ExcelPackage excelPackage;
 
+        const string Str_Stock = "Stock";
+        const string Str_StoragePlace = "Storage Place";
+        const string Str_SupplierNumber = "Supplier Number";
+        const string Str_SupplierName = "Supplier Name";
+        const string Str_PartName = "Part Name";
+
+
         string selectedColumn;
 
 
         bool SupplierNameColumnSelected;
         bool SupplierNumberColumnSelected;
+        bool StoragePlaceColumnSelected;
+        bool StockColumnSelected;
+
+
 
         string supplierNameColumn;
         public string SupplierNameColumn
@@ -62,6 +73,25 @@ namespace TidyStorage
             }
         }
 
+        string stockColumn;
+        public string StockColumn
+        {
+            get
+            {
+                return stockColumn;
+            }
+        }
+
+
+        string partNameColumn;
+        public string PartNameColumn
+        {
+            get
+            {
+                return partNameColumn;
+            }
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -71,16 +101,26 @@ namespace TidyStorage
             this.storage = storage;
             SupplierNameColumnSelected = false;
             SupplierNumberColumnSelected = false;
+            StoragePlaceColumnSelected = false;
+            StockColumnSelected = false;
 
             supplierNameColumn = "";
             supplierNumberColumn = "";
             storagePlaceColumn = "";
+            stockColumn = "";
+            partNameColumn = "";
 
             selectedColumn = "";
 
             InitializeComponent();
 
+            labelSelect.Text = Str_SupplierName;
+            labelSelected.Text = "None";
+
             this.DialogResult = DialogResult.Cancel;
+
+            this.Width = 1200;
+            this.Height = 680;
         }
 
         /// <summary>
@@ -100,24 +140,29 @@ namespace TidyStorage
             //ofd.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
 
             DialogResult ofd_dr = ofd.ShowDialog();
-
+            
+            
             if (ofd_dr == DialogResult.OK)
             {
                 excelFilename = ofd.FileName;
-                FileInfo fileInfo = new FileInfo(excelFilename);
 
-                try
+                if (File.Exists(excelFilename))
                 {
-                    using (ExcelPackage pck = new ExcelPackage(fileInfo))
+                    FileInfo fileInfo = new FileInfo(excelFilename);
+
+                    try
                     {
-                        ExcelWorksheet ws = pck.Workbook.Worksheets.First();
-                        dataGridViewTable.DataSource = WorksheetToDataTable(ws);
+                        using (ExcelPackage pck = new ExcelPackage(fileInfo))
+                        {
+                            ExcelWorksheet ws = pck.Workbook.Worksheets.First();
+                            dataGridViewTable.DataSource = WorksheetToDataTable(ws);
+                        }
                     }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Import failed. " + ex.Message, "Excel Import Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    this.Close();
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Import failed. " + ex.Message, "Excel Import Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        this.Close();
+                    }
                 }
             }
             else
@@ -181,30 +226,96 @@ namespace TidyStorage
         {
             if (SupplierNameColumnSelected == false)
             {
-                SupplierNameColumnSelected = true;
-                labelSelect.Text = "Supplier Number";
+                labelSelect.Text = Str_SupplierNumber;
                 labelSelected.Text = "None";
-                selectedColumn = "";
-
                 supplierNameColumn = selectedColumn;
-                selectedColumn = "";
+                SupplierNameColumnSelected = true;
+                buttonUndo.Enabled = true;
+                buttonOK.Text = "Select";
             }
             else if (SupplierNumberColumnSelected == false)
             {
-                SupplierNumberColumnSelected = true;
-                labelSelect.Text = "Storage Place (Optional)";
+                labelSelect.Text = Str_StoragePlace;
                 labelSelected.Text = "None";
-
                 supplierNumberColumn = selectedColumn;
-                selectedColumn = "";
+                SupplierNumberColumnSelected = true;
+                buttonOK.Text = "Select";
+            }
+            else if (StoragePlaceColumnSelected == false)
+            {
+                labelSelect.Text = Str_Stock;
+                labelSelected.Text = "None";
+                storagePlaceColumn = selectedColumn;
+                StoragePlaceColumnSelected = true;
+                buttonOK.Text = "Select";
+            }
+            else if (StockColumnSelected == false)
+            {
+                labelSelect.Text = Str_PartName;
+                labelSelected.Text = "None";
+                stockColumn = selectedColumn;
+                StockColumnSelected = true;
+                buttonOK.Text = "OK";
             }
             else
             {
-                storagePlaceColumn = selectedColumn;
+                partNameColumn = selectedColumn;
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }
+
+            selectedColumn = "";
         }
+
+
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void buttonUndo_Click(object sender, EventArgs e)
+        {
+            if (StockColumnSelected)
+            {
+                labelSelect.Text = Str_Stock;
+                labelSelected.Text = stockColumn;
+                stockColumn = "";
+                StockColumnSelected = false;
+                buttonOK.Text = "Select";
+            }
+            else if (StoragePlaceColumnSelected)
+            {
+                labelSelect.Text = Str_StoragePlace;
+                labelSelected.Text = storagePlaceColumn;
+                storagePlaceColumn = "";
+                StoragePlaceColumnSelected = false;
+                buttonOK.Text = "Select";
+            }
+            else if (SupplierNumberColumnSelected)
+            {
+                labelSelect.Text = Str_SupplierNumber;
+                labelSelected.Text = supplierNumberColumn;
+                supplierNumberColumn = "";
+                SupplierNumberColumnSelected = false;
+                buttonOK.Text = "Select";
+            }
+            else if (SupplierNameColumnSelected)
+            {
+                labelSelect.Text = Str_SupplierName;
+                labelSelected.Text = supplierNameColumn;
+                supplierNameColumn = "";
+                SupplierNameColumnSelected = false;
+                buttonUndo.Enabled = false;
+                buttonOK.Text = "Select";
+            }
+            
+
+            selectedColumn = "";
+        }
+
+
 
         /// <summary>
         /// 
@@ -217,6 +328,39 @@ namespace TidyStorage
             {
                 selectedColumn = dataGridViewTable.Columns[e.ColumnIndex].HeaderText;
                 labelSelected.Text = selectedColumn;
+            }
+        }
+        
+
+        /// <summary>
+        /// Cancel button handler. All selected columns get cleared.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void buttonCancel_Click(object sender, EventArgs e)
+        {
+            supplierNameColumn = "";
+            supplierNumberColumn = "";
+            storagePlaceColumn = "";
+            stockColumn = "";
+
+            this.DialogResult = DialogResult.Cancel;
+            this.Close();
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void dataGridViewTable_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex >= 0)
+            {
+                selectedColumn = dataGridViewTable.Columns[e.ColumnIndex].HeaderText;
+                labelSelected.Text = selectedColumn;
+                buttonOK_Click(null, null);
             }
         }
     }

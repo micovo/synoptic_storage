@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.IO;
 using System.Windows.Forms;
+using System.Data;
 
 using OfficeOpenXml;
 
@@ -22,18 +23,35 @@ namespace TidyStorage
         Task importTask;
 
         bool ImportFinished;
+        MainForm mainForm;
+
+        bool ManualMode;
+        bool CancelRequested;
+
+        StorageExcelImportMenu seim;
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="storage"></param>
-        public ExcelImporter(Storage storage)
+        public ExcelImporter(Storage storage, MainForm mainForm)
         {
             this.storage = storage;
+            this.mainForm = mainForm;
             ImportFinished = false;
+
+            ManualMode = true;
+            CancelRequested = false;
         }
 
-           
+
+        private void ExcelImportMenuCancel_Click(object sender, EventArgs e)
+        {
+            CancelRequested = true;
+        }
+
+
+
         /// <summary>
         /// Starts import procedure. Processing GUI and starting import worker
         /// </summary>
@@ -43,20 +61,166 @@ namespace TidyStorage
 
             if (sei.ShowDialog() == DialogResult.OK)
             {
-                loadingForm = new LoadingForm();
-                importTask = new Task(new Action(Worker));
-
-                importTask.Start();
-
-                loadingForm.Show();
-
-                while (ImportFinished == false)
+                if ((sei.SupplierNameColumn != "") && (sei.SupplierNumberColumn != "") ||
+                    (sei.PartNameColumn != "") ||
+                    (sei.StoragePlaceColumn != ""))
                 {
-                    Application.DoEvents();
-                }
+                    string excelFilename = sei.ExcelFilename;
 
-                loadingForm.AllowedToClose = true;
-                loadingForm.Close();
+                    if (File.Exists(excelFilename))
+                    {
+                        FileInfo fileInfo = new FileInfo(excelFilename);
+
+                        try
+                        {
+                            using (ExcelPackage pck = new ExcelPackage(fileInfo))
+                            {
+                                ExcelWorksheet ws = pck.Workbook.Worksheets.First();
+      
+                                int totalRows = ws.Dimension.End.Row;
+                                int totalCols = ws.Dimension.End.Column;
+
+                                seim = new StorageExcelImportMenu(this);
+                                seim.buttonCancel.Click += ExcelImportMenuCancel_Click;
+
+                                ExcelRange wsRow;
+
+                                StoragePart part = null;
+
+                                string SupplierName;
+                                string SupplierNumber;
+                                string StoragePlace;
+                                string Stock;
+                                string PartName;
+                                string r;
+
+                                seim.Show();
+
+                                for (int rowNum = 1; rowNum <= totalRows; rowNum++)
+                                {
+                                    if (CancelRequested) break;
+
+                                    seim.labelCount.Text = rowNum.ToString() + " / " + totalRows.ToString();
+
+                                    r = rowNum.ToString();
+
+                                    SupplierName    = (sei.SupplierNameColumn != "")    ? ws.Cells[sei.SupplierNameColumn + r].Text : "";
+                                    SupplierNumber  = (sei.SupplierNumberColumn != "")  ? ws.Cells[sei.SupplierNumberColumn + r].Text : "";
+                                    StoragePlace    = (sei.StoragePlaceColumn != "")    ? ws.Cells[sei.StoragePlaceColumn + r].Text.ToUpper() : "";
+                                    Stock           = (sei.StockColumn != "")           ? ws.Cells[sei.StockColumn + r].Text : "";
+                                    PartName        = (sei.PartNameColumn != "")        ? ws.Cells[sei.PartNameColumn + r].Text.ToUpper() : "";
+
+                                    seim.labelSupplierName.Text = SupplierName;
+                                    seim.labelSupplierNumber.Text = SupplierNumber;
+                                    seim.labelStoragePlace.Text = StoragePlace;
+                                    seim.labelStock.Text = Stock;
+                                    seim.labelPartName.Text = PartName;
+
+
+
+                                    string columns = string.Format("{0},{1},{2},{3}", StorageConst.Str_Part_id, "suppliernumber", "productnumber", "storage_place_number");
+                                    string where_cond = "0 ";
+
+                                    if ((SupplierName != "") && (SupplierNumber != ""))
+                                    {
+                                        where_cond += " OR suppliernumber LIKE '" + SupplierNumber + "'";
+                                    }
+
+                                    if (PartName != "") 
+                                    {
+                                        where_cond += " OR productnumber LIKE '" + PartName + "'";
+                                    }
+
+                                    if (StoragePlace != "")
+                                    {
+                                        where_cond += " OR storage_place_number LIKE '" + StoragePlace + "'";
+                                    }
+
+
+                                    if (where_cond != "")
+                                    {
+                                        DataTable dt = storage.GetTable(StorageConst.Str_Part, columns , where_cond);
+
+                                        if (dt.Rows.Count > 0)
+                                        {
+                                            DialogResult dr;
+
+
+                                            int id = (int)(Int64)dt.Rows[0].ItemArray[0];
+
+                                            dr = MessageBox.Show("Part with the same part name, supplier number or storage place found:" 
+                                                + System.Environment.NewLine + "Do You want to import values?" 
+                                                + System.Environment.NewLine 
+                                                + System.Environment.NewLine + "Press \"Cancel\" to skip this part. Press \"No\" to create new part.", 
+                                                "Similar Part Found", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+
+                                            if (dr == DialogResult.Cancel)
+                                            {
+                                                continue;
+                                            }
+                                            else if (dr == DialogResult.Yes)
+                                            {
+                                                part = new StoragePart(storage, id);
+                                            }
+                                        }
+
+
+                                        
+                                        StorageForm spf = new StorageForm(storage, part, PartName, SupplierName, SupplierNumber, StoragePlace, Stock);
+                                        spf.Show();
+                                        spf.Center(mainForm);
+
+                                        while ((CancelRequested == false) && (spf.Closed == false))
+                                        {
+                                            Application.DoEvents();
+                                        }
+
+                                        if (spf.Closed == false)
+                                        {
+                                            spf.Close();
+                                        }
+
+                                        mainForm.RefreshStorageTable();
+                                        mainForm.RefreshListBox();
+                                        
+                                    }
+                                }
+
+
+                                seim.labelCount.Text = "Done";
+                                seim.Close();
+
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Import failed. " + ex.Message, "Excel Import Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+
+
+                    /*
+                    importTask = new Task(new Action(Worker));
+
+                    importTask.Start();
+
+                    loadingForm = new LoadingForm();
+                    loadingForm.Show();
+                    loadingForm.Center(sei);
+
+                    while (ImportFinished == false)
+                    {
+                        Application.DoEvents();
+                    }
+                   
+                    loadingForm.AllowedToClose = true;
+                    loadingForm.Close();
+                    */
+                }
+                else
+                {
+                    MessageBox.Show("Unable to import Excel file. Not enough columns selected", "Excel Import Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                }
             }
         }
 

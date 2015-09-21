@@ -126,6 +126,15 @@
     <Compile Include="StorageExcelImport.Designer.cs">
       <DependentUpon>StorageExcelImport.cs</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\StorageFormHelper.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="StorageExcelImportMenu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="StorageExcelImportMenu.Designer.cs">
+      <DependentUpon>StorageExcelImportMenu.cs</DependentUpon>
+    </Compile>
     <Compile Include="StoragePart.cs" />
     <Compile Include="StorageForm.cs">
       <SubType>Form</SubType>
@@ -145,7 +154,7 @@
     <Compile Include="StorageTypeEditor.Designer.cs">
       <DependentUpon>StorageTypeEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="StringHelpers.cs" />
+    <Compile Include="Helpers\StringHelpers.cs" />
     <Compile Include="Suppliers\Data\PartRow.cs" />
     <Compile Include="Suppliers\FarnellSupplier.cs" />
     <Compile Include="Suppliers\GMESupplier.cs" />
@@ -175,6 +184,9 @@
     </Compile>
     <EmbeddedResource Include="StorageExcelImport.resx">
       <DependentUpon>StorageExcelImport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StorageExcelImportMenu.resx">
+      <DependentUpon>StorageExcelImportMenu.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="StorageForm.resx">
       <DependentUpon>StorageForm.cs</DependentUpon>
