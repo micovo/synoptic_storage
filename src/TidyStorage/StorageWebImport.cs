@@ -159,12 +159,18 @@ namespace TidyStorage
                     comboBox4.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Name == "Datasheet")) ?? nullItem;
                 }
 
+                if (supplier.GetType() == typeof(TMESupplier))
+                {
+                    
+                    comboBox1.SelectedItem = unusedPartRows[1] ?? nullItem;
+                    comboBox2.SelectedItem = unusedPartRows[2] ?? nullItem;
+                    comboBox3.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Name.Contains("Pouzdr"))) ?? nullItem;
+                    comboBox4.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Name == "Datasheet")) ?? nullItem;
+                }
 
 
                 comboBox12.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Value.Contains("°C") && (x.Value.Contains("ppm") == false) && x.Value[0] == '-')) ?? nullItem;
                 comboBox13.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Value.Contains("°C") && (x.Value.Contains("ppm") == false) && x.Value[0] != '-')) ?? nullItem;
-
-
 
 
                 FoundPartType = -1;
@@ -192,7 +198,7 @@ namespace TidyStorage
                             if ((pvu != "") && (svu != ""))
                             {
                                 var pvuo = unusedPartRows.FirstOrDefault(x => (x.Value.EndsWith(pvu)));
-                                var svuo = unusedPartRows.FirstOrDefault(x => (x.Value.Contains(svu)));
+                                var svuo = unusedPartRows.FirstOrDefault(x => (x.Value.EndsWith(svu)));
 
                                 if ((pvuo != null) && (svuo != null))
                                 {
@@ -213,16 +219,52 @@ namespace TidyStorage
 
 
 
-                if (PrimaryValueUnit != "") comboBox6.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Value.EndsWith(PrimaryValueUnit))) ?? nullItem;
-                if (PrimaryValueTolernceUnit != "") comboBox7.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Value.EndsWith(PrimaryValueTolernceUnit))) ?? nullItem;
-                if (SecondaryValueUnit != "") comboBox8.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Value.Contains(SecondaryValueUnit))) ?? nullItem;
-                if (ThirdValueUnit != "") comboBox10.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Value.Contains(ThirdValueUnit))) ?? nullItem;
+                if (PrimaryValueUnit != "")
+                {
+                    comboBox6.SelectedItem = unusedPartRows.LastOrDefault(x => (x.Value.EndsWith(PrimaryValueUnit))) ?? nullItem;
+                }
+
+                if (PrimaryValueTolernceUnit != "")
+                {
+                    comboBox7.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Value.EndsWith(PrimaryValueTolernceUnit)) && (x.Value.Length < 5)) ?? nullItem;
+                }
+
+                if (SecondaryValueUnit != "")
+                {
+                    comboBox8.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Value.EndsWith(SecondaryValueUnit))) ?? nullItem;
+                }
+
+                if (ThirdValueUnit != "")
+                {
+                    comboBox10.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Value.Contains(ThirdValueUnit))) ?? nullItem;
+                }
 
             }
 
 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void buttonUnselect_Click(object sender, EventArgs e)
+        {
+            unusedPartRows.Clear();
+            unusedPartRows.AddRange(downloadedPartRows);
 
+            foreach (Control x in this.tableLayoutPanel1.Controls)
+            {
+                if (x.GetType() == typeof(ComboBox))
+                {
+                    ComboBox cb = (ComboBox)x;
+                    cb.Items.Clear();
+                    cb.Items.Add(nullItem);
+                    cb.Items.AddRange(unusedPartRows.ToArray());
+                    cb.SelectedIndex = 0;
+                }
+            }
+        }
     }
 }

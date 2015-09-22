@@ -101,13 +101,34 @@ namespace TidyStorage
                                 seim.Top = mainForm.Top;
                                 seim.Left = mainForm.Left;
 
+
+
+                                int totalValidRows = 0;
+
+                                for (int rowNum = 1; rowNum <= totalRows; rowNum++)
+                                {
+                                    r = rowNum.ToString();
+
+                                    SupplierName = (sei.SupplierNameColumn != "") ? ws.Cells[sei.SupplierNameColumn + r].Text : "";
+                                    SupplierNumber = (sei.SupplierNumberColumn != "") ? ws.Cells[sei.SupplierNumberColumn + r].Text : "";
+                                    StoragePlace = (sei.StoragePlaceColumn != "") ? ws.Cells[sei.StoragePlaceColumn + r].Text.ToUpper() : "";
+                                    Stock = (sei.StockColumn != "") ? ws.Cells[sei.StockColumn + r].Text : "";
+                                    PartName = (sei.PartNameColumn != "") ? ws.Cells[sei.PartNameColumn + r].Text.ToUpper() : "";
+
+                                    if (((SupplierName != "") && (SupplierNumber != "")) || (PartName != "") || (StoragePlace != ""))
+                                    {
+                                        totalValidRows++;
+                                    }
+                                }
+
+
                                 for (int rowNum = 1; rowNum <= totalRows; rowNum++)
                                 {
                                     if (CancelRequested) break;
 
                                     StoragePart part = null;
 
-                                    seim.labelCount.Text = rowNum.ToString() + " / " + totalRows.ToString();
+                                    seim.labelCount.Text = rowNum.ToString() + " / " + totalValidRows.ToString();
 
                                     r = rowNum.ToString();
 

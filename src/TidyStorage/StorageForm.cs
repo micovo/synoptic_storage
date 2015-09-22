@@ -191,30 +191,34 @@ namespace TidyStorage
                     string pack = "";
 
                     v = ((PartRow)spi.comboBox2.SelectedItem).Value;
-                    if (v != "") manuf = v;
 
-
-                    string cond = StringHelpers.LikeCondition(StorageConst.Str_Manufacturer_name, manuf.Split(' '), "OR");
-
-                    DataTable dt = storage.GetTable(StorageConst.Str_Manufacturer, "*",  cond);
-
-                    if ((dt != null) && (dt.Rows.Count > 0))
+                    if (v != "")
                     {
-                        var manuf_id = (int)(Int64)dt.Rows[0].ItemArray[0];
+                        manuf = v;
 
-                        SelectNamedIndexComboBox(comboBoxManufacturer, manuf_id);
-                    }
-                    else
-                    {
-                        DialogResult dr = MessageBox.Show("Manufacturer \"" + manuf + "\" was not found in database." + System.Environment.NewLine + "Do you want to add new manufacturer?", "New manufacturer", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                        if (dr == DialogResult.Yes)
+
+                        string cond = StringHelpers.LikeCondition(StorageConst.Str_Manufacturer_name, manuf.Split(' '), "OR");
+
+                        DataTable dt = storage.GetTable(StorageConst.Str_Manufacturer, "*", cond);
+
+                        if ((dt != null) && (dt.Rows.Count > 0))
                         {
-                            var new_id = storage.InsertNewRow(StorageConst.Str_Manufacturer, StorageConst.Str_Manufacturer_name, manuf);
+                            var manuf_id = (int)(Int64)dt.Rows[0].ItemArray[0];
 
-                            if (new_id > -1)
+                            SelectNamedIndexComboBox(comboBoxManufacturer, manuf_id);
+                        }
+                        else
+                        {
+                            DialogResult dr = MessageBox.Show("Manufacturer \"" + manuf + "\" was not found in database." + System.Environment.NewLine + "Do you want to add new manufacturer?", "New manufacturer", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                            if (dr == DialogResult.Yes)
                             {
-                                RefreshComboBoxes();
-                                SelectNamedIndexComboBox(comboBoxManufacturer, new_id);
+                                var new_id = storage.InsertNewRow(StorageConst.Str_Manufacturer, StorageConst.Str_Manufacturer_name, manuf);
+
+                                if (new_id > -1)
+                                {
+                                    RefreshComboBoxes();
+                                    SelectNamedIndexComboBox(comboBoxManufacturer, new_id);
+                                }
                             }
                         }
                     }
@@ -224,41 +228,40 @@ namespace TidyStorage
 
 
                     v = ((PartRow)spi.comboBox3.SelectedItem).Value;
-                    if (v != "") pack = v;
-
-                    //Remove extra package information
-                    int epi = pack.IndexOfAny(("({[").ToCharArray());
-                    if (epi > 0) pack = pack.Substring(0, epi).Trim();
-
-                    cond = StringHelpers.LikeCondition(StorageConst.Str_Package_name, pack.Split(' '), "OR");
-
-                    dt = storage.GetTable(StorageConst.Str_Package, "*", cond);
-
-                    if ((dt != null) && (dt.Rows.Count > 0))
+                    if (v != "")
                     {
-                        var package_id = (int)(Int64)dt.Rows[0].ItemArray[0];
+                        pack = v;
 
-                        SelectNamedIndexComboBox(comboBoxPackage, package_id);
-                    }
-                    else
-                    {
-                        DialogResult dr = MessageBox.Show("Package \"" + pack + "\" was not found in database." + System.Environment.NewLine + "Do you want to add new package?", "New package", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                        if (dr == DialogResult.Yes)
+                        //Remove extra package information
+                        int epi = pack.IndexOfAny(("({[").ToCharArray());
+                        if (epi > 0) pack = pack.Substring(0, epi).Trim();
+
+                        string cond = StringHelpers.LikeCondition(StorageConst.Str_Package_name, pack.Split(' '), "OR");
+
+                        DataTable dt = storage.GetTable(StorageConst.Str_Package, "*", cond);
+
+                        if ((dt != null) && (dt.Rows.Count > 0))
                         {
-                            var new_id = storage.InsertNewRow(StorageConst.Str_Package, StorageConst.Str_Package_name, pack);
+                            var package_id = (int)(Int64)dt.Rows[0].ItemArray[0];
 
-                            if (new_id > -1)
+                            SelectNamedIndexComboBox(comboBoxPackage, package_id);
+                        }
+                        else
+                        {
+                            DialogResult dr = MessageBox.Show("Package \"" + pack + "\" was not found in database." + System.Environment.NewLine + "Do you want to add new package?", "New package", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                            if (dr == DialogResult.Yes)
                             {
-                                RefreshComboBoxes();
-                                SelectNamedIndexComboBox(comboBoxPackage, new_id);
+                                var new_id = storage.InsertNewRow(StorageConst.Str_Package, StorageConst.Str_Package_name, pack);
+
+                                if (new_id > -1)
+                                {
+                                    RefreshComboBoxes();
+                                    SelectNamedIndexComboBox(comboBoxPackage, new_id);
+                                }
                             }
                         }
                     }
-
-
-
-
-
+                    
 
 
                     v = ((PartRow)spi.comboBox1.SelectedItem).Value;
@@ -326,15 +329,15 @@ namespace TidyStorage
             var priceobj = sp.prices.FirstOrDefault(x => (x.amount_max < 10));
             textBoxPrice1pcs.Text = (priceobj != null) ? priceobj.price.ToString() : "";
 
-            priceobj = sp.prices.FirstOrDefault(x => (x.amount_min >= 10));
+            priceobj = sp.prices.LastOrDefault(x => (x.amount_min <= 10));
             textBoxPrice10pcs.Text = (priceobj != null) ? priceobj.price.ToString() : "";
 
 
-            priceobj = sp.prices.FirstOrDefault(x => (x.amount_min >= 100));
+            priceobj = sp.prices.LastOrDefault(x => (x.amount_min <= 100));
             textBoxPrice100pcs.Text = (priceobj != null) ? priceobj.price.ToString() : "";
 
 
-            priceobj = sp.prices.FirstOrDefault(x => (x.amount_min <= 1000) && (x.amount_max > 1000));
+            priceobj = sp.prices.LastOrDefault(x => (x.amount_min <= 1000));
             textBoxPrice1000pcs.Text = (priceobj != null) ? priceobj.price.ToString() : "";
         }
 

@@ -57,6 +57,7 @@
             this.comboBox13 = new System.Windows.Forms.ComboBox();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.buttonOk = new System.Windows.Forms.Button();
+            this.buttonUnselect = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -409,6 +410,16 @@
             this.buttonOk.UseVisualStyleBackColor = true;
             this.buttonOk.Click += new System.EventHandler(this.buttonOk_Click);
             // 
+            // buttonUnselect
+            // 
+            this.buttonUnselect.Location = new System.Drawing.Point(12, 346);
+            this.buttonUnselect.Name = "buttonUnselect";
+            this.buttonUnselect.Size = new System.Drawing.Size(75, 23);
+            this.buttonUnselect.TabIndex = 10;
+            this.buttonUnselect.Text = "Unselect All";
+            this.buttonUnselect.UseVisualStyleBackColor = true;
+            this.buttonUnselect.Click += new System.EventHandler(this.buttonUnselect_Click);
+            // 
             // StorageWebImport
             // 
             this.AcceptButton = this.buttonOk;
@@ -416,6 +427,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.buttonCancel;
             this.ClientSize = new System.Drawing.Size(364, 381);
+            this.Controls.Add(this.buttonUnselect);
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.buttonOk);
             this.Controls.Add(this.tableLayoutPanel1);
@@ -465,5 +477,6 @@
         public System.Windows.Forms.ComboBox comboBox11;
         public System.Windows.Forms.ComboBox comboBox12;
         public System.Windows.Forms.ComboBox comboBox13;
+        private System.Windows.Forms.Button buttonUnselect;
     }
 }

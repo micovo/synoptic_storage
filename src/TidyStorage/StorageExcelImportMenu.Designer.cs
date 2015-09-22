@@ -153,45 +153,45 @@
             this.labelSupplierName.AutoSize = true;
             this.labelSupplierName.Location = new System.Drawing.Point(97, 0);
             this.labelSupplierName.Name = "labelSupplierName";
-            this.labelSupplierName.Size = new System.Drawing.Size(35, 13);
+            this.labelSupplierName.Size = new System.Drawing.Size(95, 13);
             this.labelSupplierName.TabIndex = 5;
-            this.labelSupplierName.Text = "label7";
+            this.labelSupplierName.Text = "labelSupplierName";
             // 
             // labelSupplierNumber
             // 
             this.labelSupplierNumber.AutoSize = true;
             this.labelSupplierNumber.Location = new System.Drawing.Point(97, 25);
             this.labelSupplierNumber.Name = "labelSupplierNumber";
-            this.labelSupplierNumber.Size = new System.Drawing.Size(35, 13);
+            this.labelSupplierNumber.Size = new System.Drawing.Size(104, 13);
             this.labelSupplierNumber.TabIndex = 6;
-            this.labelSupplierNumber.Text = "label8";
+            this.labelSupplierNumber.Text = "labelSupplierNumber";
             // 
             // labelStoragePlace
             // 
             this.labelStoragePlace.AutoSize = true;
             this.labelStoragePlace.Location = new System.Drawing.Point(97, 50);
             this.labelStoragePlace.Name = "labelStoragePlace";
-            this.labelStoragePlace.Size = new System.Drawing.Size(35, 13);
+            this.labelStoragePlace.Size = new System.Drawing.Size(93, 13);
             this.labelStoragePlace.TabIndex = 7;
-            this.labelStoragePlace.Text = "label9";
+            this.labelStoragePlace.Text = "labelStoragePlace";
             // 
             // labelStock
             // 
             this.labelStock.AutoSize = true;
             this.labelStock.Location = new System.Drawing.Point(97, 75);
             this.labelStock.Name = "labelStock";
-            this.labelStock.Size = new System.Drawing.Size(41, 13);
+            this.labelStock.Size = new System.Drawing.Size(57, 13);
             this.labelStock.TabIndex = 8;
-            this.labelStock.Text = "label10";
+            this.labelStock.Text = "labelStock";
             // 
             // labelPartName
             // 
             this.labelPartName.AutoSize = true;
             this.labelPartName.Location = new System.Drawing.Point(97, 100);
             this.labelPartName.Name = "labelPartName";
-            this.labelPartName.Size = new System.Drawing.Size(41, 13);
+            this.labelPartName.Size = new System.Drawing.Size(76, 13);
             this.labelPartName.TabIndex = 9;
-            this.labelPartName.Text = "label11";
+            this.labelPartName.Text = "labelPartName";
             // 
             // StorageExcelImportMenu
             // 

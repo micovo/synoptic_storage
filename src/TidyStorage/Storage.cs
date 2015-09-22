@@ -528,7 +528,8 @@ currency
                     //Not deleted, check for content changes
                     for (int i = 1; i < strings_to_compare + 1; i++)
                     {
-                        if (dr.ItemArray[i].GetType() != typeof(System.DBNull))
+                        if ((dr.ItemArray[i].GetType() != typeof(System.DBNull)) && 
+                            (drr.ItemArray[i].GetType() != typeof(System.DBNull)))
                         {
                             if (dr.ItemArray[i].GetType() == typeof(string))
                             {
