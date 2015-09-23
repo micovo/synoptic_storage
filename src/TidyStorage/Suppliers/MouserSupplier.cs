@@ -23,7 +23,7 @@ namespace TidyStorage.Suppliers
 
         public override SupplierPart DownloadPart()
         {
-            throw new NotImplementedException();
+            return new SupplierPart();
         }
 
         /*

@@ -32,8 +32,12 @@ namespace TidyStorage
         public string SecondaryValueUnit = "";
         public string ThirdValueUnit = "";
 
-        public StorageWebImport(Storage storage, Supplier supplier)
+        bool FullyAutomated;
+
+
+        public StorageWebImport(Storage storage, Supplier supplier, bool FullyAutomated = false)
         {
+            this.FullyAutomated = FullyAutomated;
             this.storage = storage;
             this.supplier = supplier;
 
@@ -120,6 +124,7 @@ namespace TidyStorage
 
             loadingForm.AllowedToClose = true;
             loadingForm.Invoke(new Action(loadingForm.Close));
+
         }
 
    
@@ -153,24 +158,30 @@ namespace TidyStorage
 
                 if (supplier.GetType() == typeof(FarnellSupplier))
                 {
-                    comboBox1.SelectedItem = unusedPartRows[2] ?? nullItem;
-                    comboBox2.SelectedItem = unusedPartRows[0] ?? nullItem;
-                    comboBox3.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Name.Contains("Pouzdr"))) ?? nullItem;
-                    comboBox4.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Name == "Datasheet")) ?? nullItem;
+                    comboBox1.SelectedItem = unusedPartRows[2] ?? nullItem; //Part name
+                    comboBox2.SelectedItem = unusedPartRows[0] ?? nullItem; //Manufacturer
                 }
 
-                if (supplier.GetType() == typeof(TMESupplier))
+                else if (supplier.GetType() == typeof(TMESupplier))
                 {
-                    
                     comboBox1.SelectedItem = unusedPartRows[1] ?? nullItem;
                     comboBox2.SelectedItem = unusedPartRows[2] ?? nullItem;
-                    comboBox3.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Name.Contains("Pouzdr"))) ?? nullItem;
-                    comboBox4.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Name == "Datasheet")) ?? nullItem;
+                }
+                else if (supplier.GetType() == typeof(GMESupplier))
+                {
+                    comboBox1.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Name.Contains("P/N"))) ?? nullItem;
+                    comboBox2.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Name.Contains("Značka"))) ?? nullItem;
                 }
 
 
-                comboBox12.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Value.Contains("°C") && (x.Value.Contains("ppm") == false) && x.Value[0] == '-')) ?? nullItem;
-                comboBox13.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Value.Contains("°C") && (x.Value.Contains("ppm") == false) && x.Value[0] != '-')) ?? nullItem;
+                comboBox3.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Name.Contains("Pouzdr"))) ?? nullItem;
+
+                comboBox4.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Name == "Datasheet")) ?? nullItem;
+                comboBox5.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Name == "Comment")) ?? nullItem;
+
+
+                comboBox12.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Value.EndsWith("°C") && (x.Value.Contains("ppm") == false) && x.Value[0] == '-')) ?? nullItem;
+                comboBox13.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Value.EndsWith("°C") && (x.Value.Contains("ppm") == false) && x.Value[0] != '-')) ?? nullItem;
 
 
                 FoundPartType = -1;
@@ -197,15 +208,15 @@ namespace TidyStorage
 
                             if ((pvu != "") && (svu != ""))
                             {
-                                var pvuo = unusedPartRows.FirstOrDefault(x => (x.Value.EndsWith(pvu)));
-                                var svuo = unusedPartRows.FirstOrDefault(x => (x.Value.EndsWith(svu)));
+                                var pvuo = unusedPartRows.FirstOrDefault(x => (x.Value.ToLower().EndsWith(pvu.ToLower())));
+                                var svuo = unusedPartRows.FirstOrDefault(x => (x.Value.ToLower().EndsWith(svu.ToLower())));
 
                                 if ((pvuo != null) && (svuo != null))
                                 {
                                     PrimaryValueUnit = pvu;
                                     SecondaryValueUnit = svu;
 
-                                    var tvuo = unusedPartRows.FirstOrDefault(x => (x.Value.Contains(tvu)));
+                                    var tvuo = unusedPartRows.FirstOrDefault(x => (x.Value.ToLower().Contains(tvu.ToLower())));
 
                                     if (tvuo != null) ThirdValueUnit = tvu;
 
@@ -221,24 +232,32 @@ namespace TidyStorage
 
                 if (PrimaryValueUnit != "")
                 {
-                    comboBox6.SelectedItem = unusedPartRows.LastOrDefault(x => (x.Value.EndsWith(PrimaryValueUnit))) ?? nullItem;
+                    comboBox6.SelectedItem = unusedPartRows.LastOrDefault(x => (x.Value.ToLower().EndsWith(PrimaryValueUnit.ToLower()))) ?? nullItem;
                 }
 
                 if (PrimaryValueTolernceUnit != "")
                 {
-                    comboBox7.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Value.EndsWith(PrimaryValueTolernceUnit)) && (x.Value.Length < 5)) ?? nullItem;
+                    comboBox7.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Value.ToLower().EndsWith(PrimaryValueTolernceUnit.ToLower())) && (x.Value.Length < 5)) ?? nullItem;
                 }
 
                 if (SecondaryValueUnit != "")
                 {
-                    comboBox8.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Value.EndsWith(SecondaryValueUnit))) ?? nullItem;
+                    comboBox8.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Value.ToLower().EndsWith(SecondaryValueUnit.ToLower()))) ?? nullItem;
                 }
 
                 if (ThirdValueUnit != "")
                 {
-                    comboBox10.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Value.Contains(ThirdValueUnit))) ?? nullItem;
+                    comboBox10.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Value.ToLower().Contains(ThirdValueUnit.ToLower()))) ?? nullItem;
                 }
 
+            }
+
+
+
+            if (FullyAutomated)
+            {
+                this.DialogResult = DialogResult.OK;
+                this.Close();
             }
 
 
