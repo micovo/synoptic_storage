@@ -23,6 +23,9 @@ namespace TidyStorage
         List<IndexedName> PlaceTypeList;
         List<IndexedName> SupplierList;
 
+
+        public StorageWebImport spi;
+
         Supplier supplier;
 
         bool closed;
@@ -73,7 +76,7 @@ namespace TidyStorage
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void buttonOk_Click(object sender, EventArgs e)
+        public void buttonOk_Click(object sender, EventArgs e)
         {
             if (ProcessFormValues())
             {
@@ -164,11 +167,11 @@ namespace TidyStorage
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void buttonImport_Click(object sender, EventArgs e)
+        public void buttonImport_Click(object sender, EventArgs e)
         {         
             if (PrepareSupplier())
             {
-                StorageWebImport spi = new StorageWebImport(storage, supplier);
+                spi = new StorageWebImport(storage, supplier, (sender == null));
 
                 int SelectedPartType = ProcessTypeComboBox(comboBoxPartType);
 
@@ -209,7 +212,17 @@ namespace TidyStorage
                         }
                         else
                         {
-                            DialogResult dr = MessageBox.Show("Manufacturer \"" + manuf + "\" was not found in database." + System.Environment.NewLine + "Do you want to add new manufacturer?", "New manufacturer", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                            DialogResult dr;
+
+                            if (sender == null)
+                            {
+                                dr = DialogResult.Yes;
+                            }
+                            else
+                            {
+                                dr = MessageBox.Show("Manufacturer \"" + manuf + "\" was not found in database." + System.Environment.NewLine + "Do you want to add new manufacturer?", "New manufacturer", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                            }
+
                             if (dr == DialogResult.Yes)
                             {
                                 var new_id = storage.InsertNewRow(StorageConst.Str_Manufacturer, StorageConst.Str_Manufacturer_name, manuf);
@@ -248,7 +261,17 @@ namespace TidyStorage
                         }
                         else
                         {
-                            DialogResult dr = MessageBox.Show("Package \"" + pack + "\" was not found in database." + System.Environment.NewLine + "Do you want to add new package?", "New package", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                            DialogResult dr;
+
+                            if (sender == null)
+                            {
+                                dr = DialogResult.Yes;
+                            }
+                            else
+                            {
+                                dr = MessageBox.Show("Package \"" + pack + "\" was not found in database." + System.Environment.NewLine + "Do you want to add new package?", "New package", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                            }
+
                             if (dr == DialogResult.Yes)
                             {
                                 var new_id = storage.InsertNewRow(StorageConst.Str_Package, StorageConst.Str_Package_name, pack);
@@ -326,19 +349,22 @@ namespace TidyStorage
             textBoxPrice100pcs.Text = "";
             textBoxPrice1000pcs.Text = "";
 
-            var priceobj = sp.prices.FirstOrDefault(x => (x.amount_max < 10));
-            textBoxPrice1pcs.Text = (priceobj != null) ? priceobj.price.ToString() : "";
+            if ((sp.prices != null) && (sp.prices.Count > 0))
+            {
+                var priceobj = sp.prices.FirstOrDefault(x => (x.amount_max < 10));
+                textBoxPrice1pcs.Text = (priceobj != null) ? priceobj.price.ToString() : "";
 
-            priceobj = sp.prices.LastOrDefault(x => (x.amount_min <= 10));
-            textBoxPrice10pcs.Text = (priceobj != null) ? priceobj.price.ToString() : "";
-
-
-            priceobj = sp.prices.LastOrDefault(x => (x.amount_min <= 100));
-            textBoxPrice100pcs.Text = (priceobj != null) ? priceobj.price.ToString() : "";
+                priceobj = sp.prices.LastOrDefault(x => (x.amount_min <= 10));
+                textBoxPrice10pcs.Text = (priceobj != null) ? priceobj.price.ToString() : "";
 
 
-            priceobj = sp.prices.LastOrDefault(x => (x.amount_min <= 1000));
-            textBoxPrice1000pcs.Text = (priceobj != null) ? priceobj.price.ToString() : "";
+                priceobj = sp.prices.LastOrDefault(x => (x.amount_min <= 100));
+                textBoxPrice100pcs.Text = (priceobj != null) ? priceobj.price.ToString() : "";
+
+
+                priceobj = sp.prices.LastOrDefault(x => (x.amount_min <= 1000));
+                textBoxPrice1000pcs.Text = (priceobj != null) ? priceobj.price.ToString() : "";
+            }
         }
 
 

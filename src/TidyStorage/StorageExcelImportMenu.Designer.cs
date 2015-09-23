@@ -42,15 +42,16 @@
             this.labelStoragePlace = new System.Windows.Forms.Label();
             this.labelStock = new System.Windows.Forms.Label();
             this.labelPartName = new System.Windows.Forms.Label();
+            this.buttonMode = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // buttonCancel
             // 
             this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonCancel.Location = new System.Drawing.Point(12, 182);
+            this.buttonCancel.Location = new System.Drawing.Point(91, 184);
             this.buttonCancel.Name = "buttonCancel";
-            this.buttonCancel.Size = new System.Drawing.Size(255, 38);
+            this.buttonCancel.Size = new System.Drawing.Size(176, 38);
             this.buttonCancel.TabIndex = 0;
             this.buttonCancel.Text = "Cancel Import";
             this.buttonCancel.UseVisualStyleBackColor = true;
@@ -193,11 +194,22 @@
             this.labelPartName.TabIndex = 9;
             this.labelPartName.Text = "labelPartName";
             // 
+            // buttonMode
+            // 
+            this.buttonMode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonMode.Location = new System.Drawing.Point(9, 184);
+            this.buttonMode.Name = "buttonMode";
+            this.buttonMode.Size = new System.Drawing.Size(76, 38);
+            this.buttonMode.TabIndex = 8;
+            this.buttonMode.Text = "Manual";
+            this.buttonMode.UseVisualStyleBackColor = true;
+            // 
             // StorageExcelImportMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(279, 232);
+            this.ClientSize = new System.Drawing.Size(279, 234);
+            this.Controls.Add(this.buttonMode);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.labelCount);
             this.Controls.Add(this.label1);
@@ -230,5 +242,6 @@
         public System.Windows.Forms.Label labelStoragePlace;
         public System.Windows.Forms.Label labelStock;
         public System.Windows.Forms.Label labelPartName;
+        public System.Windows.Forms.Button buttonMode;
     }
 }

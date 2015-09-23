@@ -24,11 +24,12 @@ namespace TidyStorage
 
         bool ImportFinished;
         MainForm mainForm;
-
-        bool ManualMode;
+        
         bool CancelRequested;
 
         StorageExcelImportMenu seim;
+
+        bool AutoMode;
 
         /// <summary>
         /// Constructor
@@ -40,7 +41,8 @@ namespace TidyStorage
             this.mainForm = mainForm;
             ImportFinished = false;
 
-            ManualMode = true;
+            AutoMode = false;
+           
             CancelRequested = false;
         }
 
@@ -48,8 +50,19 @@ namespace TidyStorage
         private void ExcelImportMenuCancel_Click(object sender, EventArgs e)
         {
             CancelRequested = true;
+
         }
 
+
+        private void ExcelImportMenuMode_Click(object sender, EventArgs e)
+        {
+            Button bt = (Button)sender;
+            AutoMode = !AutoMode;
+            bt.Text = (AutoMode) ? "Auto" : "Manual";
+        }
+
+
+        
 
 
         /// <summary>
@@ -82,9 +95,10 @@ namespace TidyStorage
 
                                 seim = new StorageExcelImportMenu(this);
                                 seim.buttonCancel.Click += ExcelImportMenuCancel_Click;
-                                
+                                seim.buttonMode.Click += ExcelImportMenuMode_Click;
 
-                                
+
+
 
                                 string SupplierName;
                                 string SupplierNumber;
@@ -175,11 +189,18 @@ namespace TidyStorage
 
                                             int id = (int)(Int64)dt.Rows[0].ItemArray[0];
 
-                                            dr = MessageBox.Show("Part with the same part name, supplier number or storage place found:" 
-                                                + System.Environment.NewLine + "Do You want to import values?" 
-                                                + System.Environment.NewLine 
-                                                + System.Environment.NewLine + "Press \"Cancel\" to skip this part. Press \"No\" to create new part.", 
-                                                "Similar Part Found", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+                                            if (AutoMode)
+                                            {
+                                                dr = DialogResult.Yes;
+                                            }
+                                            else
+                                            {
+                                                dr = MessageBox.Show("Part with the same part name, supplier number or storage place found:"
+                                                    + System.Environment.NewLine + "Do You want to import values?"
+                                                    + System.Environment.NewLine
+                                                    + System.Environment.NewLine + "Press \"Cancel\" to skip this part. Press \"No\" to create new part.",
+                                                    "Similar Part Found", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+                                            }
 
                                             if (dr == DialogResult.Cancel)
                                             {
@@ -198,9 +219,36 @@ namespace TidyStorage
                                         spf.Center(mainForm);
                                         spf.Left += 100;
 
-                                        while ((CancelRequested == false) && (spf.Closed == false))
+                                        if (AutoMode)
+                                        {
+                                            if ((SupplierName != "") && (SupplierNumber != ""))
+                                            {
+                                                spf.buttonImport_Click(null, null);
+                                            }
+                                            Application.DoEvents();
+                                        }
+
+                                        if (AutoMode)
+                                        {
+                                            spf.buttonOk_Click(null, null);
+                                            Application.DoEvents();
+                                        }
+
+
+                                        while ((CancelRequested == false) && (spf.Closed == false) && (AutoMode == false))
                                         {
                                             Application.DoEvents();
+
+                                            if (AutoMode)
+                                            {
+                                                if ((SupplierName != "") && (SupplierNumber != ""))
+                                                {
+                                                    spf.buttonImport_Click(null, null);
+                                                }
+                                                Application.DoEvents();
+                                                spf.buttonOk_Click(null, null);
+                                                Application.DoEvents();
+                                            }
                                         }
 
                                         if (spf.Closed == false)
