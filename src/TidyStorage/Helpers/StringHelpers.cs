@@ -33,6 +33,7 @@ namespace TidyStorage
         public static string RemoveUnsafeCharacters(string str)
         {
             //TODO
+            str = str.Trim(",'\"".ToCharArray());
 
             return str;
         }
@@ -50,6 +51,8 @@ namespace TidyStorage
 
             foreach (string str in keywords)
             {
+                if (str.Length < 2) continue;
+
                 var str2 = StringHelpers.RemoveUnsafeCharacters(str);
 
                 o += target;

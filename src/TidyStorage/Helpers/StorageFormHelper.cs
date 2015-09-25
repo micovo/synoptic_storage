@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Drawing;
 using System.Threading.Tasks;
+using System.ComponentModel;
 
 namespace TidyStorage
 {
@@ -105,6 +106,10 @@ namespace TidyStorage
                 }
 
                 currentStorage = new Storage(filename);
+
+
+                AddRecentStorage(filename);
+
                 RefreshStorageTable();
                 RefreshListBox();
             }
@@ -165,6 +170,17 @@ namespace TidyStorage
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="filename"></param>
+        void AddRecentStorage(string filename)
+        {
+            RecentStorages.Remove(filename);
+            RecentStorages.Insert(0, filename);
+            SaveRecentFilesList();
+            LoadRecentFilesList();
+        }
 
 
         /// <summary>
@@ -175,11 +191,7 @@ namespace TidyStorage
         {
             if (File.Exists(fileName))
             {
-                RecentStorages.Remove(fileName);
-                RecentStorages.Insert(0, fileName);
-                SaveRecentFilesList();
-                LoadRecentFilesList();
-
+                AddRecentStorage(fileName);
                 currentStorage = new Storage(fileName);
                 RefreshStorageTable();
                 RefreshListBox();
@@ -238,6 +250,20 @@ namespace TidyStorage
         /// </summary>
         public void RefreshStorageTable()
         {
+            int saveRow = 0;
+            int selectedRow = 0;
+            if (dataGridViewStorage.Rows.Count > 0)
+            {
+                saveRow = dataGridViewStorage.FirstDisplayedCell.RowIndex;
+                selectedRow = (dataGridViewStorage.SelectedCells.Count > 0) ? dataGridViewStorage.SelectedCells[0].RowIndex : -1;
+            }
+
+            DataGridViewColumn oldColumn = dataGridViewStorage.SortedColumn;
+            ListSortDirection direction = (dataGridViewStorage.SortOrder == SortOrder.Ascending) ? ListSortDirection.Ascending : ListSortDirection.Descending;
+
+
+
+
             bool curr = (currentStorage != null);
             if (curr)
             {
@@ -292,7 +318,28 @@ namespace TidyStorage
                 TabFilename[0] = "";
             }
 
+            if (oldColumn != null)
+            {
+                DataGridViewColumn newColumn = dataGridViewStorage.Columns[oldColumn.Name.ToString()];
+                dataGridViewStorage.Sort(newColumn, direction);
+                newColumn.HeaderCell.SortGlyphDirection = (direction == ListSortDirection.Ascending) ? SortOrder.Ascending : SortOrder.Descending;
+            }
 
+            if (saveRow > 0 && saveRow < dataGridViewStorage.Rows.Count)
+            {
+                dataGridViewStorage.FirstDisplayedScrollingRowIndex = saveRow;
+            }
+
+
+            dataGridViewStorage.ClearSelection();
+
+            if (selectedRow > 0 && selectedRow < dataGridViewStorage.Rows.Count)
+            {
+                dataGridViewStorage.Rows[selectedRow].Selected = true;
+            }
+
+
+            
 
             saveToolStripButton.Enabled = curr;
             saveToolStripMenuItem.Enabled = curr;
@@ -357,6 +404,9 @@ namespace TidyStorage
 
                     currentStorage.Save(filename);
                     currentStorage = new Storage(filename);
+
+
+                    AddRecentStorage(filename);
                 }
             }
 

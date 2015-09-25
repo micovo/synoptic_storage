@@ -283,6 +283,7 @@ namespace TidyStorage
         {
             if (e.RowIndex >= 0)
             {
+                dataGridViewStorage.Rows[e.RowIndex].Selected = true;
                 int id = (int)(Int64)dataGridViewStorage.Rows[e.RowIndex].Cells[StorageConst.Str_Part_id].Value;
                 string filter = StorageConst.Str_Part_id + "=" + id.ToString();
                 DataTable tb = currentStorage.GetTable(StorageConst.Str_Part, "*", filter);
@@ -602,6 +603,14 @@ namespace TidyStorage
         {
             int i = recentFilesToolStripMenuItem.DropDownItems.IndexOf((ToolStripItem)sender);
             MessageBox.Show(RecentDevices[i]);
+        }
+
+        private void dataGridViewStorage_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                dataGridViewStorage.Rows[e.RowIndex].Selected = true;
+            }
         }
     }
 }

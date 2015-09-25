@@ -200,7 +200,7 @@ namespace TidyStorage
                         manuf = v;
 
 
-                        string cond = StringHelpers.LikeCondition(StorageConst.Str_Manufacturer_name, manuf.Split(' '), "OR");
+                        string cond = StorageConst.Str_Manufacturer_name + " LIKE '" + manuf.Split(' ')[0] + "%'";
 
                         DataTable dt = storage.GetTable(StorageConst.Str_Manufacturer, "*", cond);
 
@@ -249,8 +249,17 @@ namespace TidyStorage
                         int epi = pack.IndexOfAny(("({[").ToCharArray());
                         if (epi > 0) pack = pack.Substring(0, epi).Trim();
 
-                        string cond = StringHelpers.LikeCondition(StorageConst.Str_Package_name, pack.Split(' '), "OR");
+                        /*
+                        List<string> keywords = new List<string>();
+                        keywords.AddRange(pack.Split(' '));
 
+                        keywords.RemoveAll(x => (x.Length < 2) || (x.Contains("SMD")));    
+                        string cond = StringHelpers.LikeCondition(StorageConst.Str_Package_name, keywords.ToArray(), "OR");
+                        */
+
+                        pack = pack.Replace("SMD", "").Trim(", ".ToCharArray());
+
+                        string cond = StorageConst.Str_Package_name + " = '" + pack + "'";
                         DataTable dt = storage.GetTable(StorageConst.Str_Package, "*", cond);
 
                         if ((dt != null) && (dt.Rows.Count > 0))
