@@ -10,19 +10,17 @@ using System.Windows.Forms;
 
 namespace TidyStorage
 {
-    public partial class StorageExcelImportMenu : Form
+    public partial class StorageImportMenu : Form
     {
-        ExcelImporter excelImporter;
         public bool AllowedToClose;
 
-        public StorageExcelImportMenu(ExcelImporter excelImporter)
+        public StorageImportMenu()
         {
-            this.excelImporter = excelImporter;
-            this.AllowedToClose = false;
             InitializeComponent();
+            this.AllowedToClose = false;
         }
 
-        private void StorageExcelImportMenu_FormClosing(object sender, FormClosingEventArgs e)
+        private void StorageImportMenu_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (AllowedToClose == false)
             {

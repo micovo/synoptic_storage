@@ -32,7 +32,46 @@ namespace TidyStorage.Suppliers
 
         public override string GetLink()
         {
-            return "http://eu.mouser.com/Search/Refine.aspx?Keyword=" + part_number;
+             
+
+            string error = "";
+            string responce = "";
+            string url = "http://eu.mouser.com/Search/Refine.aspx?Keyword=" + part_number;
+
+            string output = "";
+
+            using (HttpWebResponse resp = WebClient.Request(url, out error, null))
+            {
+                if (resp != null)
+                {
+                    StreamReader reader = new StreamReader(resp.GetResponseStream());
+
+                    responce = reader.ReadToEnd();
+
+                    HtmlDocument document = new HtmlDocument();
+                    document.LoadHtml(responce);
+
+                    HtmlNodeCollection nodes = document.DocumentNode.SelectNodes("//div[@id='refineSearchDiv']");
+
+                    if (nodes != null)
+                    {
+                        nodes = document.DocumentNode.SelectNodes("//a[contains(@id,'lnkMouserPartNumber')]");
+                        if (nodes != null)
+                        {
+                            HtmlNode hn = nodes[0];
+                            string n = hn.Attributes["href"].Value.Trim('.');
+
+                            output = "http://eu.mouser.com" + n;
+                        }
+                    }
+                    else
+                    {
+                        output = url;
+                    }
+                }
+            }
+
+            return output;
         }
 
         public override SupplierPart DownloadPart()
@@ -98,6 +137,8 @@ namespace TidyStorage.Suppliers
                         {
                             string name = split[0].Trim();
                             string value = split[1].Trim();
+
+                            value = value.Split('\n')[0].Trim();
 
                             part.rows.Add(new PartRow(name, value));
                         }

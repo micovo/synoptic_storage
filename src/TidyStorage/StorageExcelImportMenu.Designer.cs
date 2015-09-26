@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(StorageExcelImportMenu));
             this.buttonCancel = new System.Windows.Forms.Button();
             this.labelCount = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -66,7 +67,6 @@
             this.labelCount.TabIndex = 6;
             this.labelCount.Text = "0 / 0";
             this.labelCount.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            this.labelCount.Click += new System.EventHandler(this.labelCount_Click);
             // 
             // label1
             // 
@@ -215,11 +215,13 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.buttonCancel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "StorageExcelImportMenu";
             this.Text = "Excel Import Menu";
             this.TopMost = true;
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.StorageExcelImportMenu_FormClosing);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);

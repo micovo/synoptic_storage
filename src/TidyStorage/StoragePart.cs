@@ -176,18 +176,18 @@ namespace TidyStorage
         /// 
         /// </summary>
         /// <param name="dt"></param>
-        public StoragePart(DataTable dt)
+        public StoragePart(DataTable dt, int row = 0)
         {
-            Fill(dt);
+            Fill(dt, row);
         }
 
 
-        public void Fill(DataTable dt)
+        public void Fill(DataTable dt, int row = 0)
         {
-            if (dt.Rows.Count > 0)
+            if (dt.Rows.Count > row)
             {
                 this.dt = dt;
-                DataRow dr = dt.Rows[0];
+                DataRow dr = dt.Rows[row];
 
                 this.id_part = GetCellINTEGER(dt, dr, StorageConst.Str_Part_id);
                 this.id_manufacturer = GetCellINTEGER(dt, dr, StorageConst.Str_Manufacturer_id);

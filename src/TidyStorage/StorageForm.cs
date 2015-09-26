@@ -171,7 +171,7 @@ namespace TidyStorage
         {         
             if (PrepareSupplier())
             {
-                spi = new StorageWebImport(storage, supplier, (sender == null));
+                spi = new StorageWebImport(storage, supplier, (sender is ExcelImporter));
 
                 int SelectedPartType = ProcessTypeComboBox(comboBoxPartType);
 
@@ -382,9 +382,9 @@ namespace TidyStorage
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void buttonPriceCheck_Click(object sender, EventArgs e)
+        public void buttonPriceCheck_Click(object sender, EventArgs e)
         {
-            ((Button)sender).Enabled = false;
+            if (sender != null) ((Button)sender).Enabled = false;
 
             if (PrepareSupplier())
             {
@@ -404,7 +404,7 @@ namespace TidyStorage
                 lf.Close();
             }
 
-             ((Button)sender).Enabled = true;
+            if (sender != null) ((Button)sender).Enabled = true;
         }
 
         /// <summary>

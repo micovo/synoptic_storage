@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(StorageForm));
             this.buttonOk = new System.Windows.Forms.Button();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.buttonImport = new System.Windows.Forms.Button();
@@ -174,7 +175,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tableLayoutPanel2.ColumnCount = 3;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 117F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 125F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel2.Controls.Add(this.labelValuePrimary, 0, 1);
@@ -208,11 +209,10 @@
             // 
             // labelValuePrimary
             // 
-            this.labelValuePrimary.AutoSize = true;
             this.labelValuePrimary.Location = new System.Drawing.Point(3, 38);
             this.labelValuePrimary.Margin = new System.Windows.Forms.Padding(3, 8, 3, 0);
             this.labelValuePrimary.Name = "labelValuePrimary";
-            this.labelValuePrimary.Size = new System.Drawing.Size(41, 13);
+            this.labelValuePrimary.Size = new System.Drawing.Size(119, 13);
             this.labelValuePrimary.TabIndex = 2;
             this.labelValuePrimary.Text = "Primary";
             // 
@@ -220,10 +220,10 @@
             // 
             this.textBoxPrimaryValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxPrimaryValue.Location = new System.Drawing.Point(120, 36);
+            this.textBoxPrimaryValue.Location = new System.Drawing.Point(128, 36);
             this.textBoxPrimaryValue.Margin = new System.Windows.Forms.Padding(3, 6, 3, 3);
             this.textBoxPrimaryValue.Name = "textBoxPrimaryValue";
-            this.textBoxPrimaryValue.Size = new System.Drawing.Size(89, 20);
+            this.textBoxPrimaryValue.Size = new System.Drawing.Size(85, 20);
             this.textBoxPrimaryValue.TabIndex = 0;
             this.textBoxPrimaryValue.TextChanged += new System.EventHandler(this.textBoxProductName_TextChanged);
             // 
@@ -231,20 +231,19 @@
             // 
             this.textBoxSecondaryValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxSecondaryValue.Location = new System.Drawing.Point(120, 66);
+            this.textBoxSecondaryValue.Location = new System.Drawing.Point(128, 66);
             this.textBoxSecondaryValue.Margin = new System.Windows.Forms.Padding(3, 6, 3, 3);
             this.textBoxSecondaryValue.Name = "textBoxSecondaryValue";
-            this.textBoxSecondaryValue.Size = new System.Drawing.Size(89, 20);
+            this.textBoxSecondaryValue.Size = new System.Drawing.Size(85, 20);
             this.textBoxSecondaryValue.TabIndex = 2;
             this.textBoxSecondaryValue.TextChanged += new System.EventHandler(this.textBoxProductName_TextChanged);
             // 
             // labelValueSecondary
             // 
-            this.labelValueSecondary.AutoSize = true;
             this.labelValueSecondary.Location = new System.Drawing.Point(3, 68);
             this.labelValueSecondary.Margin = new System.Windows.Forms.Padding(3, 8, 3, 0);
             this.labelValueSecondary.Name = "labelValueSecondary";
-            this.labelValueSecondary.Size = new System.Drawing.Size(58, 13);
+            this.labelValueSecondary.Size = new System.Drawing.Size(119, 13);
             this.labelValueSecondary.TabIndex = 25;
             this.labelValueSecondary.Text = "Secondary";
             // 
@@ -252,10 +251,10 @@
             // 
             this.textBoxThridValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxThridValue.Location = new System.Drawing.Point(120, 96);
+            this.textBoxThridValue.Location = new System.Drawing.Point(128, 96);
             this.textBoxThridValue.Margin = new System.Windows.Forms.Padding(3, 6, 3, 3);
             this.textBoxThridValue.Name = "textBoxThridValue";
-            this.textBoxThridValue.Size = new System.Drawing.Size(89, 20);
+            this.textBoxThridValue.Size = new System.Drawing.Size(85, 20);
             this.textBoxThridValue.TabIndex = 4;
             this.textBoxThridValue.TextChanged += new System.EventHandler(this.textBoxProductName_TextChanged);
             // 
@@ -263,17 +262,17 @@
             // 
             this.textBoxPrimaryTolerance.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxPrimaryTolerance.Location = new System.Drawing.Point(215, 36);
+            this.textBoxPrimaryTolerance.Location = new System.Drawing.Point(219, 36);
             this.textBoxPrimaryTolerance.Margin = new System.Windows.Forms.Padding(3, 6, 3, 3);
             this.textBoxPrimaryTolerance.Name = "textBoxPrimaryTolerance";
-            this.textBoxPrimaryTolerance.Size = new System.Drawing.Size(90, 20);
+            this.textBoxPrimaryTolerance.Size = new System.Drawing.Size(86, 20);
             this.textBoxPrimaryTolerance.TabIndex = 1;
             this.textBoxPrimaryTolerance.TextChanged += new System.EventHandler(this.textBoxProductName_TextChanged);
             // 
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(120, 8);
+            this.label12.Location = new System.Drawing.Point(128, 8);
             this.label12.Margin = new System.Windows.Forms.Padding(3, 8, 3, 0);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(34, 13);
@@ -283,7 +282,7 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(215, 8);
+            this.label14.Location = new System.Drawing.Point(219, 8);
             this.label14.Margin = new System.Windows.Forms.Padding(3, 8, 3, 0);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(55, 13);
@@ -292,18 +291,17 @@
             // 
             // labelValueThird
             // 
-            this.labelValueThird.AutoSize = true;
             this.labelValueThird.Location = new System.Drawing.Point(3, 98);
             this.labelValueThird.Margin = new System.Windows.Forms.Padding(3, 8, 3, 0);
             this.labelValueThird.Name = "labelValueThird";
-            this.labelValueThird.Size = new System.Drawing.Size(31, 13);
+            this.labelValueThird.Size = new System.Drawing.Size(119, 13);
             this.labelValueThird.TabIndex = 27;
             this.labelValueThird.Text = "Third";
             // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(120, 128);
+            this.label8.Location = new System.Drawing.Point(128, 128);
             this.label8.Margin = new System.Windows.Forms.Padding(3, 8, 3, 0);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(24, 13);
@@ -313,7 +311,7 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(215, 128);
+            this.label15.Location = new System.Drawing.Point(219, 128);
             this.label15.Margin = new System.Windows.Forms.Padding(3, 8, 3, 0);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(27, 13);
@@ -334,10 +332,10 @@
             // 
             this.textBoxTempRangeMin.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxTempRangeMin.Location = new System.Drawing.Point(120, 156);
+            this.textBoxTempRangeMin.Location = new System.Drawing.Point(128, 156);
             this.textBoxTempRangeMin.Margin = new System.Windows.Forms.Padding(3, 6, 3, 3);
             this.textBoxTempRangeMin.Name = "textBoxTempRangeMin";
-            this.textBoxTempRangeMin.Size = new System.Drawing.Size(89, 20);
+            this.textBoxTempRangeMin.Size = new System.Drawing.Size(85, 20);
             this.textBoxTempRangeMin.TabIndex = 6;
             this.textBoxTempRangeMin.TextChanged += new System.EventHandler(this.textBoxProductName_TextChanged);
             // 
@@ -345,10 +343,10 @@
             // 
             this.textBoxTempRangeMax.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxTempRangeMax.Location = new System.Drawing.Point(215, 156);
+            this.textBoxTempRangeMax.Location = new System.Drawing.Point(219, 156);
             this.textBoxTempRangeMax.Margin = new System.Windows.Forms.Padding(3, 6, 3, 3);
             this.textBoxTempRangeMax.Name = "textBoxTempRangeMax";
-            this.textBoxTempRangeMax.Size = new System.Drawing.Size(90, 20);
+            this.textBoxTempRangeMax.Size = new System.Drawing.Size(86, 20);
             this.textBoxTempRangeMax.TabIndex = 7;
             this.textBoxTempRangeMax.TextChanged += new System.EventHandler(this.textBoxProductName_TextChanged);
             // 
@@ -356,10 +354,10 @@
             // 
             this.textBoxSecondaryTolerance.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxSecondaryTolerance.Location = new System.Drawing.Point(215, 66);
+            this.textBoxSecondaryTolerance.Location = new System.Drawing.Point(219, 66);
             this.textBoxSecondaryTolerance.Margin = new System.Windows.Forms.Padding(3, 6, 3, 3);
             this.textBoxSecondaryTolerance.Name = "textBoxSecondaryTolerance";
-            this.textBoxSecondaryTolerance.Size = new System.Drawing.Size(90, 20);
+            this.textBoxSecondaryTolerance.Size = new System.Drawing.Size(86, 20);
             this.textBoxSecondaryTolerance.TabIndex = 3;
             this.textBoxSecondaryTolerance.TextChanged += new System.EventHandler(this.textBoxProductName_TextChanged);
             // 
@@ -367,10 +365,10 @@
             // 
             this.textBoxThridTolerance.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxThridTolerance.Location = new System.Drawing.Point(215, 96);
+            this.textBoxThridTolerance.Location = new System.Drawing.Point(219, 96);
             this.textBoxThridTolerance.Margin = new System.Windows.Forms.Padding(3, 6, 3, 3);
             this.textBoxThridTolerance.Name = "textBoxThridTolerance";
-            this.textBoxThridTolerance.Size = new System.Drawing.Size(90, 20);
+            this.textBoxThridTolerance.Size = new System.Drawing.Size(86, 20);
             this.textBoxThridTolerance.TabIndex = 5;
             this.textBoxThridTolerance.TextChanged += new System.EventHandler(this.textBoxProductName_TextChanged);
             // 
@@ -1033,6 +1031,7 @@
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.buttonOk);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "StorageForm";
@@ -1126,7 +1125,6 @@
         private System.Windows.Forms.TextBox textBoxPrice1pcs;
         private System.Windows.Forms.TextBox textBoxPrice100pcs;
         private System.Windows.Forms.NumericUpDown numericUpDownStock;
-        private System.Windows.Forms.Button buttonPriceCheck;
         private System.Windows.Forms.Button buttonApply;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
         private System.Windows.Forms.Button buttonSupplierOpen;
@@ -1137,5 +1135,6 @@
         private System.Windows.Forms.TextBox textBoxSupplierNumber;
         private System.Windows.Forms.Label label26;
         private System.Windows.Forms.TextBox textBoxCurrency;
+        private System.Windows.Forms.Button buttonPriceCheck;
     }
 }

@@ -19,10 +19,6 @@ namespace TidyStorage
     public class ExcelImporter
     {
         Storage storage;
-        LoadingForm loadingForm;
-        Task importTask;
-
-        bool ImportFinished;
         MainForm mainForm;
         
         bool CancelRequested;
@@ -39,7 +35,6 @@ namespace TidyStorage
         {
             this.storage = storage;
             this.mainForm = mainForm;
-            ImportFinished = false;
 
             AutoMode = false;
            
@@ -223,7 +218,7 @@ namespace TidyStorage
                                         {
                                             if ((SupplierName != "") && (SupplierNumber != ""))
                                             {
-                                                spf.buttonImport_Click(null, null);
+                                                spf.buttonImport_Click(this, null);
                                             }
                                             Application.DoEvents();
                                         }
@@ -243,7 +238,7 @@ namespace TidyStorage
                                             {
                                                 if ((SupplierName != "") && (SupplierNumber != ""))
                                                 {
-                                                    spf.buttonImport_Click(null, null);
+                                                    spf.buttonImport_Click(this, null);
                                                 }
                                                 Application.DoEvents();
                                                 spf.buttonOk_Click(null, null);
@@ -265,6 +260,7 @@ namespace TidyStorage
 
 
                                 seim.labelCount.Text = "Done";
+                                seim.AllowedToClose = true;
                                 seim.Close();
 
                             }
@@ -274,25 +270,6 @@ namespace TidyStorage
                             MessageBox.Show("Import failed. " + ex.Message, "Excel Import Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
                     }
-
-
-                    /*
-                    importTask = new Task(new Action(Worker));
-
-                    importTask.Start();
-
-                    loadingForm = new LoadingForm();
-                    loadingForm.Show();
-                    loadingForm.Center(sei);
-
-                    while (ImportFinished == false)
-                    {
-                        Application.DoEvents();
-                    }
-                   
-                    loadingForm.AllowedToClose = true;
-                    loadingForm.Close();
-                    */
                 }
                 else
                 {
@@ -301,22 +278,7 @@ namespace TidyStorage
             }
         }
 
-
-        /// <summary>
-        /// Import worker. Main import algorhithm implementation.
-        /// </summary>
-        public void Worker()
-        {
-            int test = 10;
-
-            while (test-- > 0)
-            {
-                Thread.Sleep(1000);
-            }
-
-            ImportFinished = true;
-        }
-
+        
 
         /// <summary>
         /// Excel file import/export debugging

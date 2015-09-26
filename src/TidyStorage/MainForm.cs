@@ -32,6 +32,7 @@ namespace TidyStorage
 
 
         ExcelImporter excelImporter;
+        StorageImporter storageImporter;
 
         /// <summary>
         /// 
@@ -607,9 +608,83 @@ namespace TidyStorage
 
         private void dataGridViewStorage_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex >= 0)
+
+        }
+
+
+        private void getPartsOutOfStockToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            listBoxFilterPackage.ClearSelected();
+            listBoxFilterType.ClearSelected();
+
+            part_filter = "stock = 0";
+            part_filter_fulltext = "";
+            RefreshStorageTable();
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void pricecheckSelectedPartsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            List<StoragePart> list = StorageSelectionToList();
+            storageImporter = new StorageImporter(currentStorage, this, list, true);
+            storageImporter.Start();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void pricecheckAllPartsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            List<StoragePart> list = StorageTableToList();
+            storageImporter = new StorageImporter(currentStorage, this, list, true);
+            storageImporter.Start();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void webImportSelectedPartsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            List<StoragePart> list = StorageSelectionToList();
+            storageImporter = new StorageImporter(currentStorage, this, list, false);
+            storageImporter.Start();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void webImportAllPartsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            List<StoragePart> list = StorageTableToList();
+            storageImporter = new StorageImporter(currentStorage, this, list, false);
+            storageImporter.Start();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void selectAllToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (tabControl1.SelectedIndex == 0)
             {
-                dataGridViewStorage.Rows[e.RowIndex].Selected = true;
+                dataGridViewStorage.SelectAll();
+            }
+            else if (tabControl1.SelectedIndex == 1)
+            {
+
             }
         }
     }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
+using System.Data;
 using System.Drawing;
 using System.Threading.Tasks;
 using System.ComponentModel;
@@ -436,6 +437,70 @@ namespace TidyStorage
 
         }
 
+
+
+
+
+        public List<StoragePart> StorageSelectionToList()
+        {
+            List<int> ids = new List<int>();
+
+            List<StoragePart> output = new List<StoragePart>();
+
+
+            foreach (DataGridViewRow row in dataGridViewStorage.SelectedRows)
+            {
+                int id = (int)(Int64)row.Cells[StorageConst.Str_Part_id].Value;
+                ids.Add(id);
+            }
+
+            if (ids.Count > 0)
+            {
+                string filter = StorageConst.Str_Part_id + " IN (";
+                foreach (int i in ids)
+                {
+                    filter += i.ToString() + ",";
+                }
+                
+                filter = filter.Trim(',') + ")";
+                DataTable tb = currentStorage.GetTable(StorageConst.Str_Part, "*", filter);
+
+                int rowindex = 0;
+
+                foreach (int i in ids)
+                {
+                    output.Add(new StoragePart(tb, rowindex++));
+                }
+
+            }
+
+            
+            return output;
+        }
+
+
+        public List<StoragePart> StorageTableToList()
+        {
+            List<StoragePart> output = new List<StoragePart>();
+
+           
+            string filter = part_filter;
+
+            if (part_filter_fulltext != "")
+            {
+                filter += " AND ";
+                filter += part_filter_fulltext;
+            }
+
+            DataTable tb = currentStorage.GetTable(StorageConst.Str_Part, "*", filter);
+
+            int rowindex = 0;
+            for (int i = 0; i < tb.Rows.Count; i++)
+            {
+                output.Add(new StoragePart(tb, rowindex++));
+            }
+            return output;
+        }
 
     }
 }
