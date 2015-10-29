@@ -93,12 +93,12 @@ namespace TidyStorage.Suppliers
 
                     foreach (HtmlNode li_node in rows)
                     {
-                        HtmlNode[] childs = li_node.ChildNodes.ToArray();
+                        string[] spl = li_node.InnerText.Split(':');
 
-                        if (childs[1].Name == "strong")
+                        if (spl.Length == 2)
                         {
-                            string name = childs[1].InnerText.Trim();
-                            string value = li_node.InnerText.Replace(name, "").Trim();
+                            string name = spl[0].Trim();
+                            string value = spl[1].Trim();
 
                             part.rows.Add(new PartRow(name, value));
                         }

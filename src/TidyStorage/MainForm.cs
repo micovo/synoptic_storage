@@ -687,5 +687,15 @@ namespace TidyStorage
 
             }
         }
+
+        private void listBoxFilterType_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            buttonListFilter_Click(null, null);
+        }
+
+        private void listBoxFilterPackage_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            buttonListFilter_Click(null, null);
+        }
     }
 }

@@ -100,6 +100,7 @@ namespace TidyStorage
             if (ProcessFormValues())
             {
                 SavePart();
+                LoadPartTypeStrings();
             }
             else
             {
@@ -488,9 +489,9 @@ namespace TidyStorage
 
             s = storage.GetPartTypeStrings(i);
 
-            if (s[0] == null) s[0] = "Primary";
-            if (s[1] == null) s[1] = "Secondary";
-            if (s[2] == null) s[2] = "Third";
+            if ((s[0] == null) || (s[0].Length == 0)) s[0] = "Primary Value";
+            if ((s[1] == null) || (s[1].Length == 0)) s[1] = "Secondary Value";
+            if ((s[2] == null) || (s[2].Length == 0)) s[2] = "Third Value";
 
             if (s[0].Length > 17) s[0] = s[0].Substring(0, 17);
             if (s[1].Length > 17) s[1] = s[1].Substring(0, 17);
@@ -1129,5 +1130,6 @@ namespace TidyStorage
             this.Left = form.Left + form.Width / 2 - this.Width / 2;
             this.Top = form.Top + form.Height / 2 - this.Height / 2;
         }
+       
     }
 }

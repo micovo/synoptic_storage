@@ -240,7 +240,7 @@ namespace TidyStorage
                 LoadTable();
 
                 //Scroll to bottom
-                dataGridViewType.FirstDisplayedScrollingRowIndex = dataGridViewType.RowCount - 1;
+                dataGridViewType.FirstDisplayedScrollingRowIndex = 0; //dataGridViewType.RowCount - 1;
             }
         }
 

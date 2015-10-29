@@ -38,7 +38,7 @@ namespace TidyStorage.Suppliers
         /// <returns></returns>
         public override string GetLink()
         {
-            return "http://www.tme.eu/cz/details/" + part_number + "/";
+            return "http://www.tme.eu/cz/details/" + HttpUtility.HtmlEncode(part_number.Trim()) + "/";
         }
 
         public override SupplierPart DownloadPart()
@@ -50,7 +50,7 @@ namespace TidyStorage.Suppliers
             part.order_num = part_number;
 
 
-            string refferer = "http://www.tme.eu/cz/details/"+ HttpUtility.HtmlEncode(part_number.Trim()) + "/";
+            string refferer = GetLink();
             string error = "";
             string responce = "";
             string origin = "http://www.tme.eu";
