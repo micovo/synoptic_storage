@@ -269,15 +269,16 @@ namespace TidyStorage
         private void UpdateMainFormText()
         {
             string text = "TidyStorage";
+
             int ti = tabControl1.SelectedIndex;
 
-            if ((ti >= 0) && (ti < TabFilename.Length))
+            if ((ti >= 0) && (ti < TabFilename.Length) && (TabFilename[ti] != null) && (TabFilename[ti] != ""))
             {
-                var x = TabFilename[ti];
-                if ((x != null) && (x != ""))
-                {
-                    text += " - " + x;
-                }
+                text += " - " + TabFilename[ti];
+            }
+            else
+            {
+                text += " " + Version + " (" + BuildDate + ")";
             }
 
             this.Text = text;

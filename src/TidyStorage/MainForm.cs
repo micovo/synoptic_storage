@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SQLite;
 using System.IO;
+using System.Diagnostics;
 
 namespace TidyStorage
 {
@@ -34,12 +35,27 @@ namespace TidyStorage
         ExcelImporter excelImporter;
         StorageImporter storageImporter;
 
+        public string Version;
+        public string BuildDate;
+
         /// <summary>
         /// 
         /// </summary>
         public MainForm()
         {
             InitializeComponent();
+
+            System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
+            FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+            string version = fvi.FileVersion;
+
+            string builddate = Properties.Resources.BuildDate;
+            int i = builddate.IndexOf(' ');
+            i = i < 0 ? 0 : i;
+            builddate = builddate.Substring(i).Trim(); //Remove name of the day
+
+            this.Version = version;
+            this.BuildDate = builddate;
         }
 
 
