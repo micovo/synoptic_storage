@@ -84,5 +84,11 @@ namespace TidyStorage
             this.Left = form.Left + form.Width / 2 - this.Width / 2;
             this.Top = form.Top + form.Height / 2 - this.Height / 2;
         }
+
+        private void buttonCancel_Click(object sender, EventArgs e)
+        {
+            allowedToClose = true;
+            this.Close();
+        }
     }
 }

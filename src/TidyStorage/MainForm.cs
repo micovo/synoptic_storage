@@ -49,8 +49,7 @@ namespace TidyStorage
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void MainForm_Load(object sender, EventArgs e)
-        {
-            showConsoleToolStripMenuItem.Checked = false; //Commits ChangeConsoleVisibility(false);
+        { 
             RefreshStorageTable();
 
             Rectangle rec = Screen.FromControl(this).Bounds;
@@ -64,6 +63,12 @@ namespace TidyStorage
             LoadRecentFilesList();
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <param name="maxlength"></param>
+        /// <returns></returns>
         private string GetMenuItemText(string filename, int maxlength)
         {
             if (filename.Length > maxlength)
@@ -93,7 +98,7 @@ namespace TidyStorage
                 return filename;
             }
         }
-
+        
         /// <summary>
         /// 
         /// </summary>
@@ -338,6 +343,28 @@ namespace TidyStorage
                 part_filter = part_filter.Trim(',') + ") ";
             }
 
+            s = listBoxStorageTypes.SelectedItems;
+
+
+            if (s.Count > 0)
+            {
+                if (part_filter != "")
+                {
+                    part_filter += " AND ";
+                }
+
+                part_filter += StorageConst.Str_Part + "." + StorageConst.Str_PlaceType_id + " IN (";
+
+                foreach (var ss in s)
+                {
+                    IndexedName i = (IndexedName)ss;
+                    part_filter += i.id.ToString() + ",";
+                }
+
+                part_filter = part_filter.Trim(',') + ") ";
+            }
+
+
             if (part_filter == "") part_filter = "1";
 
             RefreshStorageTable();
@@ -352,6 +379,7 @@ namespace TidyStorage
         private void buttonFulltextClear_Click(object sender, EventArgs e)
         {
             part_filter_fulltext = "";
+            textBoxStorageFulltext.Text = "";
             RefreshStorageTable();
         }
 
@@ -384,6 +412,7 @@ namespace TidyStorage
         {
             listBoxFilterPackage.ClearSelected();
             listBoxFilterType.ClearSelected();
+            listBoxStorageTypes.ClearSelected();
 
             part_filter = "1";
             RefreshStorageTable();
@@ -535,16 +564,6 @@ namespace TidyStorage
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void showConsoleToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
-        {
-            ChangeConsoleVisibility(showConsoleToolStripMenuItem.Checked);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void closeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CloseStorage();
@@ -616,6 +635,7 @@ namespace TidyStorage
         {
             listBoxFilterPackage.ClearSelected();
             listBoxFilterType.ClearSelected();
+            listBoxStorageTypes.ClearSelected();
 
             part_filter = "stock = 0";
             part_filter_fulltext = "";
@@ -696,6 +716,16 @@ namespace TidyStorage
         private void listBoxFilterPackage_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             buttonListFilter_Click(null, null);
+        }
+
+        private void copySelectedPartToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            List<StoragePart> list = StorageSelectionToList();
+
+            if (list.Count > 0)
+            {
+                CreateNewStoragePart(list[0]);
+            }
         }
     }
 }

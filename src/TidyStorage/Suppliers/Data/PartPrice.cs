@@ -22,6 +22,13 @@ namespace TidyStorage.Suppliers.Data
         }
 
 
+        public PartPrice(long amount_min, long amount_max, double price) :  this((int) amount_min, (int) amount_max, (float) price)
+        {
+
+        }
+
+
+
         public PartPrice(int amount_min, float price)
         {
             this.amount_max = 0;

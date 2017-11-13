@@ -28,7 +28,7 @@ namespace TidyStorage.Suppliers
 
         }
 
-        public override string Name { get { return "Mouse"; } }
+        public override string Name { get { return "Mouser"; } }
 
         public override string GetLink()
         {
@@ -36,11 +36,14 @@ namespace TidyStorage.Suppliers
 
             string error = "";
             string responce = "";
-            string url = "http://eu.mouser.com/Search/Refine.aspx?Keyword=" + part_number;
+            string url = "https://cz.mouser.com/Search/Refine.aspx?Keyword=" + part_number;
 
             string output = "";
 
-            using (HttpWebResponse resp = WebClient.Request(url, out error, null))
+            CookieContainer cookies = new CookieContainer();
+
+
+            using (HttpWebResponse resp = WebClient.Request(url, out error, cookies))
             {
                 if (resp != null)
                 {

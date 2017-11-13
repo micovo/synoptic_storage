@@ -16,6 +16,9 @@ namespace TidyStorage.Suppliers.Data
 
         public string currency;
 
+        //PriceListMaster variable
+        public string supplier;
+
         public float GetPrice(int amount)
         {
             if ((prices != null) && (prices.Count > 0))

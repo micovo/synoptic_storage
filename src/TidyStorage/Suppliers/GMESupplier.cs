@@ -232,6 +232,13 @@ namespace TidyStorage.Suppliers
                     }
                 }
 
+
+                for (int i = 0; i < part.prices.Count - 1; i++)
+                {
+                    part.prices[i].amount_max = part.prices[i+1].amount_min - 1;
+                }
+
+                part.prices[part.prices.Count - 1].amount_max = int.MaxValue;
             }
         }
     }

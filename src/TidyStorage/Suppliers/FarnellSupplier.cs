@@ -81,15 +81,15 @@ namespace TidyStorage.Suppliers
         private void GetProductDescriptors(HtmlDocument document)
         {
             part.rows = new List<PartRow>();
-            HtmlNodeCollection hnc = document.DocumentNode.SelectNodes("//div[@id='productDescription']");
+            HtmlNodeCollection hnc = document.DocumentNode.SelectNodes("//div[@class='productDescription packaging']");
 
             if (hnc != null)
             {
-                var ul_node = hnc.First().ChildNodes.First(x => (x.Name == "ul"));
+                var ul_node = hnc.First().ChildNodes.FirstOrDefault(x => (x.Name == "dl"));
 
                 if (ul_node != null)
                 {
-                    HtmlNode[] rows = ul_node.ChildNodes.Where(x => (x.Name == "li")).ToArray();
+                    HtmlNode[] rows = ul_node.ChildNodes.Where(x => (x.Name == "div")).ToArray();
 
                     foreach (HtmlNode li_node in rows)
                     {
@@ -98,9 +98,12 @@ namespace TidyStorage.Suppliers
                         if (spl.Length == 2)
                         {
                             string name = spl[0].Trim();
-                            string value = spl[1].Trim();
+                            string value = spl[1].Trim().Split('\n')[0].Trim();
 
-                            part.rows.Add(new PartRow(name, value));
+                            if ((name.Length > 0)&& (value.Length > 0))
+                            {
+                                part.rows.Add(new PartRow(name, value));
+                            }
                         }
                     }
                 }
@@ -117,9 +120,12 @@ namespace TidyStorage.Suppliers
 
                     if (a_node != null)
                     {
-                        string name = "Datasheet";
-                        string value = a_node.Attributes["href"].Value;
-                        part.rows.Add(new PartRow(name, value));
+                        if (a_node.Attributes["href"] != null)
+                        {
+                            string name = "Datasheet";
+                            string value = a_node.Attributes["href"].Value;
+                            part.rows.Add(new PartRow(name, value));
+                        }
                     }
                 }
             }
@@ -149,6 +155,28 @@ namespace TidyStorage.Suppliers
                     }
                 }
             }
+
+            hnc = document.DocumentNode.SelectNodes("//dl");
+
+            if (hnc != null)
+            {
+                foreach (HtmlNode dl_node in hnc)
+                {
+                    HtmlNode[] dt_nodes = dl_node.ChildNodes.Where(x => (x.Name == "dt")).ToArray();
+                    HtmlNode[] dd_nodes = dl_node.ChildNodes.Where(x => (x.Name == "dd")).ToArray();
+                    
+                    for (int i = 0; i < dt_nodes.Count(); i++)
+                    {
+                        string value = dd_nodes[i].InnerText;
+                        value = value.Replace('µ', 'u');
+                        value = value.Replace('±', ' ');
+                        value = value.Trim();
+
+
+                        part.rows.Add(new PartRow(dt_nodes[i].InnerText.Trim(), value));
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -158,18 +186,20 @@ namespace TidyStorage.Suppliers
         private void GetPrice(HtmlDocument document)
         {
 
-            HtmlNodeCollection hnc = document.DocumentNode.SelectNodes("//table[@class='tableProductDetailPrice pricing ']");
+            HtmlNodeCollection hnc = document.DocumentNode.SelectNodes("//table[@class='tableProductDetailPrice pricing']");
 
             if (hnc != null)
             {
                 HtmlNode hn = hnc.First().ChildNodes.Where(x => x.Name == "tbody").First();
                 part.prices = new List<PartPrice>();
 
+                
+
                 foreach (HtmlNode x in hn.ChildNodes)
                 {
                     if ((x.Name == "tr") && (x.ChildNodes.Count > 0) && (x.ChildNodes[1].Name == "td"))
                     {
-                        if (x.ChildNodes.Count >= 4)
+                        if (x.ChildNodes.Count >= 5)
                         {
                             string tda = HttpUtility.HtmlDecode(x.ChildNodes[1].InnerText).Trim();
                             string tdp = HttpUtility.HtmlDecode(x.ChildNodes[3].InnerText).Trim().Replace(".", ",");
@@ -180,21 +210,19 @@ namespace TidyStorage.Suppliers
 
                                 var aaa = tda.Split('-');
                                 var min = int.Parse(aaa[0].Trim().Trim('+'));
-                                var max = int.MaxValue;
-
-                                if (aaa.Length > 1)
-                                {
-                                    max = int.Parse(aaa[1].Trim());
-                                }
-
 
                                 int ix = tdp.IndexOfAny(("0123456789").ToCharArray());
                                 var price = float.Parse(tdp.Substring(ix, tdp.Length - ix - 3));
 
-                                part.prices.Add(new PartPrice(min, max, price));
+                                part.prices.Add(new PartPrice(min, int.MaxValue, price));
                             }
                         }
                     }
+                }
+ 
+                for (int i = 0; i < part.prices.Count - 1; i++)
+                {
+                    part.prices[i].amount_max = part.prices[i + 1].amount_min - 1;
                 }
             }
         }

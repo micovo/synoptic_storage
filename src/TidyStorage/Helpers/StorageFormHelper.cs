@@ -47,6 +47,42 @@ namespace TidyStorage
             RefreshListBox();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public void CreateNewStoragePart(StoragePart sp)
+        {
+            if (currentStorage != null)
+            {
+                dataGridViewStorage.Enabled = false;
+
+                sp = new StoragePart(sp);
+
+                StorageForm spf = new StorageForm(currentStorage, sp);
+                spf.Show();
+                spf.Center(this);
+
+                while (spf.Closed == false)
+                {
+                    Application.DoEvents();
+                }
+                dataGridViewStorage.Enabled = true;
+
+
+            }
+            else
+            {
+                DialogResult dr = MessageBox.Show("There is no storage. Do tou want to create new Storage?", "Cannot create new Storage part", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                if (dr == DialogResult.Yes)
+                {
+                    CreateNewStorage();
+                }
+            }
+
+            RefreshStorageTable();
+            RefreshListBox();
+        }
+
 
 
         /// <summary>
@@ -170,6 +206,8 @@ namespace TidyStorage
                 OpenStorageFile(ofd.FileName);
             }
         }
+
+
 
         /// <summary>
         /// 
@@ -363,14 +401,17 @@ namespace TidyStorage
             {
                 listBoxFilterType.DataSource = currentStorage.GetStringIdArray(StorageTypeTables.PartType);
                 listBoxFilterPackage.DataSource = currentStorage.GetStringIdArray(StorageTypeTables.Package);
+                listBoxStorageTypes.DataSource = currentStorage.GetStringIdArray(StorageTypeTables.PlaceType);
 
                 listBoxFilterType.ClearSelected();
                 listBoxFilterPackage.ClearSelected();
+                listBoxStorageTypes.ClearSelected();
             }
             else
             {
                 listBoxFilterType.DataSource = null;
                 listBoxFilterPackage.DataSource = null;
+                listBoxStorageTypes.DataSource = null;
             }
 
         }
@@ -413,28 +454,6 @@ namespace TidyStorage
 
             RefreshStorageTable();
             RefreshListBox();
-        }
-
-
-
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="visible"></param>
-        private void ChangeConsoleVisibility(bool visible)
-        {
-            if (visible)
-            {
-                groupBoxConsole.Visible = true;
-                dataGridViewStorage.Height -= groupBoxConsole.Height + 12;
-            }
-            else
-            {
-                groupBoxConsole.Visible = false;
-                dataGridViewStorage.Height += groupBoxConsole.Height + 12;
-            }
-
         }
 
 

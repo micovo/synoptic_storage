@@ -45,8 +45,9 @@ namespace TidyStorage
         public double price_10pcs;
         public double price_100pcs;
         public double price_1000pcs;
+        private StoragePart sp;
 
-        
+
 
 
         /// <summary>
@@ -181,6 +182,40 @@ namespace TidyStorage
             Fill(dt, row);
         }
 
+        public StoragePart(StoragePart sp)
+        {
+             id_manufacturer = sp.id_manufacturer;
+             id_storage_place = sp.id_storage_place;
+             id_part_package = sp.id_part_package;
+             id_part_type = sp.id_part_type;
+
+             id_supplier = sp.id_supplier;
+
+
+             productnumber = sp.productnumber;
+             suppliernumber = sp.suppliernumber;
+             comment = sp.comment;
+             datasheet_url = sp.datasheet_url;
+             currency = sp.currency;
+             storage_place_number = sp.storage_place_number;
+
+
+             temperature_from = sp.temperature_from;
+             temperature_to = sp.temperature_to;
+             stock = sp.stock;
+
+             primary_value = sp.primary_value;
+             primary_tolerance = sp.primary_tolerance;
+             secondary_value = sp.secondary_value;
+             secondary_tolerance = sp.secondary_tolerance;
+             tertiary_value = sp.tertiary_value;
+             tertiary_tolerance = sp.tertiary_tolerance;
+
+             price_1pcs = sp.price_1pcs;
+             price_10pcs = sp.price_10pcs;
+             price_100pcs = sp.price_100pcs;
+             price_1000pcs = sp.price_1000pcs;
+        }
 
         public void Fill(DataTable dt, int row = 0)
         {

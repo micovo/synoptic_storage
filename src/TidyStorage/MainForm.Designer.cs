@@ -88,18 +88,10 @@
             this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.selectAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.showConsoleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator13 = new System.Windows.Forms.ToolStripSeparator();
             this.customizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.storageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.getPartsOutOfStockToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
-            this.pricecheckSelectedPartsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.pricecheckAllPartsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator14 = new System.Windows.Forms.ToolStripSeparator();
-            this.webImportSelectedPartsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.webImportAllPartsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator16 = new System.Windows.Forms.ToolStripSeparator();
             this.editManufacturersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editPartTypesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -121,21 +113,22 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.groupBoxConsole = new System.Windows.Forms.GroupBox();
-            this.textBoxConsole = new System.Windows.Forms.TextBox();
+            this.splitContainerStorage = new System.Windows.Forms.SplitContainer();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.buttonListFilterClear = new System.Windows.Forms.Button();
+            this.buttonListFilter = new System.Windows.Forms.Button();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.listBoxStorageTypes = new System.Windows.Forms.ListBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.listBoxFilterType = new System.Windows.Forms.ListBox();
+            this.listBoxFilterPackage = new System.Windows.Forms.ListBox();
+            this.labelFilterStorage = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.buttonFulltextClear = new System.Windows.Forms.Button();
             this.buttonFulltextFilter = new System.Windows.Forms.Button();
             this.label10 = new System.Windows.Forms.Label();
             this.textBoxStorageFulltext = new System.Windows.Forms.TextBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.buttonListFilterClear = new System.Windows.Forms.Button();
-            this.buttonListFilter = new System.Windows.Forms.Button();
-            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.listBoxFilterType = new System.Windows.Forms.ListBox();
-            this.listBoxFilterPackage = new System.Windows.Forms.ListBox();
             this.dataGridViewStorage = new System.Windows.Forms.DataGridView();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
@@ -174,14 +167,25 @@
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripSeparator18 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.partToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.pricecheckSelectedPartsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pricecheckAllPartsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator14 = new System.Windows.Forms.ToolStripSeparator();
+            this.webImportSelectedPartsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.webImportAllPartsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
+            this.copySelectedPartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
-            this.groupBoxConsole.SuspendLayout();
-            this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainerStorage)).BeginInit();
+            this.splitContainerStorage.Panel1.SuspendLayout();
+            this.splitContainerStorage.Panel2.SuspendLayout();
+            this.splitContainerStorage.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewStorage)).BeginInit();
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -206,6 +210,7 @@
             this.editToolStripMenuItem,
             this.toolsToolStripMenuItem,
             this.storageToolStripMenuItem,
+            this.partToolStripMenuItem1,
             this.deviceToolStripMenuItem2,
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
@@ -690,8 +695,6 @@
             // toolsToolStripMenuItem
             // 
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.showConsoleToolStripMenuItem,
-            this.toolStripSeparator13,
             this.customizeToolStripMenuItem,
             this.optionsToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
@@ -700,47 +703,24 @@
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
             this.toolsToolStripMenuItem.Text = "&Tools";
             // 
-            // showConsoleToolStripMenuItem
-            // 
-            this.showConsoleToolStripMenuItem.Checked = true;
-            this.showConsoleToolStripMenuItem.CheckOnClick = true;
-            this.showConsoleToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.showConsoleToolStripMenuItem.Name = "showConsoleToolStripMenuItem";
-            this.showConsoleToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
-            | System.Windows.Forms.Keys.C)));
-            this.showConsoleToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
-            this.showConsoleToolStripMenuItem.Text = "Show Console";
-            this.showConsoleToolStripMenuItem.CheckedChanged += new System.EventHandler(this.showConsoleToolStripMenuItem_CheckedChanged);
-            // 
-            // toolStripSeparator13
-            // 
-            this.toolStripSeparator13.Name = "toolStripSeparator13";
-            this.toolStripSeparator13.Size = new System.Drawing.Size(220, 6);
-            // 
             // customizeToolStripMenuItem
             // 
             this.customizeToolStripMenuItem.Enabled = false;
             this.customizeToolStripMenuItem.Name = "customizeToolStripMenuItem";
-            this.customizeToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
+            this.customizeToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
             this.customizeToolStripMenuItem.Text = "&Customize";
             // 
             // optionsToolStripMenuItem
             // 
             this.optionsToolStripMenuItem.Enabled = false;
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
+            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
             this.optionsToolStripMenuItem.Text = "&Options";
             // 
             // storageToolStripMenuItem
             // 
             this.storageToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.getPartsOutOfStockToolStripMenuItem1,
-            this.toolStripSeparator11,
-            this.pricecheckSelectedPartsToolStripMenuItem,
-            this.pricecheckAllPartsToolStripMenuItem,
-            this.toolStripSeparator14,
-            this.webImportSelectedPartsToolStripMenuItem,
-            this.webImportAllPartsToolStripMenuItem,
             this.toolStripSeparator16,
             this.editManufacturersToolStripMenuItem,
             this.editPartTypesToolStripMenuItem,
@@ -756,46 +736,6 @@
             this.getPartsOutOfStockToolStripMenuItem1.Size = new System.Drawing.Size(250, 22);
             this.getPartsOutOfStockToolStripMenuItem1.Text = "Get Parts Out of Stock";
             this.getPartsOutOfStockToolStripMenuItem1.Click += new System.EventHandler(this.getPartsOutOfStockToolStripMenuItem1_Click);
-            // 
-            // toolStripSeparator11
-            // 
-            this.toolStripSeparator11.Name = "toolStripSeparator11";
-            this.toolStripSeparator11.Size = new System.Drawing.Size(247, 6);
-            // 
-            // pricecheckSelectedPartsToolStripMenuItem
-            // 
-            this.pricecheckSelectedPartsToolStripMenuItem.Name = "pricecheckSelectedPartsToolStripMenuItem";
-            this.pricecheckSelectedPartsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.K)));
-            this.pricecheckSelectedPartsToolStripMenuItem.Size = new System.Drawing.Size(250, 22);
-            this.pricecheckSelectedPartsToolStripMenuItem.Text = "Pricecheck Selected Parts";
-            this.pricecheckSelectedPartsToolStripMenuItem.Click += new System.EventHandler(this.pricecheckSelectedPartsToolStripMenuItem_Click);
-            // 
-            // pricecheckAllPartsToolStripMenuItem
-            // 
-            this.pricecheckAllPartsToolStripMenuItem.Name = "pricecheckAllPartsToolStripMenuItem";
-            this.pricecheckAllPartsToolStripMenuItem.Size = new System.Drawing.Size(250, 22);
-            this.pricecheckAllPartsToolStripMenuItem.Text = "Pricecheck All Parts";
-            this.pricecheckAllPartsToolStripMenuItem.Click += new System.EventHandler(this.pricecheckAllPartsToolStripMenuItem_Click);
-            // 
-            // toolStripSeparator14
-            // 
-            this.toolStripSeparator14.Name = "toolStripSeparator14";
-            this.toolStripSeparator14.Size = new System.Drawing.Size(247, 6);
-            // 
-            // webImportSelectedPartsToolStripMenuItem
-            // 
-            this.webImportSelectedPartsToolStripMenuItem.Name = "webImportSelectedPartsToolStripMenuItem";
-            this.webImportSelectedPartsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.I)));
-            this.webImportSelectedPartsToolStripMenuItem.Size = new System.Drawing.Size(250, 22);
-            this.webImportSelectedPartsToolStripMenuItem.Text = "Web Import Selected Parts";
-            this.webImportSelectedPartsToolStripMenuItem.Click += new System.EventHandler(this.webImportSelectedPartsToolStripMenuItem_Click);
-            // 
-            // webImportAllPartsToolStripMenuItem
-            // 
-            this.webImportAllPartsToolStripMenuItem.Name = "webImportAllPartsToolStripMenuItem";
-            this.webImportAllPartsToolStripMenuItem.Size = new System.Drawing.Size(250, 22);
-            this.webImportAllPartsToolStripMenuItem.Text = "Web Import All Parts";
-            this.webImportAllPartsToolStripMenuItem.Click += new System.EventHandler(this.webImportAllPartsToolStripMenuItem_Click);
             // 
             // toolStripSeparator16
             // 
@@ -836,13 +776,13 @@
             this.getPartsOutOfStockToolStripMenuItem,
             this.toolStripSeparator12,
             this.generatePricelistToolStripMenuItem});
-            this.deviceToolStripMenuItem2.Enabled = false;
             this.deviceToolStripMenuItem2.Name = "deviceToolStripMenuItem2";
             this.deviceToolStripMenuItem2.Size = new System.Drawing.Size(54, 20);
             this.deviceToolStripMenuItem2.Text = "Device";
             // 
             // getPartsOutOfStockToolStripMenuItem
             // 
+            this.getPartsOutOfStockToolStripMenuItem.Enabled = false;
             this.getPartsOutOfStockToolStripMenuItem.Name = "getPartsOutOfStockToolStripMenuItem";
             this.getPartsOutOfStockToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
             this.getPartsOutOfStockToolStripMenuItem.Text = "Get Parts Out of Stock";
@@ -854,6 +794,7 @@
             // 
             // generatePricelistToolStripMenuItem
             // 
+            this.generatePricelistToolStripMenuItem.Enabled = false;
             this.generatePricelistToolStripMenuItem.Name = "generatePricelistToolStripMenuItem";
             this.generatePricelistToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
             this.generatePricelistToolStripMenuItem.Text = "Generate Pricelist";
@@ -942,42 +883,165 @@
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.groupBoxConsole);
-            this.tabPage1.Controls.Add(this.groupBox2);
-            this.tabPage1.Controls.Add(this.groupBox1);
-            this.tabPage1.Controls.Add(this.dataGridViewStorage);
+            this.tabPage1.Controls.Add(this.splitContainerStorage);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(10);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(7);
             this.tabPage1.Size = new System.Drawing.Size(1156, 525);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Storage";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // groupBoxConsole
+            // splitContainerStorage
             // 
-            this.groupBoxConsole.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBoxConsole.Controls.Add(this.textBoxConsole);
-            this.groupBoxConsole.Location = new System.Drawing.Point(10, 385);
-            this.groupBoxConsole.Name = "groupBoxConsole";
-            this.groupBoxConsole.Padding = new System.Windows.Forms.Padding(10);
-            this.groupBoxConsole.Size = new System.Drawing.Size(1134, 128);
-            this.groupBoxConsole.TabIndex = 4;
-            this.groupBoxConsole.TabStop = false;
-            this.groupBoxConsole.Text = "Console";
+            this.splitContainerStorage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainerStorage.Location = new System.Drawing.Point(7, 7);
+            this.splitContainerStorage.Name = "splitContainerStorage";
+            this.splitContainerStorage.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
-            // textBoxConsole
+            // splitContainerStorage.Panel1
             // 
-            this.textBoxConsole.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxConsole.Location = new System.Drawing.Point(13, 26);
-            this.textBoxConsole.Multiline = true;
-            this.textBoxConsole.Name = "textBoxConsole";
-            this.textBoxConsole.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBoxConsole.Size = new System.Drawing.Size(1108, 89);
-            this.textBoxConsole.TabIndex = 0;
+            this.splitContainerStorage.Panel1.Controls.Add(this.groupBox1);
+            this.splitContainerStorage.Panel1.Controls.Add(this.groupBox2);
+            this.splitContainerStorage.Panel1MinSize = 140;
+            // 
+            // splitContainerStorage.Panel2
+            // 
+            this.splitContainerStorage.Panel2.Controls.Add(this.dataGridViewStorage);
+            this.splitContainerStorage.Panel2MinSize = 200;
+            this.splitContainerStorage.Size = new System.Drawing.Size(1142, 511);
+            this.splitContainerStorage.SplitterDistance = 141;
+            this.splitContainerStorage.TabIndex = 4;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.groupBox1.Controls.Add(this.buttonListFilterClear);
+            this.groupBox1.Controls.Add(this.buttonListFilter);
+            this.groupBox1.Controls.Add(this.tableLayoutPanel2);
+            this.groupBox1.Location = new System.Drawing.Point(3, 7);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(10);
+            this.groupBox1.Size = new System.Drawing.Size(715, 131);
+            this.groupBox1.TabIndex = 2;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Filter";
+            // 
+            // buttonListFilterClear
+            // 
+            this.buttonListFilterClear.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonListFilterClear.Location = new System.Drawing.Point(638, 20);
+            this.buttonListFilterClear.Name = "buttonListFilterClear";
+            this.buttonListFilterClear.Size = new System.Drawing.Size(64, 38);
+            this.buttonListFilterClear.TabIndex = 3;
+            this.buttonListFilterClear.Text = "Clear";
+            this.buttonListFilterClear.UseVisualStyleBackColor = true;
+            this.buttonListFilterClear.Click += new System.EventHandler(this.buttonListFilterClear_Click);
+            // 
+            // buttonListFilter
+            // 
+            this.buttonListFilter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonListFilter.Location = new System.Drawing.Point(638, 64);
+            this.buttonListFilter.Name = "buttonListFilter";
+            this.buttonListFilter.Size = new System.Drawing.Size(64, 48);
+            this.buttonListFilter.TabIndex = 2;
+            this.buttonListFilter.Text = "Filter";
+            this.buttonListFilter.UseVisualStyleBackColor = true;
+            this.buttonListFilter.Click += new System.EventHandler(this.buttonListFilter_Click);
+            // 
+            // tableLayoutPanel2
+            // 
+            this.tableLayoutPanel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.tableLayoutPanel2.ColumnCount = 3;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 187F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel2.Controls.Add(this.listBoxStorageTypes, 2, 1);
+            this.tableLayoutPanel2.Controls.Add(this.label9, 1, 0);
+            this.tableLayoutPanel2.Controls.Add(this.label8, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.listBoxFilterType, 0, 1);
+            this.tableLayoutPanel2.Controls.Add(this.listBoxFilterPackage, 1, 1);
+            this.tableLayoutPanel2.Controls.Add(this.labelFilterStorage, 2, 0);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(13, 20);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 2;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(619, 98);
+            this.tableLayoutPanel2.TabIndex = 1;
+            // 
+            // listBoxStorageTypes
+            // 
+            this.listBoxStorageTypes.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listBoxStorageTypes.FormattingEnabled = true;
+            this.listBoxStorageTypes.Location = new System.Drawing.Point(435, 23);
+            this.listBoxStorageTypes.Name = "listBoxStorageTypes";
+            this.listBoxStorageTypes.ScrollAlwaysVisible = true;
+            this.listBoxStorageTypes.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
+            this.listBoxStorageTypes.Size = new System.Drawing.Size(181, 72);
+            this.listBoxStorageTypes.TabIndex = 6;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label9.Location = new System.Drawing.Point(219, 0);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(210, 20);
+            this.label9.TabIndex = 1;
+            this.label9.Text = "Filter Package";
+            this.label9.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label8.Location = new System.Drawing.Point(3, 0);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(210, 20);
+            this.label8.TabIndex = 0;
+            this.label8.Text = "Filter Type";
+            this.label8.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            // 
+            // listBoxFilterType
+            // 
+            this.listBoxFilterType.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listBoxFilterType.FormattingEnabled = true;
+            this.listBoxFilterType.Location = new System.Drawing.Point(3, 23);
+            this.listBoxFilterType.Name = "listBoxFilterType";
+            this.listBoxFilterType.ScrollAlwaysVisible = true;
+            this.listBoxFilterType.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
+            this.listBoxFilterType.Size = new System.Drawing.Size(210, 72);
+            this.listBoxFilterType.TabIndex = 2;
+            this.listBoxFilterType.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listBoxFilterType_MouseDoubleClick);
+            // 
+            // listBoxFilterPackage
+            // 
+            this.listBoxFilterPackage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listBoxFilterPackage.FormattingEnabled = true;
+            this.listBoxFilterPackage.Location = new System.Drawing.Point(219, 23);
+            this.listBoxFilterPackage.Name = "listBoxFilterPackage";
+            this.listBoxFilterPackage.ScrollAlwaysVisible = true;
+            this.listBoxFilterPackage.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
+            this.listBoxFilterPackage.Size = new System.Drawing.Size(210, 72);
+            this.listBoxFilterPackage.TabIndex = 3;
+            this.listBoxFilterPackage.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listBoxFilterPackage_MouseDoubleClick);
+            // 
+            // labelFilterStorage
+            // 
+            this.labelFilterStorage.AutoSize = true;
+            this.labelFilterStorage.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.labelFilterStorage.Location = new System.Drawing.Point(435, 7);
+            this.labelFilterStorage.Name = "labelFilterStorage";
+            this.labelFilterStorage.Size = new System.Drawing.Size(181, 13);
+            this.labelFilterStorage.TabIndex = 5;
+            this.labelFilterStorage.Text = "Storage Type";
             // 
             // groupBox2
             // 
@@ -985,10 +1049,10 @@
             this.groupBox2.Controls.Add(this.buttonFulltextFilter);
             this.groupBox2.Controls.Add(this.label10);
             this.groupBox2.Controls.Add(this.textBoxStorageFulltext);
-            this.groupBox2.Location = new System.Drawing.Point(615, 12);
+            this.groupBox2.Location = new System.Drawing.Point(724, 7);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(10);
-            this.groupBox2.Size = new System.Drawing.Size(241, 128);
+            this.groupBox2.Size = new System.Drawing.Size(241, 130);
             this.groupBox2.TabIndex = 3;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Fulltext Search";
@@ -1029,107 +1093,6 @@
             this.textBoxStorageFulltext.Size = new System.Drawing.Size(215, 20);
             this.textBoxStorageFulltext.TabIndex = 0;
             // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.buttonListFilterClear);
-            this.groupBox1.Controls.Add(this.buttonListFilter);
-            this.groupBox1.Controls.Add(this.tableLayoutPanel2);
-            this.groupBox1.Location = new System.Drawing.Point(10, 12);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(10);
-            this.groupBox1.Size = new System.Drawing.Size(594, 128);
-            this.groupBox1.TabIndex = 2;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Filter";
-            // 
-            // buttonListFilterClear
-            // 
-            this.buttonListFilterClear.Location = new System.Drawing.Point(517, 20);
-            this.buttonListFilterClear.Name = "buttonListFilterClear";
-            this.buttonListFilterClear.Size = new System.Drawing.Size(64, 38);
-            this.buttonListFilterClear.TabIndex = 3;
-            this.buttonListFilterClear.Text = "Clear";
-            this.buttonListFilterClear.UseVisualStyleBackColor = true;
-            this.buttonListFilterClear.Click += new System.EventHandler(this.buttonListFilterClear_Click);
-            // 
-            // buttonListFilter
-            // 
-            this.buttonListFilter.Location = new System.Drawing.Point(517, 64);
-            this.buttonListFilter.Name = "buttonListFilter";
-            this.buttonListFilter.Size = new System.Drawing.Size(64, 48);
-            this.buttonListFilter.TabIndex = 2;
-            this.buttonListFilter.Text = "Filter";
-            this.buttonListFilter.UseVisualStyleBackColor = true;
-            this.buttonListFilter.Click += new System.EventHandler(this.buttonListFilter_Click);
-            // 
-            // tableLayoutPanel2
-            // 
-            this.tableLayoutPanel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.tableLayoutPanel2.ColumnCount = 2;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.64457F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 49.35543F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel2.Controls.Add(this.label9, 1, 0);
-            this.tableLayoutPanel2.Controls.Add(this.label8, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.listBoxFilterType, 0, 1);
-            this.tableLayoutPanel2.Controls.Add(this.listBoxFilterPackage, 1, 1);
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(13, 20);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 2;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(495, 95);
-            this.tableLayoutPanel2.TabIndex = 1;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label9.Location = new System.Drawing.Point(253, 0);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(239, 20);
-            this.label9.TabIndex = 1;
-            this.label9.Text = "Filter Package";
-            this.label9.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label8.Location = new System.Drawing.Point(3, 0);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(244, 20);
-            this.label8.TabIndex = 0;
-            this.label8.Text = "Filter Type";
-            this.label8.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
-            // 
-            // listBoxFilterType
-            // 
-            this.listBoxFilterType.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listBoxFilterType.FormattingEnabled = true;
-            this.listBoxFilterType.Location = new System.Drawing.Point(3, 23);
-            this.listBoxFilterType.Name = "listBoxFilterType";
-            this.listBoxFilterType.ScrollAlwaysVisible = true;
-            this.listBoxFilterType.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
-            this.listBoxFilterType.Size = new System.Drawing.Size(244, 69);
-            this.listBoxFilterType.TabIndex = 2;
-            this.listBoxFilterType.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listBoxFilterType_MouseDoubleClick);
-            // 
-            // listBoxFilterPackage
-            // 
-            this.listBoxFilterPackage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listBoxFilterPackage.FormattingEnabled = true;
-            this.listBoxFilterPackage.Location = new System.Drawing.Point(253, 23);
-            this.listBoxFilterPackage.Name = "listBoxFilterPackage";
-            this.listBoxFilterPackage.ScrollAlwaysVisible = true;
-            this.listBoxFilterPackage.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
-            this.listBoxFilterPackage.Size = new System.Drawing.Size(239, 69);
-            this.listBoxFilterPackage.TabIndex = 3;
-            this.listBoxFilterPackage.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listBoxFilterPackage_MouseDoubleClick);
-            // 
             // dataGridViewStorage
             // 
             this.dataGridViewStorage.AllowUserToAddRows = false;
@@ -1138,10 +1101,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridViewStorage.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
             this.dataGridViewStorage.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewStorage.Location = new System.Drawing.Point(10, 151);
+            this.dataGridViewStorage.Location = new System.Drawing.Point(3, 3);
             this.dataGridViewStorage.Name = "dataGridViewStorage";
             this.dataGridViewStorage.ReadOnly = true;
-            this.dataGridViewStorage.Size = new System.Drawing.Size(1134, 223);
+            this.dataGridViewStorage.Size = new System.Drawing.Size(1136, 360);
             this.dataGridViewStorage.TabIndex = 0;
             this.dataGridViewStorage.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewStorage_CellClick);
             this.dataGridViewStorage.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewStorage_CellDoubleClick);
@@ -1565,6 +1528,67 @@
             this.toolStripMenuItem1.Size = new System.Drawing.Size(28, 25);
             this.toolStripMenuItem1.Text = "Print Pre&view";
             // 
+            // partToolStripMenuItem1
+            // 
+            this.partToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.pricecheckSelectedPartsToolStripMenuItem,
+            this.pricecheckAllPartsToolStripMenuItem,
+            this.toolStripSeparator14,
+            this.webImportSelectedPartsToolStripMenuItem,
+            this.webImportAllPartsToolStripMenuItem,
+            this.toolStripSeparator11,
+            this.copySelectedPartToolStripMenuItem});
+            this.partToolStripMenuItem1.Name = "partToolStripMenuItem1";
+            this.partToolStripMenuItem1.Size = new System.Drawing.Size(40, 20);
+            this.partToolStripMenuItem1.Text = "Part";
+            // 
+            // pricecheckSelectedPartsToolStripMenuItem
+            // 
+            this.pricecheckSelectedPartsToolStripMenuItem.Name = "pricecheckSelectedPartsToolStripMenuItem";
+            this.pricecheckSelectedPartsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.K)));
+            this.pricecheckSelectedPartsToolStripMenuItem.Size = new System.Drawing.Size(250, 22);
+            this.pricecheckSelectedPartsToolStripMenuItem.Text = "Pricecheck Selected Parts";
+            this.pricecheckSelectedPartsToolStripMenuItem.Click += new System.EventHandler(this.pricecheckSelectedPartsToolStripMenuItem_Click);
+            // 
+            // pricecheckAllPartsToolStripMenuItem
+            // 
+            this.pricecheckAllPartsToolStripMenuItem.Name = "pricecheckAllPartsToolStripMenuItem";
+            this.pricecheckAllPartsToolStripMenuItem.Size = new System.Drawing.Size(250, 22);
+            this.pricecheckAllPartsToolStripMenuItem.Text = "Pricecheck All Parts";
+            this.pricecheckAllPartsToolStripMenuItem.Click += new System.EventHandler(this.pricecheckAllPartsToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator14
+            // 
+            this.toolStripSeparator14.Name = "toolStripSeparator14";
+            this.toolStripSeparator14.Size = new System.Drawing.Size(247, 6);
+            // 
+            // webImportSelectedPartsToolStripMenuItem
+            // 
+            this.webImportSelectedPartsToolStripMenuItem.Name = "webImportSelectedPartsToolStripMenuItem";
+            this.webImportSelectedPartsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.I)));
+            this.webImportSelectedPartsToolStripMenuItem.Size = new System.Drawing.Size(250, 22);
+            this.webImportSelectedPartsToolStripMenuItem.Text = "Web Import Selected Parts";
+            this.webImportSelectedPartsToolStripMenuItem.Click += new System.EventHandler(this.webImportSelectedPartsToolStripMenuItem_Click);
+            // 
+            // webImportAllPartsToolStripMenuItem
+            // 
+            this.webImportAllPartsToolStripMenuItem.Name = "webImportAllPartsToolStripMenuItem";
+            this.webImportAllPartsToolStripMenuItem.Size = new System.Drawing.Size(250, 22);
+            this.webImportAllPartsToolStripMenuItem.Text = "Web Import All Parts";
+            this.webImportAllPartsToolStripMenuItem.Click += new System.EventHandler(this.webImportAllPartsToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator11
+            // 
+            this.toolStripSeparator11.Name = "toolStripSeparator11";
+            this.toolStripSeparator11.Size = new System.Drawing.Size(247, 6);
+            // 
+            // copySelectedPartToolStripMenuItem
+            // 
+            this.copySelectedPartToolStripMenuItem.Name = "copySelectedPartToolStripMenuItem";
+            this.copySelectedPartToolStripMenuItem.Size = new System.Drawing.Size(250, 22);
+            this.copySelectedPartToolStripMenuItem.Text = "Copy Selected Part";
+            this.copySelectedPartToolStripMenuItem.Click += new System.EventHandler(this.copySelectedPartToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1587,13 +1611,15 @@
             this.panel1.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
-            this.groupBoxConsole.ResumeLayout(false);
-            this.groupBoxConsole.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
+            this.splitContainerStorage.Panel1.ResumeLayout(false);
+            this.splitContainerStorage.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainerStorage)).EndInit();
+            this.splitContainerStorage.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewStorage)).EndInit();
             this.tabPage2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
@@ -1655,9 +1681,6 @@
         private System.Windows.Forms.ToolStripMenuItem deviceToolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem getPartsOutOfStockToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem getPartsOutOfStockToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator11;
-        private System.Windows.Forms.ToolStripMenuItem pricecheckSelectedPartsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem pricecheckAllPartsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem generatePricelistToolStripMenuItem;
         private System.Drawing.Printing.PrintDocument printDocument1;
         private System.Windows.Forms.Panel panel1;
@@ -1715,17 +1738,12 @@
         private System.Windows.Forms.Button buttonFulltextFilter;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TextBox textBoxStorageFulltext;
-        private System.Windows.Forms.GroupBox groupBoxConsole;
-        private System.Windows.Forms.TextBox textBoxConsole;
-        private System.Windows.Forms.ToolStripMenuItem showConsoleToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator13;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem3;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem4;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem5;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem6;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem7;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator14;
         private System.Windows.Forms.ToolStripMenuItem editManufacturersToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem editPartTypesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem editPackagesToolStripMenuItem;
@@ -1751,11 +1769,20 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem21;
         private System.Windows.Forms.ToolStripMenuItem storageTableToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem selectedPartsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem webImportSelectedPartsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem webImportAllPartsToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator16;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator18;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.SplitContainer splitContainerStorage;
+        private System.Windows.Forms.Label labelFilterStorage;
+        private System.Windows.Forms.ListBox listBoxStorageTypes;
+        private System.Windows.Forms.ToolStripMenuItem partToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem pricecheckSelectedPartsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem pricecheckAllPartsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator14;
+        private System.Windows.Forms.ToolStripMenuItem webImportSelectedPartsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem webImportAllPartsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator11;
+        private System.Windows.Forms.ToolStripMenuItem copySelectedPartToolStripMenuItem;
     }
 }
 

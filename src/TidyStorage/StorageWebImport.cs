@@ -153,7 +153,7 @@ namespace TidyStorage
 
 
 
-            if (unusedPartRows.Count > 0)
+            if (unusedPartRows.Count > 3)
             {
 
                 comboBox3.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Name.Contains("Pouzdr"))) ?? nullItem;
@@ -163,7 +163,7 @@ namespace TidyStorage
 
                 if (supplier.GetType() == typeof(FarnellSupplier))
                 {
-                    comboBox1.SelectedItem = unusedPartRows[2] ?? nullItem; //Part name
+                    comboBox1.SelectedItem = unusedPartRows[1] ?? nullItem; //Part name
                     comboBox2.SelectedItem = unusedPartRows[0] ?? nullItem; //Manufacturer
                 }
 

@@ -57,6 +57,12 @@ namespace TidyStorage.Suppliers
             return true;
         }
 
+
+        static public bool AcceptAllCertifications(object sender, System.Security.Cryptography.X509Certificates.X509Certificate certification, System.Security.Cryptography.X509Certificates.X509Chain chain, System.Net.Security.SslPolicyErrors sslPolicyErrors)
+        {
+            return true;
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -70,8 +76,11 @@ namespace TidyStorage.Suppliers
 
             errorresponce = "";
 
-            request.UnsafeAuthenticatedConnectionSharing = true;
+            //request.UnsafeAuthenticatedConnectionSharing = true;
             request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback(AcceptAllCertifications);
 
             try
             {
@@ -136,7 +145,11 @@ namespace TidyStorage.Suppliers
 
 
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
         public static HttpWebResponse Request(string url)
         {
             string error = "";
@@ -151,17 +164,23 @@ namespace TidyStorage.Suppliers
         /// <returns></returns>
         public static HttpWebResponse Request(string url, out string error, CookieContainer cookieContainer = null, NameValueCollection postdata = null, string host = "", string referer = "", string origin = "")
         {
+            if (url == "")
+            {
+                error = "No url address was provided";
+                return null;
+            }
             HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
 
             error = "";
 
             request.Method = (postdata == null) ? "GET" : "POST";
-            request.Timeout = 15000;
+            request.Timeout = 20000;
             request.KeepAlive = false;
-            request.Accept = "*/*";
-            request.ContentType = "application/x-www-form-urlencoded";
-            request.UserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:20.0) Gecko/20100101 Firefox/20.1";
+            request.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8";
+            request.Headers.Add("accept-language", "en-US");
+            request.UserAgent = "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36";
             request.Proxy = null;
+            request.Headers.Add("Upgrade-Insecure-Requests", "1");
 
             if (host != "") request.Host = host;
             if (referer != "") request.Referer = referer;
