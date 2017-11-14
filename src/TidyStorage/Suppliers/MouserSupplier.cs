@@ -42,7 +42,7 @@ namespace TidyStorage.Suppliers
         {
             string error = "";
             string responce = "";
-            string url = "https://cz.mouser.com/Search/Refine.aspx?Keyword=" + part_number;
+            string url = "https://eu.mouser.com/Search/Refine.aspx?Keyword=" + part_number;
 
             string output = "";
 
