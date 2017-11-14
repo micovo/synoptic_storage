@@ -19,6 +19,11 @@ namespace TidyStorage.Suppliers.Data
         //PriceListMaster variable
         public string supplier;
 
+        /// <summary>
+        /// Get part price based on the requested amount.
+        /// </summary>
+        /// <param name="amount">Count of parts</param>
+        /// <returns>Price for the requested amount of parts</returns>
         public float GetPrice(int amount)
         {
             if ((prices != null) && (prices.Count > 0))

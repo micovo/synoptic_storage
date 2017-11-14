@@ -15,6 +15,10 @@ namespace TidyStorage
         ExcelImporter excelImporter;
         public bool AllowedToClose;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="excelImporter"></param>
         public StorageExcelImportMenu(ExcelImporter excelImporter)
         {
             this.excelImporter = excelImporter;
@@ -22,6 +26,11 @@ namespace TidyStorage
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Form close event handler. Close have to enabled by the app.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void StorageExcelImportMenu_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (AllowedToClose == false)

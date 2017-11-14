@@ -9,7 +9,6 @@ namespace TidyStorage
 {
     public class StoragePart
     {
-
         private DataTable dt;
 
         public int id_part;
@@ -20,16 +19,14 @@ namespace TidyStorage
         public int id_part_type;
 
         public int id_supplier;
-
-
+        
         public string productnumber;
         public string suppliernumber;
         public string comment;
         public string datasheet_url;
         public string currency;
         public string storage_place_number;
-
-
+        
         public int temperature_from;
         public int temperature_to;
         public int stock;
@@ -46,10 +43,7 @@ namespace TidyStorage
         public double price_100pcs;
         public double price_1000pcs;
         private StoragePart sp;
-
-
-
-
+        
         /// <summary>
         /// 
         /// </summary>
@@ -64,8 +58,6 @@ namespace TidyStorage
             this.productnumber = "New part";
 
             dt = null;
-
-            
         }
         
         /// <summary>
@@ -83,8 +75,7 @@ namespace TidyStorage
             }
             return -1;
         }
-
-
+        
         /// <summary>
         /// 
         /// </summary>
@@ -129,7 +120,6 @@ namespace TidyStorage
             }
 
             return "";
-            
         }
 
         /// <summary>
@@ -155,11 +145,6 @@ namespace TidyStorage
             return double.NaN;
         }
 
-
-
-
-
-
         /// <summary>
         /// 
         /// </summary>
@@ -171,8 +156,7 @@ namespace TidyStorage
 
             Fill(dt);
         }
-
-
+        
         /// <summary>
         /// 
         /// </summary>
@@ -182,6 +166,10 @@ namespace TidyStorage
             Fill(dt, row);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sp"></param>
         public StoragePart(StoragePart sp)
         {
              id_manufacturer = sp.id_manufacturer;
@@ -217,6 +205,11 @@ namespace TidyStorage
              price_1000pcs = sp.price_1000pcs;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <param name="row"></param>
         public void Fill(DataTable dt, int row = 0)
         {
             if (dt.Rows.Count > row)
@@ -274,8 +267,7 @@ namespace TidyStorage
         public string GetUpdateString()
         {
             string o = "";
-
-
+            
             Type t = typeof(StoragePart);
 
             StringBuilder sb = new StringBuilder();

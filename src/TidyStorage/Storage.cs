@@ -16,24 +16,36 @@ namespace TidyStorage
         public int id;
         public string name;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="name"></param>
         public IndexedName(int id, string name)
         {
             this.id = id;
             this.name = name;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             return name;
         }
     }
-
-
+    
     public class Storage
     {
         private string workfile;
 
         private string filename;
+
+        /// <summary>
+        /// 
+        /// </summary>
         public string Filename
         {
             get
@@ -41,10 +53,11 @@ namespace TidyStorage
                 return filename;
             }
         }
-
-
-
+        
         bool changeCommited;
+        /// <summary>
+        /// 
+        /// </summary>
         public bool ChangeCommited
         {
             get
@@ -53,8 +66,6 @@ namespace TidyStorage
             }
         }
         
-
-
         /// <summary>
         /// Destructor
         /// </summary>
@@ -63,7 +74,10 @@ namespace TidyStorage
            //TODO: Delete database temporary file
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="target_filename"></param>
         public void Save(string target_filename = "")
         {
             if (target_filename == "")
@@ -74,9 +88,7 @@ namespace TidyStorage
             File.Copy(this.workfile, target_filename, true);
             changeCommited = false;
         }
-
-
-
+        
         /// <summary>
         /// 
         /// </summary>
@@ -87,8 +99,7 @@ namespace TidyStorage
             if (sql.Length > 512) sql = sql.Substring(0, 512);
             MessageBox.Show("Failed to commit SQL query:\r\n" + sql + "\r\n\r\n" + ex.Message + "\r\n\r\n" + ex.StackTrace, "Storage database error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
-
-
+        
         /// <summary>
         /// Checks if file exist, new file is created if not. 
         /// Constructor also checks DB tables by comparing SQL create commands stored in SQLite master table.
@@ -186,14 +197,7 @@ namespace TidyStorage
                 throw new Exception("TidyStorage datafile corrupted");
             }
         }
-
-
-
-
-
-
-
-
+        
         /// <summary>
         /// 
         /// </summary>
@@ -239,11 +243,9 @@ namespace TidyStorage
 
             return tab;
         }
-
         
-
         /// <summary>
-        /// 
+        /// Get Data Source for storage data grid view
         /// </summary>
         /// <param name="filter"></param>
         /// <returns></returns>
@@ -311,8 +313,7 @@ currency
 
             return tab;
         }
-
-
+       
         /// <summary>
         /// 
         /// </summary>
@@ -335,8 +336,7 @@ currency
 
             return o;
         }
-
-
+        
         /// <summary>
         /// 
         /// </summary>
@@ -386,8 +386,7 @@ currency
 
             return new_id;
         }
-
-
+        
         /// <summary>
         /// 
         /// </summary>
@@ -425,10 +424,7 @@ currency
             GC.Collect();
 
         }
-
         
-
-
         /// <summary>
         /// 
         /// </summary>
@@ -487,9 +483,7 @@ currency
 
             return lst;
         }
-
-
-
+        
         /// <summary>
         /// 
         /// </summary>
@@ -509,10 +503,7 @@ currency
             DataColumn[] columns = new DataColumn[1];
             columns[0] = tab.Columns[0];
             tab.PrimaryKey = columns;
-
-           
-
-
+            
             foreach (DataRow dr in dt.Rows)
             {
                 bool change_found = false;
@@ -606,17 +597,10 @@ currency
                     con.Close();
                 }
             }
-
-
+            
             return true;
         }
-
-
-
-
         
-
-
         /// <summary>
         /// 
         /// </summary>
@@ -633,7 +617,6 @@ currency
                 try
                 {
                     con.Open();
-
 
                     sql = string.Format("INSERT INTO {0} ({1}) VALUES ('" + name + "')", table, namecolumn);
                     var cmd = new SQLiteCommand(sql, con);
@@ -665,8 +648,7 @@ currency
 
             return new_id;
         }
-
-
+        
         /// <summary>
         /// 
         /// </summary>
@@ -699,14 +681,12 @@ currency
 
             GC.Collect();
         }
-
-
-
-
+        
         /// <summary>
         /// 
         /// </summary>
         /// <param name="column_name"></param>
+        /// <param name="column_value"></param>
         /// <returns></returns>
         public bool ColumnValueIsInUse(string column_name, int column_value)
         {
@@ -747,7 +727,5 @@ currency
 
             return (count > 0);
         }
-
-
     }
 }

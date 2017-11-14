@@ -21,70 +21,45 @@ namespace TidyStorage.Suppliers
 {
     class WebClient
     {
-
         /// <summary>
-        /// 
+        /// Function for the validation of the SSL certificates. This function validates all certificates.
+        /// Pass this function to ServicePointManager.ServerCertificateValidationCallback
         /// </summary>
-        /// <param name="size"></param>
-        /// <returns></returns>
-        public static string RandomString(int size)
-        {
-            Random _rng = new Random();
-            const string _chars = "aaaabcdeeeefffffghiiiiijklmnoooooopqrstuuuuuuuuvwwwwwwwwxyz--------";
-
-            char[] buffer = new char[size];
-
-            for (int i = 0; i < size; i++)
-            {
-                buffer[i] = _chars[_rng.Next(_chars.Length)];
-            }
-            return new string(buffer);
-        }
-
-        
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="certificate"></param>
-        /// <param name="chain"></param>
-        /// <param name="policyErrors"></param>
-        /// <returns></returns>
+        /// <param name="sender">Function sender</param>
+        /// <param name="certificate">Certificated to be checked</param>
+        /// <param name="chain">Certificate chain</param>
+        /// <param name="policyErrors">Certificate policy errors</param>
+        /// <returns>Returns true if certificate is valid. Always true.</returns>
         public static bool ValidateRemoteCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors policyErrors)
         {
-            // allow all certificates
-            return true;
-        }
-
-
-        static public bool AcceptAllCertifications(object sender, System.Security.Cryptography.X509Certificates.X509Certificate certification, System.Security.Cryptography.X509Certificates.X509Chain chain, System.Net.Security.SslPolicyErrors sslPolicyErrors)
-        {
+            //Allow all certificates
             return true;
         }
 
         /// <summary>
-        /// 
+        /// HTTP request and responce wrapper that is trying to act as Chrome web browser.
         /// </summary>
-        /// <param name="request"></param>
-        /// <param name="errorresponce"></param>
-        /// <param name="postdata"></param>
-        /// <returns></returns>
+        /// <param name="request">HTTP request to be processed</param>
+        /// <param name="errorresponce">HTTP error string if the web server returns any error</param>
+        /// <param name="postdata">POST data collection to be sent. GET request is sent if this parameter is null</param>
+        /// <returns>Response of the HTTP server or null if the request failed</returns>
         public static HttpWebResponse GetResponse(HttpWebRequest request, out string errorresponce, NameValueCollection postdata = null)
         {
-            Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en-US");
-
             errorresponce = "";
+
+            //Force US english
+            Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en-US");
 
             //request.UnsafeAuthenticatedConnectionSharing = true;
             request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
 
+            //Enable SSL
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-            ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback(AcceptAllCertifications);
+            ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback(ValidateRemoteCertificate);
 
             try
             {
-
+                //Process POST data if any
                 if (postdata != null)
                 {
                     string dataString = NameValueToHttpString(postdata);
@@ -102,10 +77,9 @@ namespace TidyStorage.Suppliers
             }
             catch (WebException e)
             {
-
-
                 if (e.Status == WebExceptionStatus.ProtocolError)
                 {
+                    //Read error details
                     using (WebResponse resp = e.Response)
                     {
                         using (StreamReader sr = new StreamReader(resp.GetResponseStream()))
@@ -127,29 +101,28 @@ namespace TidyStorage.Suppliers
                 return null;
             }
         }
-
         
         /// <summary>
-        /// 
+        /// Function converts collection of POST data to HTTP encoded form string
         /// </summary>
-        /// <param name="postdata"></param>
-        /// <returns></returns>
+        /// <param name="postdata">Collection of POST data to be converted</param>
+        /// <returns>HTTP encoded string</returns>
         public static string NameValueToHttpString(NameValueCollection postdata)
         {
-            return String.Join("&", Array.ConvertAll(postdata.AllKeys, key =>
-                        String.Format("{0}={1}", HttpUtility.UrlEncode(key), HttpUtility.UrlEncode(postdata[key]))
-                    )
-                    );
+            return String.Join("&", 
+                Array.ConvertAll(postdata.AllKeys, key =>
+                        String.Format("{0}={1}", 
+                            HttpUtility.UrlEncode(key), 
+                            HttpUtility.UrlEncode(postdata[key]))
+                            )
+                        );
         }
         
-
-
-
         /// <summary>
-        /// 
+        /// Simple HTTP request
         /// </summary>
-        /// <param name="url"></param>
-        /// <returns></returns>
+        /// <param name="url">URL to be processed by the HTTP client</param>
+        /// <returns>HTTP response or null in case of error</returns>
         public static HttpWebResponse Request(string url)
         {
             string error = "";
@@ -158,10 +131,16 @@ namespace TidyStorage.Suppliers
         }
 
         /// <summary>
-        /// 
+        /// Comples HTTP request function
         /// </summary>
-        /// <param name="url"></param>
-        /// <returns></returns>
+        /// <param name="url">URL link to be requested</param>
+        /// <param name="error">Error defails in case of request failure</param>
+        /// <param name="cookieContainer">HTTP client cookie container for keeping authentication etc.</param>
+        /// <param name="postdata">POST data collection. GET request is sent if this variable is null.</param>
+        /// <param name="host">Host value used in HTTP request header</param>
+        /// <param name="referer">Referer value used in HTTP request header</param>
+        /// <param name="origin">Origin value used in HTTP request header</param>
+        /// <returns>HTTP response or null in case of error</returns>
         public static HttpWebResponse Request(string url, out string error, CookieContainer cookieContainer = null, NameValueCollection postdata = null, string host = "", string referer = "", string origin = "")
         {
             if (url == "")
@@ -191,31 +170,12 @@ namespace TidyStorage.Suppliers
                 request.Headers.Add("X-Requested-With", "XMLHttpRequest");
             }
 
+            //Create new cookie container if no container was provided
             request.CookieContainer = cookieContainer ?? new CookieContainer();
 
+            //Allow redirection
             request.AllowAutoRedirect = true;
             request.MaximumAutomaticRedirections = 10;
-
-            System.Net.ServicePointManager.Expect100Continue = false;
-
-            return WebClient.GetResponse(request, out error, postdata);
-        }
-
-        
-
-        public static HttpWebResponse RequestExchangeAPI(string url, NameValueCollection postdata, out string error)
-        {
-            HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
-
-            error = "";
-
-            request.Method = "POST";
-            request.Timeout = 15000;
-            request.KeepAlive = false;
-            request.Accept = "*/*";
-            request.ContentType = "application/x-www-form-urlencoded";
-            request.UserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:20.0) Gecko/20100101 Firefox/20.1";
-            request.Proxy = null;
 
             System.Net.ServicePointManager.Expect100Continue = false;
 

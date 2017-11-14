@@ -18,13 +18,10 @@ namespace TidyStorage
         bool ContentChanged = false;
 
         //Database delegates
-
-
         string column_id_name = "";
         string column_name_name = "";
         string table_name = "";
-
-
+        
         const int IdColumnWidth = 60;
 
         /// <summary>
@@ -74,8 +71,7 @@ namespace TidyStorage
                     break;
             }
         }
-
-
+        
         /// <summary>
         /// Load type table content from the SQLite
         /// </summary>
@@ -123,9 +119,6 @@ namespace TidyStorage
                     }
                 }
 
-
-
-
                 ContentChanged = false;
 
                 buttonApply.Enabled = false;
@@ -135,8 +128,7 @@ namespace TidyStorage
                 throw new Exception("No storage available");
             }
         }
-
-
+        
         /// <summary>
         /// Handling OK button
         /// </summary>
@@ -157,8 +149,7 @@ namespace TidyStorage
             }
             
         }
-
-
+        
         /// <summary>
         /// Handling cancel button
         /// </summary>
@@ -171,7 +162,7 @@ namespace TidyStorage
         }
 
         /// <summary>
-        /// 
+        /// Storage part type editor OnLoad event handler
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -179,10 +170,9 @@ namespace TidyStorage
         {
             LoadTable();
         }
-
-
+        
         /// <summary>
-        /// 
+        /// Data grid view row delete handler.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -215,13 +205,20 @@ namespace TidyStorage
                     storage.DeleteRow(table_name, column_id_name, id);
                 }
             }
-
-
         }
 
+        /// <summary>
+        /// Data grid view event after row is deleted by the user.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void dataGridViewType_UserDeletedRow(object sender, DataGridViewRowEventArgs e)
+        {
+            LoadTable();
+        }
 
         /// <summary>
-        /// 
+        /// Create New button click event handler
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -243,11 +240,9 @@ namespace TidyStorage
                 dataGridViewType.FirstDisplayedScrollingRowIndex = 0; //dataGridViewType.RowCount - 1;
             }
         }
-
-
-
+        
         /// <summary>
-        /// 
+        /// Data grid view cell value changed event handler
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -256,19 +251,9 @@ namespace TidyStorage
             ContentChanged = true;
             buttonApply.Enabled = true;
         }
-
+                
         /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void dataGridViewType_UserDeletedRow(object sender, DataGridViewRowEventArgs e)
-        {
-            LoadTable();
-        }
-
-        /// <summary>
-        /// 
+        /// Form resize event handler
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -281,7 +266,7 @@ namespace TidyStorage
         }
 
         /// <summary>
-        /// 
+        /// Apply button click event handler
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>

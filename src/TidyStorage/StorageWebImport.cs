@@ -34,7 +34,12 @@ namespace TidyStorage
 
         bool FullyAutomated;
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="storage"></param>
+        /// <param name="supplier"></param>
+        /// <param name="FullyAutomated"></param>
         public StorageWebImport(Storage storage, Supplier supplier, bool FullyAutomated = false)
         {
             this.FullyAutomated = FullyAutomated;
@@ -86,8 +91,7 @@ namespace TidyStorage
             downloadTask.Start();
             loadingForm.ShowDialog();
         }
-
-
+        
         /// <summary>
         /// 
         /// </summary>
@@ -126,11 +130,7 @@ namespace TidyStorage
             loadingForm.Invoke(new Action(loadingForm.Close));
 
         }
-
-   
         
-
-
         /// <summary>
         /// 
         /// </summary>
@@ -150,12 +150,9 @@ namespace TidyStorage
                     cb.SelectedIndex = 0;
                 }
             }
-
-
-
+            
             if (unusedPartRows.Count > 3)
             {
-
                 comboBox3.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Name.Contains("Pouzdr"))) ?? nullItem;
 
                 comboBox4.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Name == "Datasheet")) ?? nullItem;
@@ -185,12 +182,8 @@ namespace TidyStorage
                     comboBox5.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Name == "Description")) ?? nullItem;
                 }
                 
-
-
-
                 comboBox12.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Value.EndsWith("°C") && (x.Value.Contains("ppm") == false) && x.Value[0] == '-')) ?? nullItem;
                 comboBox13.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Value.EndsWith("°C") && (x.Value.Contains("ppm") == false) && x.Value[0] != '-')) ?? nullItem;
-
 
                 FoundPartType = -1;
 
@@ -235,9 +228,7 @@ namespace TidyStorage
                         }
                     }
                 }
-
-
-
+                
                 if (PrimaryValueUnit != "")
                 {
                     comboBox6.SelectedItem = unusedPartRows.LastOrDefault(x => (x.Value.Length < 10) && (x.Value.ToLower().EndsWith(PrimaryValueUnit.ToLower())) && (x.Name.Contains("Tolerance") == false)) ?? nullItem;
@@ -262,18 +253,13 @@ namespace TidyStorage
                 {
                     comboBox10.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Value.Length < 10) && (x.Value.ToLower().Contains(ThirdValueUnit.ToLower()))) ?? nullItem;
                 }
-
             }
-
-
-
+            
             if (FullyAutomated)
             {
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }
-
-
         }
 
         /// <summary>

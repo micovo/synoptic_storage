@@ -106,7 +106,6 @@
     <Compile Include="AboutBox.Designer.cs">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="AppSettings.cs" />
     <Compile Include="Device.cs" />
     <Compile Include="DeviceAssembly.cs" />
     <Compile Include="DevicePart.cs" />
@@ -245,9 +244,6 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="appicon.ico" />

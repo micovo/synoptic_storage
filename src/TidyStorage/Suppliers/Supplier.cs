@@ -15,8 +15,7 @@ namespace TidyStorage.Suppliers
         {
             get { return part_number; }
         }
-
-
+        
         public Supplier(string part_number)
         {
             this.part_number = part_number;

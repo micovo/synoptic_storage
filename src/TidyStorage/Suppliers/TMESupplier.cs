@@ -26,16 +26,19 @@ namespace TidyStorage.Suppliers
 
         public override string Name { get { return "TME CZ"; } }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="part_number"></param>
         public TMESupplier(string part_number) : base(part_number)
         {
-
+            //Nothing to do here
         }
-
         
         /// <summary>
-        /// /
+        /// Function creates URL for the provided supplier part number
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Part URL</returns>
         public override string GetLink()
         {
             string fixed_part_number = part_number.Replace('/', '_');
@@ -43,6 +46,10 @@ namespace TidyStorage.Suppliers
             return url;
         }
 
+        /// <summary>
+        /// Function downloads part details for the provided supplier part number
+        /// </summary>
+        /// <returns>Supplier Part</returns>
         public override SupplierPart DownloadPart()
         {
             HtmlDocument pricesDocument = null;
@@ -50,8 +57,7 @@ namespace TidyStorage.Suppliers
 
             part = new SupplierPart();
             part.order_num = part_number;
-
-
+            
             string refferer = GetLink();
             string error = "";
             string responce = "";
@@ -117,9 +123,9 @@ namespace TidyStorage.Suppliers
 
 
         /// <summary>
-        /// 
+        /// Parser for reading product details from the prvided HTML document
         /// </summary>
-        /// <param name="document"></param>
+        /// <param name="document">HTML document to be parsed</param>
         private void GetProductDescriptors(HtmlDocument document)
         {
             part.rows = new List<PartRow>();
@@ -202,11 +208,10 @@ namespace TidyStorage.Suppliers
             }
         }
 
-
         /// <summary>
-        /// 
+        /// Parser for reading product prices from the prvided HTML document
         /// </summary>
-        /// <param name="document"></param>
+        /// <param name="document">HTML document to be parsed</param>
         private void GetPrices(HtmlDocument document)
         {
             try

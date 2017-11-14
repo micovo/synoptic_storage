@@ -32,19 +32,19 @@ namespace TidyStorage
         const string Str_SupplierNumber = "Supplier Number";
         const string Str_SupplierName = "Supplier Name";
         const string Str_PartName = "Part Name";
-
-
+        
         string selectedColumn;
-
-
+        
         bool SupplierNameColumnSelected;
         bool SupplierNumberColumnSelected;
         bool StoragePlaceColumnSelected;
         bool StockColumnSelected;
 
-
-
+        
         string supplierNameColumn;
+        /// <summary>
+        /// 
+        /// </summary>
         public string SupplierNameColumn
         {
             get
@@ -52,9 +52,11 @@ namespace TidyStorage
                 return supplierNameColumn;
             }
         }
-
-
+        
         string supplierNumberColumn;
+        /// <summary>
+        /// 
+        /// </summary>
         public string SupplierNumberColumn
         {
             get
@@ -62,9 +64,11 @@ namespace TidyStorage
                 return supplierNumberColumn;
             }
         }
-
-
+        
         string storagePlaceColumn;
+        /// <summary>
+        /// 
+        /// </summary>
         public string StoragePlaceColumn
         {
             get
@@ -74,6 +78,9 @@ namespace TidyStorage
         }
 
         string stockColumn;
+        /// <summary>
+        /// 
+        /// </summary>
         public string StockColumn
         {
             get
@@ -84,6 +91,9 @@ namespace TidyStorage
 
 
         string partNameColumn;
+        /// <summary>
+        /// 
+        /// </summary>
         public string PartNameColumn
         {
             get
@@ -171,9 +181,7 @@ namespace TidyStorage
             }
 
         }
-
-
-
+        
         /// <summary>
         /// Function for read data from Excel worksheet into DataTable
         /// </summary>
@@ -214,9 +222,7 @@ namespace TidyStorage
 
             return dt;
         }
-
-
-
+        
         /// <summary>
         /// 
         /// </summary>
@@ -266,10 +272,7 @@ namespace TidyStorage
 
             selectedColumn = "";
         }
-
-
-
-
+        
         /// <summary>
         /// 
         /// </summary>
@@ -311,12 +314,9 @@ namespace TidyStorage
                 buttonOK.Text = "Select";
             }
             
-
             selectedColumn = "";
         }
-
-
-
+        
         /// <summary>
         /// 
         /// </summary>
@@ -331,7 +331,6 @@ namespace TidyStorage
             }
         }
         
-
         /// <summary>
         /// Cancel button handler. All selected columns get cleared.
         /// </summary>
@@ -347,8 +346,7 @@ namespace TidyStorage
             this.DialogResult = DialogResult.Cancel;
             this.Close();
         }
-
-
+        
         /// <summary>
         /// 
         /// </summary>

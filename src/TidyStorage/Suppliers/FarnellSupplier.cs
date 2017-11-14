@@ -24,20 +24,30 @@ namespace TidyStorage.Suppliers
     {
         SupplierPart part;
 
+        public override string Name { get { return "Farnell CZ"; } }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="part_number"></param>
         public FarnellSupplier(string part_number):base(part_number)
         {
-
+            //Nothing to do here
         }
 
+        /// <summary>
+        /// Function creates URL for the provided supplier part number
+        /// </summary>
+        /// <returns>Part URL</returns>
         public override string GetLink()
         {
             return "http://cz.farnell.com/jsp/search/productdetail.jsp?SKU=" + part_number;
         }
 
-
-        public override string Name { get { return "Farnell CZ"; } }
-
-
+        /// <summary>
+        /// Function downloads part details for the provided supplier part number
+        /// </summary>
+        /// <returns>Supplier Part</returns>
         public override SupplierPart DownloadPart()
         {
             part = new SupplierPart();
@@ -73,11 +83,10 @@ namespace TidyStorage.Suppliers
 
         }
 
-
         /// <summary>
-        /// 
+        /// Parser for reading product details from the prvided HTML document
         /// </summary>
-        /// <param name="document"></param>
+        /// <param name="document">HTML document to be parsed</param>
         private void GetProductDescriptors(HtmlDocument document)
         {
             part.rows = new List<PartRow>();
@@ -180,9 +189,9 @@ namespace TidyStorage.Suppliers
         }
 
         /// <summary>
-        /// 
+        /// Parser for reading product prices from the prvided HTML document
         /// </summary>
-        /// <param name="document"></param>
+        /// <param name="document">HTML document to be parsed</param>
         private void GetPrice(HtmlDocument document)
         {
 

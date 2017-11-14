@@ -26,11 +26,12 @@ namespace TidyStorage
         StorageExcelImportMenu seim;
 
         bool AutoMode;
-
+        
         /// <summary>
-        /// Constructor
+        /// Storage parts excel importer contructor
         /// </summary>
-        /// <param name="storage"></param>
+        /// <param name="storage">Storage dabase handler</param>
+        /// <param name="mainForm">TidyStorage Main form</param>
         public ExcelImporter(Storage storage, MainForm mainForm)
         {
             this.storage = storage;
@@ -41,25 +42,30 @@ namespace TidyStorage
             CancelRequested = false;
         }
 
-
+        /// <summary>
+        /// Cancel button event handler
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ExcelImportMenuCancel_Click(object sender, EventArgs e)
         {
             CancelRequested = true;
 
         }
 
-
+        /// <summary>
+        /// Handling button that is switching between Auto import mode and Manual import mode.
+        /// In manual import mode all parts have to be confirmed in Storage part form.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ExcelImportMenuMode_Click(object sender, EventArgs e)
         {
             Button bt = (Button)sender;
             AutoMode = !AutoMode;
             bt.Text = (AutoMode) ? "Auto" : "Manual";
         }
-
-
         
-
-
         /// <summary>
         /// Starts import procedure. Processing GUI and starting import worker
         /// </summary>
@@ -81,6 +87,7 @@ namespace TidyStorage
 
                         try
                         {
+                            //Read excel file
                             using (ExcelPackage pck = new ExcelPackage(fileInfo))
                             {
                                 ExcelWorksheet ws = pck.Workbook.Worksheets.First();
@@ -91,10 +98,7 @@ namespace TidyStorage
                                 seim = new StorageExcelImportMenu(this);
                                 seim.buttonCancel.Click += ExcelImportMenuCancel_Click;
                                 seim.buttonMode.Click += ExcelImportMenuMode_Click;
-
-
-
-
+                                
                                 string SupplierName;
                                 string SupplierNumber;
                                 string StoragePlace;
@@ -104,13 +108,11 @@ namespace TidyStorage
 
                                 string columns = string.Format("{0},{1},{2},{3}", StorageConst.Str_Part_id, "suppliernumber", "productnumber", "storage_place_number");
 
-
+                                //Open import progress form
                                 seim.Show();
 
                                 seim.Top = mainForm.Top;
                                 seim.Left = mainForm.Left;
-
-
 
                                 int totalValidRows = 0;
 
@@ -230,7 +232,7 @@ namespace TidyStorage
                                         }
 
 
-                                        while ((CancelRequested == false) && (spf.Closed == false) && (AutoMode == false))
+                                        while ((CancelRequested == false) && (spf.StorageClosed == false) && (AutoMode == false))
                                         {
                                             Application.DoEvents();
 
@@ -246,7 +248,7 @@ namespace TidyStorage
                                             }
                                         }
 
-                                        if (spf.Closed == false)
+                                        if (spf.StorageClosed == false)
                                         {
                                             spf.Close();
                                         }
@@ -276,93 +278,6 @@ namespace TidyStorage
                     MessageBox.Show("Unable to import Excel file. Not enough columns selected", "Excel Import Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
             }
-        }
-
-        
-
-        /// <summary>
-        /// Excel file import/export debugging
-        /// </summary>
-        public void ExcellTest()
-        {
-            FileInfo newFile = new FileInfo("sample6.xlsx");
-
-            ExcelPackage pck = new ExcelPackage(newFile);
-            //Add the Content sheet
-
-
-            var ws = pck.Workbook.Worksheets["Content"];
-
-            ws.View.ShowGridLines = true;
-
-            //textBoxConsole.Text += ws.Cells["B1"].Value;
-
-            ws.Cells["C2"].Formula = "SUM(B1:B5)";
-            ws.Cells["B1"].Value = 6;
-            ws.Cells["B2"].Value = 2;
-            ws.Cells["B3"].Value = 3;
-            ws.Cells["B4"].Value = 4;
-            ws.Cells["B5"].Value = 5;
-
-            pck.Save();
-
-            /*
-            ExcelWorkbook exw = OfficeOpenXml.ExcelWorksheets()
-            Microsoft.Office.Interop.Excel.Application excelApp = null;
-            Workbooks workBooks = null;
-            Workbook workBook = null;
-            Worksheet workSheet;
-
-            try
-            {
-
-                excelApp = new Microsoft.Office.Interop.Excel.Application();
-                excelApp.DisplayAlerts = false;
-
-                workBooks = excelApp.Workbooks;
-                workBook = workBooks.Open(@"D:\Visual Studio\TidyStorage\src\TidyStorage\bin\Debug\test.xlsx", AddToMru: false);
-                workSheet = workBook.Worksheets.get_Item(1);
-
-                int nOfColumns = workSheet.UsedRange.Columns.Count;
-                int lastRowNumber = workSheet.UsedRange.Rows.Count;
-
-                Range rng = workSheet.Range["C1"];
-                rng.Formula = "=SUM(B2:B4)";
-                String formula = rng.Formula; //retrieve the formula successfully
-
-
-                rng.FormulaHidden = false;
-                workSheet.Unprotect();
-
-                workBook.SaveAs(@"D:\Visual Studio\TidyStorage\src\TidyStorage\bin\Debug\test.xlsx", AccessMode: XlSaveAsAccessMode.xlExclusive);
-
-                formula = rng.Formula;  //retrieve the formula successfully
-                bool hidden = rng.FormulaHidden;
-
-            }
-            catch (Exception e)
-            {
-                throw;
-            }
-            finally
-            {
-                if (workBook != null)
-                {
-                    workBook.Close();
-                    workBook = null;
-                }
-                if (workBooks != null)
-                {
-                    workBooks.Close();
-                    workBooks = null;
-                }
-                if (excelApp != null)
-                {
-                    excelApp.Quit();
-                    excelApp = null;
-                }
-            }
-            */
         }
     }
 }

@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace TidyStorage
 {
-
     public enum StorageTypeTables
     {
         Manufacturer,
@@ -15,11 +14,9 @@ namespace TidyStorage
         PlaceType,
         Supplier
     }
-
-
+    
     public class StorageConst
     {
-
         public const string sqlite_version = "1.0.0.0";
 
         public const string sqlite_connection_str = "Data Source={0};Version=3;";
@@ -30,29 +27,23 @@ namespace TidyStorage
         public const string Str_Manufacturer = "manufacturer";
         public const string Str_Manufacturer_id = "id_manufacturer";
         public const string Str_Manufacturer_name = "manufacturername";
-
-
+        
         public const string Str_Package = "part_package";
         public const string Str_Package_id = "id_part_package";
         public const string Str_Package_name = "packagename";
-
-
+        
         public const string Str_PartType = "part_type";
         public const string Str_PartType_id = "id_part_type";
         public const string Str_PartType_name = "typename";
-
-
+        
         public const string Str_PlaceType = "storage_place";
         public const string Str_PlaceType_id = "id_storage_place";
         public const string Str_PlaceType_name = "placename";
-
-
+        
         public const string Str_Supplier = "supplier";
         public const string Str_Supplier_id = "id_supplier";
         public const string Str_Supplier_name = "suppliername";
-
-
-
+        
         public const string sql_createtable_storage_info = @"
         CREATE TABLE storage_info (
             parameter VARCHAR(20) PRIMARY KEY NOT NULL, 
@@ -87,9 +78,7 @@ namespace TidyStorage
             " + Str_PlaceType_id + @" INTEGER,
             storage_place_number VARCHAR(64)
         )";
-
-
-
+        
         public const string sql_insert_part = @"INSERT INTO " + Str_Part + @" (productnumber) VALUES(' ')";
 
         /*
@@ -119,8 +108,6 @@ namespace TidyStorage
             " + Str_PlaceType_id + @",
             storage_place_number) VALUES ({0})"; */
         
-
-
         public const string sql_createtable_manufacturer = @"
         CREATE TABLE " + Str_Manufacturer + @" (
             " + Str_Manufacturer_id + @" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
@@ -142,16 +129,13 @@ namespace TidyStorage
             secondary_valuename VARCHAR(64),
             tertiary_valuename VARCHAR(64)
         )";
-
-
-
+        
         public const string sql_createtable_storage_place = @"
         CREATE TABLE " + Str_PlaceType + @" (
             " + Str_PlaceType_id + @"  INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
             " + Str_PlaceType_name + @"  VARCHAR(64) NOT NULL
         )";
-
-
+        
         public const string sql_createtable_supplier = @"
         CREATE TABLE " + Str_Supplier + @" (
             " + Str_Supplier_id + @" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,

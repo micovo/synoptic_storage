@@ -14,12 +14,20 @@ namespace TidyStorage
     {
         public bool AllowedToClose;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public StorageImportMenu()
         {
             InitializeComponent();
             this.AllowedToClose = false;
         }
 
+        /// <summary>
+        /// Form close event handler. Close have to enabled by the app.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void StorageImportMenu_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (AllowedToClose == false)

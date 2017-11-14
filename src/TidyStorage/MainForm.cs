@@ -39,7 +39,7 @@ namespace TidyStorage
         public string BuildDate;
 
         /// <summary>
-        /// 
+        /// Initialize GUI and get build date and assembly version
         /// </summary>
         public MainForm()
         {
@@ -60,7 +60,7 @@ namespace TidyStorage
 
 
         /// <summary>
-        /// 
+        /// Initialize form maximalization state on load
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -75,25 +75,28 @@ namespace TidyStorage
                 this.WindowState = FormWindowState.Maximized;
             }
 
-
             LoadRecentFilesList();
         }
         
         /// <summary>
-        /// 
+        /// Function creates nice short path string for Recent files menu
         /// </summary>
-        /// <param name="filename"></param>
-        /// <param name="maxlength"></param>
-        /// <returns></returns>
+        /// <param name="filename">Full path to be shorten</param>
+        /// <param name="maxlength">Max length of the output string</param>
+        /// <returns>Input string if its shorter than maxlength or nicely shortened path string</returns>
         private string GetMenuItemText(string filename, int maxlength)
         {
             if (filename.Length > maxlength)
             {
+                //Get folders in path
                 string [] folders = filename.Split('\\').Reverse().ToArray();
 
                 string output = "";
+
+                //Drive name have to be always visible
                 string root = Path.GetPathRoot(filename) + "...\\";
 
+                //Check how many folder names can be added to the string
                 foreach (string s in folders)
                 {
                     if ((root.Length + output.Length + 1) < maxlength)
@@ -102,21 +105,24 @@ namespace TidyStorage
                     }
                     else
                     {
+                        //No more folders can be added to the string
                         break;
                     }
                 }
-
+                
+                //Trim extra backslash characters 
                 output = root + output.Trim('\\');
                 return output;
             }
             else
             {
+                //Path is shorter than maxlength, return whole path
                 return filename;
             }
         }
         
         /// <summary>
-        /// 
+        /// Function stores list of recently used storage and device files into recent.ini file
         /// </summary>
         void SaveRecentFilesList()
         {
@@ -138,11 +144,11 @@ namespace TidyStorage
 
 
         /// <summary>
-        /// 
+        /// Function loads list of recently used storage and device files from recent.ini file
         /// </summary>
         void LoadRecentFilesList()
         {
-            
+            //Clear all recent lists
             RecentStorages.Clear();
             RecentDevices.Clear();
 
@@ -165,7 +171,7 @@ namespace TidyStorage
                 }
             }
             
-
+            //Sync Recent lists with dropdown menu
             for (int i = 0; i < 10; i++)
             {
                 if (RecentStorages.ElementAtOrDefault(i) != null)
@@ -203,6 +209,7 @@ namespace TidyStorage
         /// <param name="e"></param>
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            //Check changes and cancel closing if necessary
             if (StorageChangesProcedure() == DialogResult.Cancel)
             {
                 e.Cancel = true;
@@ -213,7 +220,7 @@ namespace TidyStorage
 
 
         /// <summary>
-        /// 
+        /// Toolbox menu New button click handler
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -221,18 +228,19 @@ namespace TidyStorage
         {
             if (tabControl1.SelectedIndex == 0)
             {
+                //Create new storage part
                 CreateNewStoragePart();
             }
             else if (tabControl1.SelectedIndex == 1)
             {
-              
+                //TODO New device
             }
         }
         
 
 
         /// <summary>
-        /// 
+        /// Storage data grid view delete action handler
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -247,7 +255,7 @@ namespace TidyStorage
         }
 
         /// <summary>
-        /// 
+        /// Drop down menu New->Part click handler
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -257,17 +265,7 @@ namespace TidyStorage
         }
 
         /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void newToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        /// <summary>
-        /// 
+        /// Drop down menu save button handler
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -280,7 +278,7 @@ namespace TidyStorage
         }
 
         /// <summary>
-        /// 
+        /// Toolbox save button handler
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -297,7 +295,7 @@ namespace TidyStorage
         
 
         /// <summary>
-        /// 
+        /// Storage data grid view cell double click handler
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -315,16 +313,17 @@ namespace TidyStorage
         }
 
         /// <summary>
-        /// 
+        /// Storage filter button click handler
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void buttonListFilter_Click(object sender, EventArgs e)
         {
+            //Function creates conditions used in main storage SQL command in WHERE section
+
+            //Filter part type (Resistor, Capacitor....)
             var s = listBoxFilterType.SelectedItems;
-
             part_filter = "";
-
             if (s.Count > 0)
             {
                 part_filter += StorageConst.Str_Part + "." + StorageConst.Str_PartType_id + " IN (";
@@ -337,10 +336,9 @@ namespace TidyStorage
 
                 part_filter = part_filter.Trim(',') + ") ";
             }
-
-            s = listBoxFilterPackage.SelectedItems;
             
-
+            //Filter part package (SOIC, TSSOP.....)
+            s = listBoxFilterPackage.SelectedItems;
             if (s.Count > 0)
             {
                 if (part_filter != "")
@@ -359,9 +357,8 @@ namespace TidyStorage
                 part_filter = part_filter.Trim(',') + ") ";
             }
 
+            //Filter storage type (Cut tape, full reel....)
             s = listBoxStorageTypes.SelectedItems;
-
-
             if (s.Count > 0)
             {
                 if (part_filter != "")
@@ -380,15 +377,17 @@ namespace TidyStorage
                 part_filter = part_filter.Trim(',') + ") ";
             }
 
-
+            //Output uf this function is direcly use in WHERE condition
+            //so we have to set path_filter variable to 1 (true) to deactivate filter.
             if (part_filter == "") part_filter = "1";
 
+            //Refresh storage data grid view
             RefreshStorageTable();
         }
 
 
         /// <summary>
-        /// 
+        /// Storage fulltext search clear button
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -400,15 +399,17 @@ namespace TidyStorage
         }
 
         /// <summary>
-        /// 
+        /// Storage fulltext search button
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void buttonFulltextFilter_Click(object sender, EventArgs e)
         {
+            //Create condition for the storage SQL command
             string text = textBoxStorageFulltext.Text;
             part_filter_fulltext = "";
 
+            //Add columns for fulltext search
             string[] columns = { "primary_value", "secondary_value", "tertiary_value", "comment", "productnumber" ,"suppliernumber"};
             string[] keywords = text.Split(' ');
 
@@ -420,7 +421,7 @@ namespace TidyStorage
         }
 
         /// <summary>
-        /// 
+        /// Storage list filter clear button handler
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -436,7 +437,7 @@ namespace TidyStorage
         
 
         /// <summary>
-        /// 
+        /// Drop down about button click handler
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -447,7 +448,7 @@ namespace TidyStorage
         }
 
         /// <summary>
-        /// 
+        /// Parts manufacturers editor drop down menu button click handler
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -461,7 +462,7 @@ namespace TidyStorage
         }
         
         /// <summary>
-        /// 
+        /// Part types editor drop down menu button click handler
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -476,7 +477,7 @@ namespace TidyStorage
         }
 
         /// <summary>
-        /// 
+        /// Part packages editor drop down menu button click handler
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -491,7 +492,7 @@ namespace TidyStorage
         }
 
         /// <summary>
-        /// 
+        /// Part storage places editor drop down menu button click handler
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -505,7 +506,7 @@ namespace TidyStorage
         }
 
         /// <summary>
-        /// 
+        /// File->Exit drop down menu button click handler
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -515,7 +516,7 @@ namespace TidyStorage
         }
 
         /// <summary>
-        /// 
+        /// File->Import->Storage Part drop down menu button click handler
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -531,7 +532,7 @@ namespace TidyStorage
 
 
         /// <summary>
-        /// 
+        /// Open->File Storage drop down menu button click handler
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -542,7 +543,7 @@ namespace TidyStorage
 
 
         /// <summary>
-        /// 
+        /// Toolbox Open button click handler
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -556,7 +557,7 @@ namespace TidyStorage
 
 
         /// <summary>
-        /// 
+        /// File->New->Storage drop down menu click handler
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -566,7 +567,7 @@ namespace TidyStorage
         }
 
         /// <summary>
-        /// 
+        /// File->Save As drop down menu click handler
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -576,7 +577,7 @@ namespace TidyStorage
         }
 
         /// <summary>
-        /// 
+        /// File->Close drop down menu click handler
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -586,7 +587,7 @@ namespace TidyStorage
         }
 
         /// <summary>
-        /// 
+        /// Main tab control index changed event handler
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -596,7 +597,7 @@ namespace TidyStorage
         }
 
         /// <summary>
-        /// 
+        /// About->Visit TidyStorage GitHub
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -606,7 +607,7 @@ namespace TidyStorage
         }
 
         /// <summary>
-        /// 
+        /// About->Visit TidyStorage Website
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -618,7 +619,7 @@ namespace TidyStorage
 
 
         /// <summary>
-        /// 
+        /// Recent storages in File drop down menu item click
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -635,18 +636,23 @@ namespace TidyStorage
             OpenStorageFile(s);
         }
 
+        /// <summary>
+        /// Recent devices in File drop down menu item click
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void RecentDevicesMenu_Click(object sender, EventArgs e)
         {
             int i = recentFilesToolStripMenuItem.DropDownItems.IndexOf((ToolStripItem)sender);
             MessageBox.Show(RecentDevices[i]);
         }
+        
 
-        private void dataGridViewStorage_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
-
+        /// <summary>
+        /// Storage->Get Parts Out of Stock drop down menu item click
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void getPartsOutOfStockToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             listBoxFilterPackage.ClearSelected();
@@ -660,7 +666,7 @@ namespace TidyStorage
 
 
         /// <summary>
-        /// 
+        /// Part->Pricecheck Selected Parts drop down menu item click
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -672,7 +678,7 @@ namespace TidyStorage
         }
 
         /// <summary>
-        /// 
+        /// Part->Pricecheck All Parts drop down menu item click
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -684,7 +690,7 @@ namespace TidyStorage
         }
 
         /// <summary>
-        /// 
+        /// Part->Web Import Selected Parts drop down menu item click
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -696,7 +702,7 @@ namespace TidyStorage
         }
 
         /// <summary>
-        /// 
+        /// Part->Web Import All Parts drop down menu item click
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -708,7 +714,7 @@ namespace TidyStorage
         }
 
         /// <summary>
-        /// 
+        /// Edit->Select All
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -724,16 +730,31 @@ namespace TidyStorage
             }
         }
 
+        /// <summary>
+        /// Part Types filter list mouse double click event handler
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void listBoxFilterType_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             buttonListFilter_Click(null, null);
         }
 
+        /// <summary>
+        /// Part Packages filter list mouse double click event handler
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void listBoxFilterPackage_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             buttonListFilter_Click(null, null);
         }
 
+        /// <summary>
+        /// Part->Copy Selected Part
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void copySelectedPartToolStripMenuItem_Click(object sender, EventArgs e)
         {
             List<StoragePart> list = StorageSelectionToList();

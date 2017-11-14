@@ -6,21 +6,35 @@ using System.Threading.Tasks;
 
 namespace TidyStorage.Suppliers.Data
 {
+    /// <summary>
+    /// Class used for by the web importer for passing parameters.
+    /// </summary>
     public class PartRow
     {
         string name;
         string value;
 
+        /// <summary>
+        /// Parameter value
+        /// </summary>
         public string Value
         {
             get { return value; }
         }
 
+        /// <summary>
+        /// Parameter name
+        /// </summary>
         public string Name
         {
             get { return name; }
         }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="value"></param>
         public PartRow(string name, string value = "")
         {
             this.name = name;
@@ -38,6 +52,11 @@ namespace TidyStorage.Suppliers.Data
             return s;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         public override bool Equals(object obj)
         {
             if (obj.GetType() == typeof(PartRow))

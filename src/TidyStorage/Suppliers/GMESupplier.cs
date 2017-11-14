@@ -22,17 +22,23 @@ namespace TidyStorage.Suppliers
 {
     public class GMESupplier : Supplier
     {
-
-
         SupplierPart part;
-
-        public GMESupplier(string part_number):base(part_number)
-        {
-
-        }
 
         public override string Name { get { return "GME CZ"; } }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="part_number"></param>
+        public GMESupplier(string part_number):base(part_number)
+        {
+            //Nothing to do here
+        }
+
+        /// <summary>
+        /// Function creates URL for the provided supplier part number
+        /// </summary>
+        /// <returns>Part URL</returns>
         public override string GetLink()
         {
             string error = "";
@@ -63,12 +69,13 @@ namespace TidyStorage.Suppliers
                     }
                 }
             }
-
-
             return output;
         }
-
-
+        
+        /// <summary>
+        /// Function downloads part details for the provided supplier part number
+        /// </summary>
+        /// <returns>Supplier Part</returns>
         public override SupplierPart DownloadPart()
         {
             part = new SupplierPart();
@@ -102,11 +109,10 @@ namespace TidyStorage.Suppliers
             return part;
         }
 
-
         /// <summary>
-        /// 
+        /// Parser for reading product details from the prvided HTML document
         /// </summary>
-        /// <param name="document"></param>
+        /// <param name="document">HTML document to be parsed</param>
         private void GetProductDescriptors(HtmlDocument document)
         {
             part.rows = new List<PartRow>();
@@ -180,12 +186,10 @@ namespace TidyStorage.Suppliers
             }
         }
 
-
-
         /// <summary>
-        /// 
+        /// Parser for reading product prices from the prvided HTML document
         /// </summary>
-        /// <param name="document"></param>
+        /// <param name="document">HTML document to be parsed</param>
         private void GetPrices(HtmlDocument document)
         {
 

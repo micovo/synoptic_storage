@@ -20,14 +20,11 @@ namespace TidyStorage
     {
         Storage storage;
         MainForm mainForm;
-
-        bool CancelRequested;
-
         StorageImportMenu seim;
 
         bool AutoMode;
-
         bool PriceCheckOnly;
+        bool CancelRequested;
 
         List<StoragePart> parts;
 
@@ -60,25 +57,28 @@ namespace TidyStorage
             this.parts = parts;
         }
 
-
+        /// <summary>
+        /// Cancel button click event handler
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ImportMenuCancel_Click(object sender, EventArgs e)
         {
             CancelRequested = true;
-
         }
 
-
+        /// <summary>
+        /// Auto/Manual button click event handler
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ImportMenuMode_Click(object sender, EventArgs e)
         {
             Button bt = (Button)sender;
             AutoMode = !AutoMode;
             bt.Text = (AutoMode) ? "Auto" : "Manual";
         }
-
-
-
-
-
+        
         /// <summary>
         /// Starts import procedure. Processing GUI and starting import worker
         /// </summary>
@@ -99,9 +99,7 @@ namespace TidyStorage
 
                     seim.buttonCancel.Click += ImportMenuCancel_Click;
                     seim.buttonMode.Click += ImportMenuMode_Click;
-
-
-
+                    
                     StorageForm spf = new StorageForm(storage, part);
                     spf.Show();
                     spf.Center(mainForm);
@@ -118,16 +116,14 @@ namespace TidyStorage
                         spf.buttonImport_Click(null, null);
                     }
                     Application.DoEvents();
-
-
+                    
                     if (AutoMode)
                     {
                         spf.buttonOk_Click(null, null);
                         Application.DoEvents();
                     }
-
-
-                    while ((CancelRequested == false) && (spf.Closed == false) && (AutoMode == false))
+                    
+                    while ((CancelRequested == false) && (spf.StorageClosed == false) && (AutoMode == false))
                     {
                         Application.DoEvents();
                         if (AutoMode)
@@ -136,17 +132,14 @@ namespace TidyStorage
                             Application.DoEvents();
                         }
                     }
-                    if (spf.Closed == false)
+                    if (spf.StorageClosed == false)
                     {
                         spf.Close();
                     }
-
-
+                    
                     if (CancelRequested) break;
-
                 }
-
-
+                
                 mainForm.RefreshStorageTable();
                 mainForm.RefreshListBox();
 
@@ -158,8 +151,6 @@ namespace TidyStorage
             {
                 MessageBox.Show("Import failed. " + ex.Message, "Excel Import Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
         }
-        
     }
 }

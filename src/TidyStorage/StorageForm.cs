@@ -17,69 +17,85 @@ namespace TidyStorage
     {
         StoragePart part;
         Storage storage;
+        Supplier supplier;
+
         List<IndexedName> ManufacturerList;
         List<IndexedName> PackageList;
         List<IndexedName> PartTypeList;
         List<IndexedName> PlaceTypeList;
         List<IndexedName> SupplierList;
-
-
+        
         public StorageWebImport spi;
 
-        Supplier supplier;
-
-        bool closed;
-        public bool Closed
+        //Background color for textbox if it contains error
+        Color ERROR_COLOR = Color.LightCoral;
+        
+        bool storage_closed;
+        /// <summary>
+        /// Storage Database Closed status. This property is used by modal forms.
+        /// </summary>
+        public bool StorageClosed
         {
             get
             {
-                return closed;
+                return storage_closed;
             }
         }
 
-
+        /// <summary>
+        /// Storage part form constructor
+        /// </summary>
+        /// <param name="storage">Storage SQLite database</param>
+        /// <param name="part">Storage part to copy. Set null to create blank part.</param>
+        /// <param name="PartName">Manufacturer part name</param>
+        /// <param name="SupplierName">Name of the part supplier such as Farnell or Mouser</param>
+        /// <param name="SupplierNumber">Part name or id used by the part supplier</param>
+        /// <param name="StoragePlace">Place where the part is stored</param>
+        /// <param name="Stock">Quantity of parts in stock</param>
         public StorageForm(Storage storage, StoragePart part, string PartName = "", string SupplierName = "", string SupplierNumber = "", string StoragePlace = "", string Stock = "")
         {
             InitializeComponent();
 
             this.storage = storage;
 
-            closed = false;
+            storage_closed = false;
 
             if  (part == null)
             {
                 this.part = new StoragePart();
-                
             }
             else
             {
                 this.part = part;
             }
 
+            //Refresh part types, packages, etc. from the database
             RefreshComboBoxes();
             LoadPartTypeStrings();
             RefreshForm();
 
+            //Use input values if any
             if (PartName != "") textBoxProductName.Text = PartName;
             if (SupplierNumber != "") textBoxSupplierNumber.Text = SupplierNumber;
             if (StoragePlace != "") textBoxPlaceNumber.Text = StoragePlace;
 
             int stock = 0;
             if ((Stock != "") && (int.TryParse(Stock, out stock))) numericUpDownStock.Value = stock;
-
-
+            
             if (SupplierName != "") comboBoxSupplier.SelectedItem = SupplierList.FirstOrDefault(x => x.name == SupplierName);
         }
 
         /// <summary>
-        /// 
+        /// OK button event click. Part is stored in the temporary database if all values are valid.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         public void buttonOk_Click(object sender, EventArgs e)
         {
+            //Check if all parameters are valid
             if (ProcessFormValues())
             {
+                //Store part in temporary database
                 SavePart();
                 this.DialogResult = DialogResult.OK;
                 this.Close();
@@ -91,14 +107,16 @@ namespace TidyStorage
         }
 
         /// <summary>
-        /// 
+        /// Apply button event click. Part is stored in the temporary database if all values are valid.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void buttonApply_Click(object sender, EventArgs e)
         {
+            //Check if all parameters are valid
             if (ProcessFormValues())
             {
+                //Store part in temporary database
                 SavePart();
                 LoadPartTypeStrings();
             }
@@ -109,7 +127,7 @@ namespace TidyStorage
         }
 
         /// <summary>
-        /// 
+        /// Cancel button event click. All changes will be ignored.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -118,17 +136,17 @@ namespace TidyStorage
             this.DialogResult = DialogResult.Cancel;
             this.Close();
         }
-
-
+        
         /// <summary>
-        /// 
+        /// Function checks if selected supplier have implemented the web import 
+        /// and if the user provided the supplier part number.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>True if part name and supplier web importer is available</returns>
         bool PrepareSupplier()
         {
             supplier = null;
 
-            // Process part import here
+            //Check if any supplier is selected
             if (comboBoxSupplier.SelectedIndex > -1)
             {
                 if (textBoxSupplierNumber.Text.Length > 0)
@@ -136,15 +154,16 @@ namespace TidyStorage
                     string supp = comboBoxSupplier.Text;
                     string suppnum = textBoxSupplierNumber.Text;
 
+                    //Get supplier class from the supplier name
                     switch (supp)
                     {
                         case "Farnell": this.supplier = new FarnellSupplier(suppnum); break;
                         case "Mouser": this.supplier = new MouserSupplier(suppnum); break;
                         case "GME": this.supplier = new GMESupplier(suppnum); break;
                         case "TME": this.supplier = new TMESupplier(suppnum); break;
-                        default: MessageBox.Show("Supplier is not implemented, please enter parameters manualy or contact developers.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation); break;
+                        default: MessageBox.Show("Supplier is not implemented, please enter parameters manualy or contact developers.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                            return false;
                     }
-
                     
                     return true;
                 }
@@ -160,46 +179,50 @@ namespace TidyStorage
 
             return false;
         }
-
         
-
         /// <summary>
-        /// 
+        /// Import from Web button event click. This function imports part price and
+        /// parameters downloaded from website of the supplier.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         public void buttonImport_Click(object sender, EventArgs e)
         {         
+            //Check if supplier and supplier part name is valid.
+            //This function also sets this.supplier variable.
             if (PrepareSupplier())
             {
+                //Open web import form
                 spi = new StorageWebImport(storage, supplier, (sender is ExcelImporter));
-
+                
+                //Set units of the part type values if the part type is selected in current form
                 int SelectedPartType = ProcessTypeComboBox(comboBoxPartType);
-
                 if (SelectedPartType > -1)
                 {
                     string[] s = new string[3];
 
                     s = storage.GetPartTypeStrings(SelectedPartType);
 
+                    //Units are stored as a string with following format: 
+                    //Parameter name [Unit], for example Resistivity [Ohm] or Capacity [F]
                     spi.PrimaryValueUnit = StringHelpers.Between(s[0], "[", "]");
                     spi.SecondaryValueUnit = StringHelpers.Between(s[1], "[", "]");
                     spi.ThirdValueUnit = StringHelpers.Between(s[2], "[", "]");
                 }
-
-
+                
+                //Pass values from the web import to supplier part form
                 if (spi.ShowDialog() == DialogResult.OK)
                 {
                     string v = "";
                     string manuf = "";
                     string pack = "";
 
+                    //Process manufacturer name provided by the web importer
                     v = ((PartRow)spi.comboBox2.SelectedItem).Value;
 
                     if (v != "")
                     {
                         manuf = v;
-
 
                         string cond = StorageConst.Str_Manufacturer_name + " LIKE '" + manuf.Split(' ')[0] + "%'";
 
@@ -237,10 +260,7 @@ namespace TidyStorage
                         }
                     }
 
-
-
-
-
+                    //Process part name provided by the web importer
                     v = ((PartRow)spi.comboBox3.SelectedItem).Value;
                     if (v != "")
                     {
@@ -295,13 +315,10 @@ namespace TidyStorage
                         }
                     }
                     
-
-
+                    //Pass values from the web import to storage form textboxes
                     v = ((PartRow)spi.comboBox1.SelectedItem).Value;
                     if (v != "") textBoxProductName.Text = v;
-
-                   
-
+                    
                     v = ((PartRow)spi.comboBox4.SelectedItem).Value;
                     if (v != "") textBoxDatasheet.Text = v;
 
@@ -331,12 +348,10 @@ namespace TidyStorage
 
                     v = ((PartRow)spi.comboBox13.SelectedItem).Value;
                     if (v != "") textBoxTempRangeMax.Text = v.Replace("°C","").Trim();
-
-
-
+                
+                    //Prices are stored in the supplierPart variable
                     UpdatePrices(spi.supplierPart);
                     
-
                     if (SelectedPartType < 0)
                     {
                         SelectNamedIndexComboBox(comboBoxPartType, spi.FoundPartType);
@@ -347,9 +362,9 @@ namespace TidyStorage
 
 
         /// <summary>
-        /// 
+        /// Procedure for filling the prices textboxes from the supplier part usualy provided by the web importer.
         /// </summary>
-        /// <param name="sp"></param>
+        /// <param name="sp">Supplier part to be used as a source of prices</param>
         void UpdatePrices(SupplierPart sp)
         {
             textBoxCurrency.Text = sp.currency;
@@ -366,20 +381,18 @@ namespace TidyStorage
 
                 priceobj = sp.prices.LastOrDefault(x => (x.amount_min <= 10));
                 textBoxPrice10pcs.Text = (priceobj != null) ? priceobj.price.ToString() : "";
-
-
+                
                 priceobj = sp.prices.LastOrDefault(x => (x.amount_min <= 100));
                 textBoxPrice100pcs.Text = (priceobj != null) ? priceobj.price.ToString() : "";
-
-
+                
                 priceobj = sp.prices.LastOrDefault(x => (x.amount_min <= 1000));
                 textBoxPrice1000pcs.Text = (priceobj != null) ? priceobj.price.ToString() : "";
             }
         }
-
-
+        
         /// <summary>
-        /// 
+        /// Price check button click event handler. 
+        /// This function updates price of the part via web importer.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -409,35 +422,39 @@ namespace TidyStorage
         }
 
         /// <summary>
-        /// 
+        /// Open button in Datasheet row click event handler.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void buttonOpenDatasheet_Click(object sender, EventArgs e)
         {
             string url = textBoxDatasheet.Text;
-            if (url.ToLower().StartsWith("http://"))
+
+            //Check if the link in datasheet textbox is valid URL
+            if ((url.ToLower().StartsWith("http://")) || (url.ToLower().StartsWith("https://")))
             {
                 System.Diagnostics.Process.Start(url);
             }
             else
             {
-                textBoxDatasheet.BackColor = Color.LightCoral;
+                //Invalid URL, display error
+                textBoxDatasheet.BackColor = ERROR_COLOR;
             }
         }
 
         /// <summary>
-        /// 
+        /// Datasheet TextBox change event handler
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void textBoxDatasheet_TextChanged(object sender, EventArgs e)
         {
+            //Clean up error color
             textBoxDatasheet.BackColor = Color.White;
         }
 
         /// <summary>
-        /// 
+        /// Storage Type row Edit button click handler
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -472,14 +489,13 @@ namespace TidyStorage
             
             DialogResult ds = spte.ShowDialog();
 
+            //Refresh sync possible changes made in the type editor
             RefreshComboBoxes();
             LoadPartTypeStrings();
         }
-
-
-
+        
         /// <summary>
-        /// 
+        /// Function loads part type parameters or default text
         /// </summary>
         void LoadPartTypeStrings()
         {
@@ -501,14 +517,10 @@ namespace TidyStorage
             labelValueSecondary.Text = s[1];
             labelValueThird.Text = s[2];
 
-
             textBoxThridValue.Enabled = (s[2] != "");
             textBoxThridTolerance.Enabled = (s[2] != "");
-
         }
-
         
-
         /// <summary>
         /// Refresh of the editable comboboxes
         /// </summary>
@@ -533,8 +545,7 @@ namespace TidyStorage
             SupplierList = storage.GetStringIdArray(StorageTypeTables.Supplier);
             comboBoxSupplier.Items.Clear();
             comboBoxSupplier.Items.AddRange(SupplierList.ToArray());
-
-            
+                        
 
             IndexedName i = ManufacturerList.FirstOrDefault(x => x.id == this.part.id_manufacturer);
             if (i != null)
@@ -574,7 +585,7 @@ namespace TidyStorage
                 this.part.id_part_type = -1;
             }
 
-
+            
             i = PlaceTypeList.FirstOrDefault(x => x.id == this.part.id_storage_place);
             if (i != null)
             {
@@ -587,8 +598,7 @@ namespace TidyStorage
                 this.part.id_storage_place = -1;
             }
 
-
-
+            
             i = SupplierList.FirstOrDefault(x => x.id == this.part.id_supplier);
             if (i != null)
             {
@@ -600,15 +610,13 @@ namespace TidyStorage
                 comboBoxSupplier.SelectedItem = null;
                 this.part.id_supplier = -1;
             }
-
         }
 
-
         /// <summary>
-        /// 
+        /// Function for uniform conversion of the part price to text string.
         /// </summary>
-        /// <param name="p"></param>
-        /// <returns></returns>
+        /// <param name="p">Value to be converted to string</param>
+        /// <returns>Converted string</returns>
         string GetPartPriceString(double p)
         {
             if (double.IsNaN(p) == false)
@@ -619,27 +627,25 @@ namespace TidyStorage
             return "";
         }
 
-
         /// <summary>
-        /// 
+        /// Function for uniform conversion of the part tolerance value to text string.
         /// </summary>
-        /// <param name="primary_tolerance"></param>
-        /// <returns></returns>
+        /// <param name="primary_tolerance">Value to be converted to string</param>
+        /// <returns>Converted string</returns>
         private string GetPartToleranceString(double p)
         {
             if (double.IsNaN(p) == false)
             {
-                //return p.ToString() + " " + this.part.currency;
                 return p.ToString();
             }
             return "";
         }
 
         /// <summary>
-        /// 
+        /// Function for uniform conversion of the part value to text string.
         /// </summary>
-        /// <param name="primary_value"></param>
-        /// <returns></returns>
+        /// <param name="primary_value">Value to be converted to string</param>
+        /// <returns>Converted string</returns>
         private string GetPartValueString(double p)
         {
             if (double.IsNaN(p) == false)
@@ -649,13 +655,9 @@ namespace TidyStorage
             }
             return "";
         }
-
-
-
-
-
+        
         /// <summary>
-        /// 
+        /// Manufacturer combobox selection change event handler.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -670,9 +672,7 @@ namespace TidyStorage
                 this.part.id_manufacturer = ((IndexedName)comboBoxManufacturer.SelectedItem).id;
             }
         }
-
-
-
+        
         /// <summary>
         /// Saves part into database. New part is inserted into database if the part is new.
         /// </summary>
@@ -691,22 +691,22 @@ namespace TidyStorage
             storage.UpdateTable(StorageConst.Str_Part, s, c);
         }
 
-
         /// <summary>
-        /// 
+        /// Function for checking strings from textboxes.
+        /// Error color background is set if the textbox text is invalid.
         /// </summary>
-        /// <param name="tb"></param>
-        /// <param name="output"></param>
-        /// <returns></returns>
+        /// <param name="tb">TextBox to be checked</param>
+        /// <param name="output">Output string.</param>
+        /// <returns>True if TextBox text is valid.</returns>
         bool ProcessTextBox(TextBox tb, out string output)
         {
             output = "";
-            string o = tb.Text;
-            
+            string o = tb.Text;            
 
+            //Check forbidden characters
             if ((tb.Text.Contains('"')) || (tb.Text.Contains('\'')))
             {
-                tb.BackColor = Color.LightCoral;
+                tb.BackColor = ERROR_COLOR;
                 return false;
             }
 
@@ -714,13 +714,13 @@ namespace TidyStorage
             return true;
         }
 
-
         /// <summary>
-        /// 
+        /// Function for parsing integer strings from textboxes.
+        /// Error color background is set if the textbox text is invalid.
         /// </summary>
-        /// <param name="tb"></param>
-        /// <param name="output"></param>
-        /// <returns></returns>
+        /// <param name="tb">TextBox to be checked</param>
+        /// <param name="output">Output integer value.</param>
+        /// <returns>True if TextBox text is valid.</returns>
         bool ProcessTextBox(TextBox tb, out int output)
         {
             output = 0;
@@ -730,7 +730,7 @@ namespace TidyStorage
 
             if (int.TryParse(str, out o) == false)
             {
-                tb.BackColor = Color.LightCoral;
+                tb.BackColor = ERROR_COLOR;
                 return false;
             }
 
@@ -738,13 +738,13 @@ namespace TidyStorage
             return true;
         }
 
-
         /// <summary>
-        /// 
+        /// Function for parsing double strings from textboxes.
+        /// Error color background is set if the textbox text is invalid.
         /// </summary>
-        /// <param name="tb"></param>
-        /// <param name="output"></param>
-        /// <returns></returns>
+        /// <param name="tb">TextBox to be checked</param>
+        /// <param name="output">Output double value.</param>
+        /// <returns>True if TextBox text is valid.</returns>
         bool ProcessTextBox(TextBox tb, out double output)
         {
             output = 0;
@@ -772,18 +772,17 @@ namespace TidyStorage
                 }
             }
 
-            tb.BackColor = Color.LightCoral;
+            tb.BackColor = ERROR_COLOR;
             return false;
         }
 
-
-
         /// <summary>
-        /// 
+        /// Function for parsing currency strings from textboxes.
+        /// Error color background is set if the textbox text is invalid.
         /// </summary>
-        /// <param name="tb"></param>
-        /// <param name="output"></param>
-        /// <returns></returns>
+        /// <param name="tb">TextBox to be checked</param>
+        /// <param name="output">Output currency value.</param>
+        /// <returns>True if TextBox text is valid.</returns>
         bool ProcessTextBoxPrice(TextBox tb, out double output)
         {
             output = 0;
@@ -809,16 +808,15 @@ namespace TidyStorage
                 }
             }
 
-            tb.BackColor = Color.LightCoral;
+            tb.BackColor = ERROR_COLOR;
             return false;
         }
-
-
+        
         /// <summary>
-        /// 
+        /// Function for safe ComboBox processing.
         /// </summary>
-        /// <param name="cb"></param>
-        /// <returns></returns>
+        /// <param name="cb">ComboBox to be processed</param>
+        /// <returns>Selected item index</returns>
         int ProcessTypeComboBox(ComboBox cb)
         {
             int i = -1;
@@ -827,12 +825,11 @@ namespace TidyStorage
             return i;
         }
 
-
         /// <summary>
-        /// 
+        /// Function for selecting ComboBox item by its database id.
         /// </summary>
-        /// <param name="cb"></param>
-        /// <param name="index"></param>
+        /// <param name="cb">ComboBox to be processed</param>
+        /// <param name="index">Database index to be selected</param>
         void SelectNamedIndexComboBox(ComboBox cb, int index)
         {
             if (index != -1)
@@ -849,16 +846,15 @@ namespace TidyStorage
                 }
             }
         }
-
-
-
+        
         /// <summary>
-        /// 
+        /// Handling user input for Part name TextBox
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void textBoxProductName_TextChanged(object sender, EventArgs e)
         {
+            //Check if the event is caused by app itself or user input
             if (sender.GetType() == typeof(TextBox))
             {
                 TextBox tb = (TextBox)sender;
@@ -867,7 +863,8 @@ namespace TidyStorage
         }
 
         /// <summary>
-        /// 
+        /// Open button in Supplier Part Number row.
+        /// Click on this button opens supplier website for the part.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -887,10 +884,9 @@ namespace TidyStorage
                 }
             }
         }
-
-
+        
         /// <summary>
-        /// 
+        /// Storage Part Form OnLoad event handler.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -898,8 +894,16 @@ namespace TidyStorage
         {
             textBoxProductName.Focus();
         }
-
-
+        
+        /// <summary>
+        /// Storage part form close event handler
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void StorageForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            storage_closed = true;
+        }
 
         /// <summary>
         /// 
@@ -916,11 +920,21 @@ namespace TidyStorage
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void numericUpDownStock_KeyPress(object sender, KeyPressEventArgs e)
         {
             
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void numericUpDownStock_KeyDown(object sender, KeyEventArgs e)
         {
             //if (e.KeyChar == '+')
@@ -939,14 +953,7 @@ namespace TidyStorage
                 e.SuppressKeyPress = true;
             }
         }
-
-
-
-
-
-
-
-
+        
         /// <summary>
         /// Saves values from GUI into part data structure
         /// </summary>
@@ -1004,14 +1011,9 @@ namespace TidyStorage
             this.part.id_storage_place = ProcessTypeComboBox(comboBoxPlaceType);
 
             this.part.stock = (int)numericUpDownStock.Value;
-
-
-
-
+            
             return true;
         }
-
-
 
         /// <summary>
         /// 
@@ -1041,26 +1043,22 @@ namespace TidyStorage
             textBoxSecondaryValue.Text = GetPartValueString(this.part.secondary_value);
             textBoxThridValue.Text = GetPartValueString(this.part.tertiary_value);
 
-
             textBoxPrimaryTolerance.Text = GetPartToleranceString(this.part.primary_tolerance);
             textBoxSecondaryTolerance.Text = GetPartToleranceString(this.part.secondary_tolerance);
             textBoxThridTolerance.Text = GetPartToleranceString(this.part.tertiary_tolerance);
             */
 
-
             textBoxPrimaryValue.Text = this.part.primary_value;
             textBoxSecondaryValue.Text = this.part.secondary_value;
             textBoxThridValue.Text = this.part.tertiary_value;
-
-
+            
             textBoxPrimaryTolerance.Text = this.part.primary_tolerance;
             textBoxSecondaryTolerance.Text = this.part.secondary_tolerance;
             textBoxThridTolerance.Text = this.part.tertiary_tolerance;
-
         }
 
         /// <summary>
-        /// 
+        /// Supplier ComboBox seleted index change event
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -1074,7 +1072,7 @@ namespace TidyStorage
         }
 
         /// <summary>
-        /// 
+        /// Manufacturer ComboBox seleted index change event
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -1088,7 +1086,7 @@ namespace TidyStorage
         }
 
         /// <summary>
-        /// 
+        /// Part package ComboBox seleted index change event
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -1102,7 +1100,7 @@ namespace TidyStorage
         }
 
         /// <summary>
-        /// 
+        /// Part place type ComboBox seleted index change event
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -1115,12 +1113,6 @@ namespace TidyStorage
             }
         }
 
-        private void StorageForm_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            closed = true;
-        }
-
-
         /// <summary>
         /// Set position of this form in the center of the requested form
         /// </summary>
@@ -1129,11 +1121,6 @@ namespace TidyStorage
         {
             this.Left = form.Left + form.Width / 2 - this.Width / 2;
             this.Top = form.Top + form.Height / 2 - this.Height / 2;
-        }
-
-        private void buttonCopy_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }
