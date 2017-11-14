@@ -5,9 +5,9 @@ Application for effective administration of the electronics parts storage.
 - Cooperation with parts disributors such as Farnell or Mouser
 - Device assembly helper
 
-### Releases
-Not available yet, this app is still in alpha alpha stage. 
-You have to download Visual Studio Community 2015 (Available for free) and compile this app by yourself to test it. 
+### Download
+This app is still in alpha alpha stage. Pre-production binaries are available in the releases.
+https://github.com/micovo/tidy_storage/releases
 
 ### Screenshots
 ![alt tag](http://img.micovo.cz/tidystorage3.gif)
