@@ -43,7 +43,7 @@ namespace TidyStorage.Suppliers
         {
             string error = "";
             string responce = "";
-            string url = "http://www.gme.cz/products/search?term=" + part_number;
+            string url = "https://www.gme.cz/vysledky-vyhledavani?search_keyword=" + part_number + "&page=1";
 
             string output = "";
 
@@ -51,22 +51,7 @@ namespace TidyStorage.Suppliers
             {
                 if (resp != null)
                 {
-                    StreamReader reader = new StreamReader(resp.GetResponseStream());
-
-                    responce = reader.ReadToEnd();
-
-                    HtmlDocument document = new HtmlDocument();
-                    document.LoadHtml(responce);
-
-                    HtmlNodeCollection nodes = document.DocumentNode.SelectNodes("//article[@class='ProductTile']");
-
-                    if (nodes != null)
-                    {
-                        HtmlNode hn = nodes[0];
-                        string n = nodes[0].ChildNodes.Where(x => x.Name == "h2").First().ChildNodes.First().Attributes["href"].Value;
-
-                        output = "http://www.gme.cz" + n;
-                    }
+                    output = resp.ResponseUri.ToString();
                 }
             }
             return output;
@@ -195,6 +180,9 @@ namespace TidyStorage.Suppliers
 
             HtmlNode main = document.GetElementbyId("ProductContent");
 
+            //Failed
+            if (main == null) return;
+               
             HtmlNode hn = main.ChildNodes.Where(x => x.Name == "div").ElementAt(2);
             hn = hn.ChildNodes.Where(x => x.Name == "div").First();
             hn = hn.ChildNodes.Where(x => x.Name == "span").ElementAt(2);

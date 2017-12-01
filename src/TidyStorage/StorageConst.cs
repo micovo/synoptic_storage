@@ -142,6 +142,6 @@ namespace TidyStorage
             " + Str_Supplier_name + @" VARCHAR(64) NOT NULL,
             read_only INTEGER DEFAULT(0)
         );
-        INSERT INTO " + Str_Supplier + "(" + Str_Supplier_name + ",read_only) VALUES ('Farnell', 1), ('Mouser', 1), ('GME', 1), ('TME', 1)";
+        INSERT INTO " + Str_Supplier + "(" + Str_Supplier_name + ",read_only) VALUES ('Farnell', 1), ('Mouser', 1), ('GME', 1), ('TME', 1), ('Digikey', 1)";
     }
 }

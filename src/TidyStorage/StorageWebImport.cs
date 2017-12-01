@@ -157,6 +157,8 @@ namespace TidyStorage
 
                 comboBox4.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Name == "Datasheet")) ?? nullItem;
                 comboBox5.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Name == "Comment")) ?? nullItem;
+                comboBox2.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Name == "Manufacturer")) ?? nullItem;
+                comboBox3.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Name.StartsWith("Package"))) ?? nullItem;
 
                 if (supplier.GetType() == typeof(FarnellSupplier))
                 {
@@ -177,11 +179,15 @@ namespace TidyStorage
                 else if (supplier.GetType() == typeof(MouserSupplier))
                 {
                     comboBox1.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Name == "Manufacturer Part No")) ?? nullItem;
-                    comboBox2.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Name == "Manufacturer")) ?? nullItem;
-                    comboBox3.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Name.StartsWith("Package"))) ?? nullItem;
                     comboBox5.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Name == "Description")) ?? nullItem;
                 }
-                
+
+                else if (supplier.GetType() == typeof(DigikeySupplier))
+                {
+                    comboBox1.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Name == "Manufacturer Part Number")) ?? nullItem;
+                    comboBox5.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Name == "Detailed Description")) ?? nullItem;
+                }
+
                 comboBox12.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Value.EndsWith("°C") && (x.Value.Contains("ppm") == false) && x.Value[0] == '-')) ?? nullItem;
                 comboBox13.SelectedItem = unusedPartRows.FirstOrDefault(x => (x.Value.EndsWith("°C") && (x.Value.Contains("ppm") == false) && x.Value[0] != '-')) ?? nullItem;
 

@@ -161,6 +161,7 @@ namespace TidyStorage
                         case "Mouser": this.supplier = new MouserSupplier(suppnum); break;
                         case "GME": this.supplier = new GMESupplier(suppnum); break;
                         case "TME": this.supplier = new TMESupplier(suppnum); break;
+                        case "Digikey": this.supplier = new DigikeySupplier(suppnum); break;
                         default: MessageBox.Show("Supplier is not implemented, please enter parameters manualy or contact developers.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                             return false;
                     }
@@ -348,7 +349,15 @@ namespace TidyStorage
 
                     v = ((PartRow)spi.comboBox13.SelectedItem).Value;
                     if (v != "") textBoxTempRangeMax.Text = v.Replace("°C","").Trim();
-                
+
+
+                    if (textBoxTempRangeMin.Text.Contains("~"))
+                    {
+                        var split = textBoxTempRangeMin.Text.Split('~');
+                        textBoxTempRangeMin.Text = split[0].Trim();
+                        textBoxTempRangeMax.Text = split[1].Trim();
+                    }
+
                     //Prices are stored in the supplierPart variable
                     UpdatePrices(spi.supplierPart);
                     

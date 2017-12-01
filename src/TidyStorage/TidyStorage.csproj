@@ -169,10 +169,11 @@
     </Compile>
     <Compile Include="Helpers\StringHelpers.cs" />
     <Compile Include="Suppliers\Data\PartRow.cs" />
+    <Compile Include="Suppliers\DigikeySupplier.cs" />
     <Compile Include="Suppliers\FarnellSupplier.cs" />
     <Compile Include="Suppliers\GMESupplier.cs" />
-    <Compile Include="Suppliers\MouserSupplier.cs" />
     <Compile Include="Suppliers\Data\PartPrice.cs" />
+    <Compile Include="Suppliers\MouserSupplier.cs" />
     <Compile Include="Suppliers\Supplier.cs" />
     <Compile Include="Suppliers\Data\SupplierPart.cs" />
     <Compile Include="Suppliers\TMESupplier.cs" />
@@ -260,6 +261,14 @@
   </Target>
   <PropertyGroup>
     <PreBuildEvent>echo %25date%25 &gt; "$(ProjectDir)\Resources\BuildDate.txt"</PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>copy "$(TargetDir)*.exe" "$(SolutionDir)..\..\bin\"
+copy "$(TargetDir)*.dll" "$(SolutionDir)..\..\bin\"
+mkdir "$(SolutionDir)..\..\bin\x64\"
+mkdir "$(SolutionDir)..\..\bin\x86\"
+copy "$(TargetDir)x64\*.dll" "$(SolutionDir)..\..\bin\x64\"
+copy "$(TargetDir)x86\*.dll" "$(SolutionDir)..\..\bin\x86\"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -230,6 +230,9 @@ namespace TidyStorage.Suppliers
                                 part.currency = "EUR";
 
                                 price_str = price_str.Trim(" €".ToCharArray());
+                                price_str = price_str.Replace(",", System.Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
+                                price_str = price_str.Replace(".", System.Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
+
                                 quantity_str = quantity_str.Replace(".", "");
 
                                 if (int.TryParse(quantity_str, out min) && float.TryParse(price_str, out price))

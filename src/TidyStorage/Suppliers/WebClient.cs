@@ -141,7 +141,7 @@ namespace TidyStorage.Suppliers
         /// <param name="referer">Referer value used in HTTP request header</param>
         /// <param name="origin">Origin value used in HTTP request header</param>
         /// <returns>HTTP response or null in case of error</returns>
-        public static HttpWebResponse Request(string url, out string error, CookieContainer cookieContainer = null, NameValueCollection postdata = null, string host = "", string referer = "", string origin = "")
+        public static HttpWebResponse Request(string url, out string error, CookieContainer cookieContainer = null, NameValueCollection postdata = null, string host = "", string referer = "", string origin = "", string accept = "", string accept_encoding = "")
         {
             if (url == "")
             {
@@ -153,10 +153,12 @@ namespace TidyStorage.Suppliers
             error = "";
 
             request.Method = (postdata == null) ? "GET" : "POST";
-            request.Timeout = 20000;
+            request.Timeout = 60000;
             request.KeepAlive = false;
-            request.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8";
+            if (accept == "") request.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8"; else request.Accept = accept;
             request.Headers.Add("accept-language", "en-US");
+            if (accept_encoding != "") request.Headers.Add("accept-encoding", accept_encoding);
+            
             request.UserAgent = "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36";
             request.Proxy = null;
             request.Headers.Add("Upgrade-Insecure-Requests", "1");
@@ -167,7 +169,9 @@ namespace TidyStorage.Suppliers
 
             if (request.Method == "POST")
             {
+                request.ContentType = "application/x-www-form-urlencoded; charset=UTF-8";
                 request.Headers.Add("X-Requested-With", "XMLHttpRequest");
+                request.Headers.Add("DNT", "1");
             }
 
             //Create new cookie container if no container was provided

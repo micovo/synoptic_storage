@@ -221,7 +221,13 @@ namespace TidyStorage.Suppliers
                                 var min = int.Parse(aaa[0].Trim().Trim('+'));
 
                                 int ix = tdp.IndexOfAny(("0123456789").ToCharArray());
-                                var price = float.Parse(tdp.Substring(ix, tdp.Length - ix - 3));
+
+                                string price_str = tdp.Substring(ix, tdp.Length - ix - 3);
+
+                                price_str = price_str.Replace(",", System.Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
+                                price_str = price_str.Replace(".", System.Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
+
+                                var price = float.Parse(price_str);
 
                                 part.prices.Add(new PartPrice(min, int.MaxValue, price));
                             }

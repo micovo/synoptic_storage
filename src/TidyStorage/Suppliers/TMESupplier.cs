@@ -61,7 +61,7 @@ namespace TidyStorage.Suppliers
             string refferer = GetLink();
             string error = "";
             string responce = "";
-            string origin = "http://www.tme.eu";
+            string origin = "https://www.tme.eu";
             string host = "www.tme.eu";
             string url = refferer;
             CookieContainer cc = new CookieContainer();
@@ -76,17 +76,30 @@ namespace TidyStorage.Suppliers
                     responce = reader.ReadToEnd();
                     mainDocument = new HtmlDocument();
                     mainDocument.LoadHtml(responce);
+
+                    refferer = resp.ResponseUri.ToString();
                 }
             }
 
 
             //Download prices from the price API
-            url = "http://www.tme.eu/cz/_ajax/ProductInformationPage/_getStocks.html";
+            url = "https://www.tme.eu/cz/_ajax/ProductInformationPage/_getStocks.html";
 
             NameValueCollection nvc = new NameValueCollection();
             nvc["symbol"] = part_number;
+            nvc["brutto"] = "";
 
-            using (HttpWebResponse resp = WebClient.Request(url, out error, cc, nvc, host, refferer, origin))
+            /*
+            cc.Add(new Uri("http://www.tme.cz"), new Cookie("gtmCookie_3-seconds", "true"));
+            cc.Add(new Uri("http://www.tme.cz"), new Cookie("gtmCookie_GAUserId", "1500533699.1512077661"));
+            cc.Add(new Uri("http://www.tme.cz"), new Cookie("gtmCookie_referrer", "direct"));
+            cc.Add(new Uri("http://www.tme.cz"), new Cookie("TES", "eoj2dj9lkurq9a6h2sbv3l0riv1g854i"));
+            cc.Add(new Uri("http://www.tme.cz"), new Cookie("debug", "deleted"));
+            cc.Add(new Uri("http://www.tme.cz"), new Cookie("lang_tme", "cz"));
+            cc.Add(new Uri("http://www.tme.cz"), new Cookie("tls-checked", "1"));
+            */
+
+            using (HttpWebResponse resp = WebClient.Request(url, out error, cc, nvc, host, refferer, origin, "application/json, text/javascript, */*; q=0.01", "gzip, deflate, br"))
             {
                 if (resp != null)
                 {
@@ -230,10 +243,13 @@ namespace TidyStorage.Suppliers
                         {
                             HtmlNode[] tds = xx.ChildNodes.Where(x => x.Name == "td").ToArray();
 
-                            if (tds.Length == 2)
+                            if (tds.Length == 3)
                             {
                                 string tda = HttpUtility.HtmlDecode(tds[0].InnerText).Trim();
-                                string tdp = HttpUtility.HtmlDecode(tds[1].InnerText).Trim().Replace(".", ",");
+                                string tdp = HttpUtility.HtmlDecode(tds[2].InnerText).Trim();
+
+                                tdp = tdp.Replace(",", System.Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
+                                tdp = tdp.Replace(".", System.Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
 
                                 if (tdp.Contains("Kč"))
                                 {

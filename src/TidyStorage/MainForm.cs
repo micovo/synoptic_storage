@@ -764,5 +764,14 @@ namespace TidyStorage
                 CreateNewStoragePart(list[0]);
             }
         }
+
+        private void editSuppliersToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (currentStorage != null)
+            {
+                StorageTypeEditor spte = new StorageTypeEditor(currentStorage, StorageTypeTables.Supplier);
+                spte.ShowDialog();
+            }
+        }
     }
 }

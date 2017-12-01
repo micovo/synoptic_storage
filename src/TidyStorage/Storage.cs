@@ -572,7 +572,7 @@ currency
                             {
                                 if (dr.ItemArray[i].GetType() != typeof(System.DBNull))
                                 {
-                                    update_query += tab.Columns[i].Caption + "=\"" + (string)dr.ItemArray[i] + "\",";
+                                    update_query += tab.Columns[i].Caption + "=\"" + dr.ItemArray[i].ToString() + "\",";
                                 }
                                 else
                                 {
